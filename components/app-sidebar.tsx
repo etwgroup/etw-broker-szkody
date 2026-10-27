@@ -14,7 +14,7 @@ const adminNavigation = [
 const brokerNavigation = [
   { href: "/broker", label: "Zgłoszone szkody", icon: ClipboardList },
   { href: "/broker/communities", label: "Wspólnoty", icon: Building2 },
-  { href: "/broker/administrators", label: "Administratorzy", icon: UsersRound },
+  { href: "/broker/administrators", label: "Obsługiwani Administratorzy", icon: UsersRound },
 ];
 
 export function AppSidebar({ profile }: { profile: AppProfile }) {

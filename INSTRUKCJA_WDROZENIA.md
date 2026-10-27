@@ -78,6 +78,20 @@ Jeżeli zobaczysz czerwony komunikat błędu, nie uruchamiaj kolejnego pliku. Sk
 
    Zastąp wartość w nawiasach ostrych prawdziwym UUID, ale pozostaw apostrofy.
 
+> Każde nowe konto jest celowo tworzone jako `administrator`. Jeżeli broker po zalogowaniu widzi panel administratora, to znaczy, że ten krok został pominięty albo wykonany dla innego UUID. Możesz też nadać rolę po adresie e-mail:
+
+```sql
+update public.profiles
+set role = 'broker'
+where id = (
+  select id
+  from auth.users
+  where lower(email) = lower('adres-brokera@twojafirma.pl')
+);
+```
+
+Po wykonaniu zapytania wyloguj brokera z aplikacji i zaloguj go ponownie.
+
 ## Krok 5 — utwórz konto administratora
 
 1. W Supabase wróć do **Authentication → Users**.
@@ -180,7 +194,7 @@ GitHub służy tu do przechowywania kodu. Polecenia wpisujesz nadal w aplikacji 
 
 1. Otwórz [Vercel](https://vercel.com/new).
 2. Wybierz repozytorium `etw-broker-szkody` z GitHub.
-3. Pozostaw ustawienie **Framework Preset: Next.js**.
+3. W polu **Application Preset** wybierz **Next.js**. W starszej wersji panelu to samo pole nosiło nazwę **Framework Preset**.
 4. Przed kliknięciem **Deploy** rozwiń sekcję **Environment Variables**.
 5. Dodaj dwie zmienne — dla każdego wybierz środowiska **Production**, **Preview** i **Development**:
 
@@ -203,6 +217,30 @@ GitHub służy tu do przechowywania kodu. Polecenia wpisujesz nadal w aplikacji 
    ```
 
 4. Zapisz zmiany i wykonaj próbne logowanie na opublikowanym adresie.
+
+## Krok 10 — podłącz domenę `wspolnoty.etwbroker.pl`
+
+1. Po udanym wdrożeniu otwórz projekt w Vercel.
+2. Wejdź w **Settings → Domains**.
+3. Wybierz **Add Domain**, wpisz dokładnie `wspolnoty.etwbroker.pl` i przypisz ją do środowiska Production.
+4. Vercel pokaże wymagany rekord DNS. Dla subdomeny będzie to rekord typu **CNAME**. Skopiuj jego wartość dokładnie tak, jak pokazuje Vercel.
+5. Otwórz panel firmy, w której zarządzana jest domena `etwbroker.pl` (np. Cloudflare, rejestrator domeny lub hosting) i dodaj rekord:
+
+   | Pole w panelu DNS | Wartość |
+   | --- | --- |
+   | Typ | `CNAME` |
+   | Nazwa / Host | `wspolnoty` |
+   | Cel / Value / Points to | dokładna wartość pokazana przez Vercel |
+   | TTL | domyślne ustawienie |
+
+6. Jeżeli istnieje już rekord DNS o nazwie `wspolnoty`, usuń wyłącznie ten konfliktujący rekord przed dodaniem CNAME. Nie usuwaj rekordów głównej domeny, poczty ani innych subdomen.
+7. Wróć do Vercel i poczekaj na status **Valid Configuration**. Certyfikat HTTPS zostanie wygenerowany automatycznie.
+8. W Supabase uzupełnij **Authentication → URL Configuration**:
+
+   - **Site URL:** `https://wspolnoty.etwbroker.pl`
+   - **Redirect URLs:** `https://wspolnoty.etwbroker.pl/**`
+
+> Zmiany DNS mogą być widoczne po kilku minutach, a w niektórych przypadkach do 24 godzin.
 
 ## Końcowa kontrola
 

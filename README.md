@@ -10,7 +10,8 @@ Panel dla administratorów wspólnot mieszkaniowych i brokera ubezpieczeniowego.
 - statusy: nowa, przyjęta, zgłoszona do ubezpieczyciela, przypisany numer szkody przez ubezpieczyciela, odrzucona, zaakceptowana i wypłacona;
 - wymagany numer szkody, gdy broker wybierze status „Przypisany numer szkody przez ubezpieczyciela”;
 - prywatne dokumenty szkód i polis, reguły RLS oraz historia statusów;
-- widoki dla brokera: szkody, wspólnoty i administratorzy.
+- widoki dla brokera: szkody, wspólnoty i administratorzy;
+- ręczne dodawanie wspólnot oraz import zbiorczego wykazu Excel do wybranego konta administratora.
 
 ## Wymagania
 
@@ -106,7 +107,7 @@ Jeżeli `origin` jest już skonfigurowany, pomiń polecenie `git remote add orig
 ## 5. Wdrożenie na Vercel
 
 1. W Vercel wybierz **Add New → Project** i zaimportuj repozytorium GitHub.
-2. Pozostaw automatycznie wykryty preset **Next.js** oraz katalog główny projektu.
+2. W polu **Application Preset** wybierz **Next.js** oraz pozostaw katalog główny projektu jako `./`.
 3. W **Environment Variables** dodaj poniższe wartości dla środowisk **Production**, **Preview** i **Development**:
 
    | Nazwa | Wartość |
