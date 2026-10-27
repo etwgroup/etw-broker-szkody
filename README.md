@@ -5,13 +5,14 @@ Panel dla administratorów wspólnot mieszkaniowych i brokera ubezpieczeniowego.
 ## Zakres aplikacji
 
 - dwa typy kont: `administrator` i `broker`, zarządzane przez Supabase Auth;
-- wspólnoty przypisane do konkretnych administratorów;
+- wspólnoty przypisane do firm administrujących, nie do pojedynczych kont;
+- wiele kont administratorów w jednej firmie, ze wspólnym dostępem do jej wspólnot;
 - zgłoszenia szkód z opisem, datą zdarzenia oraz plikami (zdjęcia, faktury, kosztorysy);
 - statusy: nowa, przyjęta, zgłoszona do ubezpieczyciela, przypisany numer szkody przez ubezpieczyciela, odrzucona, zaakceptowana i wypłacona;
 - wymagany numer szkody, gdy broker wybierze status „Przypisany numer szkody przez ubezpieczyciela”;
 - prywatne dokumenty szkód i polis, reguły RLS oraz historia statusów;
 - widoki dla brokera: szkody, wspólnoty i administratorzy;
-- ręczne dodawanie wspólnot oraz import zbiorczego wykazu Excel do wybranego konta administratora.
+- ręczne dodawanie wspólnot do firmy oraz import zbiorczego wykazu Excel jako wspólnot nieprzypisanych.
 
 ## Wymagania
 
@@ -30,6 +31,7 @@ Panel dla administratorów wspólnot mieszkaniowych i brokera ubezpieczeniowego.
    2. `supabase/migrations/202610220002_insurance_policies.sql`
    3. `supabase/migrations/202610220003_insurer_claim_number_status.sql`
    4. `supabase/migrations/202610220004_insurer_claim_number_field.sql`
+   5. `supabase/migrations/202610220005_administrator_companies.sql`
 
    Trzecia i czwarta migracja muszą zostać wykonane osobno. PostgreSQL udostępnia nową wartość statusu dopiero po zatwierdzeniu poprzedniego zapytania.
 
@@ -38,7 +40,7 @@ Panel dla administratorów wspólnot mieszkaniowych i brokera ubezpieczeniowego.
    - **Project URL**;
    - **Publishable key**.
 
-   Do aplikacji nie wklejaj klucza `service_role`.
+   Klucz **Secret key** (`sb_secret_...`) będzie potrzebny wyłącznie jako prywatna zmienna Vercel `SUPABASE_SECRET_KEY` do tworzenia kont administratorów. Nigdy nie używaj przedrostka `NEXT_PUBLIC_` ani nie umieszczaj go w repozytorium.
 
 5. W **Authentication → URL Configuration** ustaw adres produkcyjny aplikacji jako **Site URL**. Do listy **Redirect URLs** dodaj co najmniej:
 
@@ -114,6 +116,7 @@ Jeżeli `origin` jest już skonfigurowany, pomiń polecenie `git remote add orig
    | --- | --- |
    | `NEXT_PUBLIC_SUPABASE_URL` | Project URL z Supabase |
    | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Publishable key z Supabase |
+   | `SUPABASE_SECRET_KEY` | Secret key (`sb_secret_...`) z Supabase — prywatna zmienna serwera |
 
 4. Kliknij **Deploy**.
 5. Po uzyskaniu adresu Vercel wróć do Supabase i dodaj go w **Authentication → URL Configuration** jako Site URL / Redirect URL, zgodnie z krokiem 1.5.
@@ -135,5 +138,5 @@ Migracje nie powinny być pomijane — nowy status z numerem szkody wymaga zaró
 ## Bezpieczeństwo
 
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` jest kluczem przeznaczonym do użycia po stronie aplikacji; bezpieczeństwo danych egzekwują reguły RLS w Supabase.
-- Nigdy nie dodawaj `service_role`, haseł ani pliku `.env.local` do repozytorium lub zmiennych dostępnych po stronie klienta.
+- Nigdy nie dodawaj `SUPABASE_SECRET_KEY`, haseł ani pliku `.env.local` do repozytorium lub zmiennych dostępnych po stronie klienta.
 - Dostęp do szkód, polis i plików opiera się na przypisaniu wspólnoty oraz roli użytkownika.

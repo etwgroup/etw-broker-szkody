@@ -20,7 +20,7 @@ Przejdź przez kroki po kolei. Nie przechodź do następnego punktu, dopóki bie
 
 ## Krok 2 — uruchom strukturę bazy danych
 
-To jest etap, na którym obecnie jesteś. Trzeba uruchomić cztery pliki SQL — **jeden po drugim**.
+Trzeba uruchomić pięć plików SQL — **jeden po drugim**.
 
 1. W lewym menu Supabase kliknij **SQL Editor**.
 2. Kliknij **New query**.
@@ -35,6 +35,7 @@ To jest etap, na którym obecnie jesteś. Trzeba uruchomić cztery pliki SQL —
    1. [202610220002_insurance_policies.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/supabase/migrations/202610220002_insurance_policies.sql)
    2. [202610220003_insurer_claim_number_status.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/supabase/migrations/202610220003_insurer_claim_number_status.sql)
    3. [202610220004_insurer_claim_number_field.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/supabase/migrations/202610220004_insurer_claim_number_field.sql)
+   4. [202610220005_administrator_companies.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220005_administrator_companies.sql)
 
 > Ważne: plików `003` i `004` nie wklejaj do jednego zapytania. Każdy plik musi być uruchomiony osobno i zakończony sukcesem.
 
@@ -60,7 +61,7 @@ Jeżeli zobaczysz czerwony komunikat błędu, nie uruchamiaj kolejnego pliku. Sk
 
 5. Zapisz plik.
 
-> Nie kopiuj klucza `service_role` ani `sb_secret_...`. Nie wysyłaj tych sekretów e-mailem ani na czacie.
+> Klucz **Secret key** zaczynający się od `sb_secret_` będzie potrzebny później wyłącznie jako prywatna zmienna w Vercel o nazwie `SUPABASE_SECRET_KEY`. Nie wklejaj go do kodu, GitHub ani zmiennej zaczynającej się od `NEXT_PUBLIC_`.
 
 ## Krok 4 — utwórz konto brokera
 
@@ -99,7 +100,7 @@ Po wykonaniu zapytania wyloguj brokera z aplikacji i zaloguj go ponownie.
 3. Utwórz konto administratora, np. `administrator@twojafirma.pl`.
 4. Ustaw hasło i zapisz konto.
 
-Nie uruchamiaj dodatkowego polecenia SQL dla tego konta. Nowe konto automatycznie otrzymuje rolę `administrator`.
+Nie uruchamiaj dodatkowego polecenia SQL dla tego konta. Nowe konto automatycznie otrzymuje rolę `administrator`. Po uruchomieniu migracji `005` kolejne konta twórz wygodnie w panelu brokera: **Obsługiwani Administratorzy → Utwórz konto administratora**. Wybierasz wtedy firmę administrującą albo tworzysz nową.
 
 > Na etapie wdrożenia nie dodajemy jeszcze wspólnot. Wspólnoty przypiszemy po uruchomieniu aplikacji, w ramach konfiguracji danych operacyjnych.
 
@@ -196,12 +197,13 @@ GitHub służy tu do przechowywania kodu. Polecenia wpisujesz nadal w aplikacji 
 2. Wybierz repozytorium `etw-broker-szkody` z GitHub.
 3. W polu **Application Preset** wybierz **Next.js**. W starszej wersji panelu to samo pole nosiło nazwę **Framework Preset**.
 4. Przed kliknięciem **Deploy** rozwiń sekcję **Environment Variables**.
-5. Dodaj dwie zmienne — dla każdego wybierz środowiska **Production**, **Preview** i **Development**:
+5. Dodaj trzy zmienne — dla każdego wybierz środowiska **Production**, **Preview** i **Development**:
 
    | Nazwa | Wartość |
    | --- | --- |
    | `NEXT_PUBLIC_SUPABASE_URL` | Project URL z kroku 3 |
    | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Publishable key z kroku 3 |
+   | `SUPABASE_SECRET_KEY` | Secret key (`sb_secret_...`) z Supabase — prywatna zmienna serwera |
 
 6. Kliknij **Deploy**.
 7. Po wdrożeniu Vercel poda adres, np. `https://etw-broker-szkody.vercel.app`.

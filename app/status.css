@@ -242,3 +242,171 @@
     border-left: 0;
   }
 }
+
+.administrator-account-form {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 18px;
+  padding: 22px;
+}
+
+.administrator-account-form__heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.administrator-account-form__heading > span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 35px;
+  height: 35px;
+  color: var(--red);
+  background: var(--red-pale);
+  border-radius: 50%;
+}
+
+.administrator-account-form__heading h2 {
+  margin: 2px 0 0;
+  font-size: 16px;
+}
+
+.administrator-account-form__heading p:last-child {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.administrator-account-form__fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  align-items: end;
+}
+
+.administrator-account-form__fields label {
+  display: grid;
+  gap: 6px;
+  color: #5f5a61;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.administrator-account-form__fields label span {
+  font-weight: 500;
+}
+
+.administrator-account-form__fields input,
+.administrator-account-form__fields select {
+  width: 100%;
+  min-width: 0;
+  min-height: 39px;
+  padding: 0 10px;
+  color: var(--ink);
+  border: 1px solid #d9d7da;
+  border-radius: 4px;
+  outline-color: var(--red);
+  background: #fff;
+  font: 600 12px "Space Grotesk", Manrope, sans-serif;
+}
+
+.administrator-account-form__fields .button {
+  align-self: end;
+  margin: 0;
+}
+
+@media (max-width: 860px) {
+  .administrator-account-form {
+    padding: 17px;
+  }
+
+  .administrator-account-form__fields {
+    grid-template-columns: 1fr;
+  }
+}
+
+.administrator-account-form {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 18px;
+  padding: 22px;
+}
+
+.administrator-account-form__heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.administrator-account-form__heading > span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 35px;
+  height: 35px;
+  color: var(--red);
+  background: var(--red-pale);
+  border-radius: 50%;
+}
+
+.administrator-account-form__heading h2 {
+  margin: 2px 0 0;
+  font-size: 16px;
+}
+
+.administrator-account-form__heading p:last-child {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.administrator-account-form__fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  align-items: end;
+}
+
+.administrator-account-form__fields label {
+  display: grid;
+  gap: 6px;
+  color: #5f5a61;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.administrator-account-form__fields label span {
+  font-weight: 500;
+}
+
+.administrator-account-form__fields input,
+.administrator-account-form__fields select {
+  width: 100%;
+  min-width: 0;
+  min-height: 39px;
+  padding: 0 10px;
+  color: var(--ink);
+  border: 1px solid #d9d7da;
+  border-radius: 4px;
+  outline-color: var(--red);
+  background: #fff;
+  font: 600 12px "Space Grotesk", Manrope, sans-serif;
+}
+
+.administrator-account-form__fields .button {
+  align-self: end;
+  margin: 0;
+}
+
+@media (max-width: 860px) {
+  .administrator-account-form {
+    padding: 17px;
+  }
+
+  .administrator-account-form__fields {
+    grid-template-columns: 1fr;
+  }
+}
