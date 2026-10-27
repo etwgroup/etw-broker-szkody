@@ -1,0 +1,47 @@
+"use client";
+
+import { Building2, ClipboardList, LayoutDashboard, LogOut, PlusCircle, ShieldCheck, UsersRound } from "lucide-react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import type { AppProfile } from "@/lib/auth";
+
+const adminNavigation = [
+  { href: "/admin", label: "Pulpit", icon: LayoutDashboard },
+  { href: "/admin/communities", label: "Obsługiwane wspólnoty", icon: Building2 },
+  { href: "/admin/damages/new", label: "Zgłoś szkodę", icon: PlusCircle },
+];
+const brokerNavigation = [
+  { href: "/broker", label: "Zgłoszone szkody", icon: ClipboardList },
+  { href: "/broker/communities", label: "Wspólnoty", icon: Building2 },
+  { href: "/broker/administrators", label: "Administratorzy", icon: UsersRound },
+];
+
+export function AppSidebar({ profile }: { profile: AppProfile }) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const nav = profile.role === "broker" ? brokerNavigation : adminNavigation;
+  const handleSignOut = async () => {
+    if (profile.isDemo) {
+      await fetch("/api/demo-login", { method: "DELETE" });
+      router.replace("/login"); router.refresh(); return;
+    }
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.replace("/login");
+    router.refresh();
+  };
+  return <aside className="sidebar">
+    <Link href={profile.role === "broker" ? "/broker" : "/admin"} className="sidebar-logo" aria-label="ETW Broker — pulpit"><img src="/etw-broker-logo.png" alt="ETW Broker" /></Link>
+    <nav className="nav-group">
+      <p className="nav-label">{profile.role === "broker" ? "Panel brokera" : "Panel administratora"}</p>
+      {nav.map(({ href, label, icon: Icon }) => <Link key={href} href={href} className={`nav-link ${pathname === href || (href !== "/admin" && href !== "/broker" && pathname.startsWith(href)) || (href === "/broker" && pathname.startsWith("/broker/damages")) ? "active" : ""}`}><Icon size={17}/><span>{label}</span></Link>)}
+    </nav>
+    <div className="sidebar-user">
+      <ShieldCheck size={15} />
+      <strong>{profile.full_name || "Użytkownik"}</strong>
+      <span>{profile.role === "broker" ? "Broker ubezpieczeniowy" : profile.email}</span>
+      <button className="signout" type="button" onClick={handleSignOut}><LogOut size={12} /> Wyloguj się</button>
+    </div>
+  </aside>;
+}
