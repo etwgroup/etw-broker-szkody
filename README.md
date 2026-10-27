@@ -32,6 +32,7 @@ Panel dla administratorów wspólnot mieszkaniowych i brokera ubezpieczeniowego.
    3. `supabase/migrations/202610220003_insurer_claim_number_status.sql`
    4. `supabase/migrations/202610220004_insurer_claim_number_field.sql`
    5. `supabase/migrations/202610220005_administrator_companies.sql`
+   6. `supabase/migrations/202610220006_company_accounts_and_community_refresh.sql`
 
    Trzecia i czwarta migracja muszą zostać wykonane osobno. PostgreSQL udostępnia nową wartość statusu dopiero po zatwierdzeniu poprzedniego zapytania.
 
@@ -131,7 +132,7 @@ Gdy aktualizacja zawiera zmiany w `supabase/migrations/`:
 1. Najpierw uruchom nowe migracje w Supabase, w kolejności ich numerów.
 2. Lokalnie wykonaj `pnpm build`.
 3. Wypchnij kod na `main` lub uruchom redeploy w Vercel.
-4. Sprawdź krytyczną ścieżkę: logowanie, zgłoszenie szkody, plik załącznika oraz zmianę statusu przez brokera.
+4. Sprawdź krytyczną ścieżkę: logowanie, tworzenie firmy i konta administratora, import wspólnot, zgłoszenie szkody i zmianę statusu przez brokera.
 
 Migracje nie powinny być pomijane — nowy status z numerem szkody wymaga zarówno migracji `003`, jak i `004`.
 

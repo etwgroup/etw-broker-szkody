@@ -317,6 +317,227 @@
   margin: 0;
 }
 
+.company-manager,
+.account-directory,
+.community-editor {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 18px;
+  padding: 22px;
+}
+
+.company-manager__heading,
+.account-directory__heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.company-manager__heading > span,
+.account-directory__heading > span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 35px;
+  height: 35px;
+  color: var(--red);
+  background: var(--red-pale);
+  border-radius: 50%;
+}
+
+.company-manager__heading h2,
+.account-directory__heading h2,
+.community-editor h2 {
+  margin: 2px 0 0;
+  font-size: 16px;
+}
+
+.company-manager__heading p:last-child,
+.account-directory__heading p:last-child {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.company-manager__form,
+.account-directory__form,
+.community-editor__fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  align-items: end;
+}
+
+.company-manager__form--edit {
+  padding: 15px;
+  border: 1px solid #f0c7cf;
+  border-radius: 5px;
+  background: #fffafa;
+}
+
+.company-manager__form label,
+.account-directory__form label,
+.community-editor__fields label {
+  display: grid;
+  gap: 6px;
+  color: #5f5a61;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.company-manager__form label span,
+.account-directory__form label span,
+.community-editor__fields label span {
+  font-weight: 500;
+}
+
+.company-manager__form input,
+.company-manager__form select,
+.account-directory__form input,
+.account-directory__form select,
+.community-editor__fields input,
+.community-editor__fields select {
+  width: 100%;
+  min-width: 0;
+  min-height: 39px;
+  padding: 0 10px;
+  color: var(--ink);
+  border: 1px solid #d9d7da;
+  border-radius: 4px;
+  outline-color: var(--red);
+  background: #fff;
+  font: 600 12px "Space Grotesk", Manrope, sans-serif;
+}
+
+.company-manager__form .button,
+.account-directory__form .button,
+.community-editor__fields .button {
+  align-self: end;
+  margin: 0;
+}
+
+.company-manager__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.company-manager__list .community-card {
+  padding: 16px;
+}
+
+.company-manager__list h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.text-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 10px;
+  padding: 0;
+  color: var(--red);
+  border: 0;
+  background: transparent;
+  font: 800 11px "Space Grotesk", Manrope, sans-serif;
+  cursor: pointer;
+}
+
+.account-directory__list {
+  display: grid;
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+}
+
+.account-directory__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  background: #fff;
+}
+
+.account-directory__item + .account-directory__item {
+  border-top: 1px solid var(--line);
+}
+
+.account-directory__item div {
+  display: grid;
+  gap: 3px;
+}
+
+.account-directory__item strong {
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.account-directory__item span,
+.account-directory__item small {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.account-directory__item .button,
+.broker-community-card__footer .button {
+  width: auto;
+  min-height: 31px;
+  margin: 0;
+}
+
+.broker-community-card {
+  display: grid;
+  overflow: hidden;
+  padding: 0;
+}
+
+.broker-community-card > a {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+}
+
+.broker-community-card small {
+  display: block;
+  margin-top: 3px;
+}
+
+.broker-community-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--line);
+  background: #fdfcfc;
+}
+
+.broker-community-card__footer span {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+@media (max-width: 860px) {
+  .company-manager,
+  .account-directory,
+  .community-editor {
+    padding: 17px;
+  }
+
+  .company-manager__form,
+  .account-directory__form,
+  .community-editor__fields,
+  .company-manager__list {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 860px) {
   .administrator-account-form {
     padding: 17px;

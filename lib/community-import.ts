@@ -4,6 +4,7 @@ export type ImportedCommunity = {
   name: string;
   address: string;
   nip: string | null;
+  regon: string | null;
   sourceAdministrator: string | null;
 };
 
@@ -19,6 +20,12 @@ function formatNip(value: unknown) {
   return digits.padStart(10, "0").slice(-10);
 }
 
+function formatRegon(value: unknown) {
+  const digits = cleanText(value).replace(/\D/g, "");
+  if (!digits) return null;
+  return digits.padStart(digits.length <= 9 ? 9 : 14, "0").slice(-14);
+}
+
 function formatAddress(streetValue: unknown, buildingNumberValue: unknown, postalCodeValue: unknown, cityValue: unknown) {
   const street = cleanText(streetValue);
   const buildingNumber = cleanText(buildingNumberValue);
@@ -32,7 +39,7 @@ function formatAddress(streetValue: unknown, buildingNumberValue: unknown, posta
 
 /**
  * Reads the 2026 ETW collective register. Its data starts on row 4:
- * B name, C postal code, D city, E street, F building number, H NIP, AQ administrator.
+ * B name, C postal code, D city, E street, F building number, G REGON, H NIP, AQ administrator.
  */
 export function parseCommunityWorkbook(file: ArrayBuffer): ImportedCommunity[] {
   const workbook = read(file, { type: "array" });
@@ -47,6 +54,7 @@ export function parseCommunityWorkbook(file: ArrayBuffer): ImportedCommunity[] {
       name,
       address,
       nip: formatNip(row[7]),
+      regon: formatRegon(row[6]),
       sourceAdministrator: cleanText(row[42]) || null,
     };
   }).filter((community) => community.name && community.address);

@@ -10,7 +10,7 @@ type Company = { id: string; name: string; nip?: string | null };
 type CommunityCreatePanelProps = { companies: Company[]; isDemo?: boolean };
 type Notice = { kind: "success" | "error"; text: string } | null;
 
-const emptyManualForm = { companyId: "", name: "", address: "", nip: "" };
+const emptyManualForm = { companyId: "", name: "", address: "", nip: "", regon: "" };
 
 function communityKey(community: Pick<ImportedCommunity, "name" | "address" | "nip">) {
   return community.nip || `${community.name}|${community.address}`.toLocaleLowerCase("pl-PL");
@@ -41,6 +41,7 @@ export function CommunityCreatePanel({ companies, isDemo = false }: CommunityCre
           name: manualForm.name.trim(),
           address: manualForm.address.trim(),
           nip: manualForm.nip.trim() || null,
+          regon: manualForm.regon.trim() || null,
         });
         if (error) throw error;
       }
@@ -75,24 +76,20 @@ export function CommunityCreatePanel({ companies, isDemo = false }: CommunityCre
     setNotice(null);
     setImportPending(true);
     try {
-      let communitiesToInsert = importedCommunities;
+      let insertedCount = importedCommunities.length;
+      let updatedCount = 0;
       if (!isDemo) {
         const supabase = createClient();
-        const { data: existing, error: existingError } = await supabase.from("communities").select("name, address, nip");
-        if (existingError) throw existingError;
-        const existingKeys = new Set((existing || []).map((community) => communityKey(community)));
-        communitiesToInsert = importedCommunities.filter((community) => !existingKeys.has(communityKey(community)));
-
-        for (let index = 0; index < communitiesToInsert.length; index += 100) {
-          const batch = communitiesToInsert.slice(index, index + 100).map((community) => ({ name: community.name, address: community.address, nip: community.nip }));
-          if (!batch.length) continue;
-          const { error } = await supabase.from("communities").insert(batch);
-          if (error) throw error;
-        }
+        const { data, error } = await supabase.rpc("import_communities_from_register", {
+          payload: importedCommunities.map(({ name, address, nip, regon }) => ({ name, address, nip, regon })),
+        });
+        if (error) throw error;
+        const result = (data?.[0] || {}) as { inserted_count?: number; updated_count?: number };
+        insertedCount = result.inserted_count || 0;
+        updatedCount = result.updated_count || 0;
       }
-      const skipped = importedCommunities.length - communitiesToInsert.length;
       setImportedCommunities([]);
-      setNotice({ kind: "success", text: isDemo ? `Tryb demonstracyjny: przygotowano import ${communitiesToInsert.length} nieprzypisanych wspólnot, ale dane nie są zapisywane trwale.` : `Dodano ${communitiesToInsert.length} nieprzypisanych wspólnot.${skipped ? ` Pominięto ${skipped} już istniejących.` : ""}` });
+      setNotice({ kind: "success", text: isDemo ? `Tryb demonstracyjny: przygotowano odświeżenie danych ${insertedCount} wspólnot, ale dane nie są zapisywane trwale.` : `Dodano ${insertedCount} nowych wspólnot i zaktualizowano ${updatedCount} istniejących. Ręczne przypisania do firm pozostały bez zmian.` });
       router.refresh();
     } catch (error) {
       setNotice({ kind: "error", text: error instanceof Error ? error.message : "Import wspólnot nie powiódł się." });
@@ -111,14 +108,15 @@ export function CommunityCreatePanel({ companies, isDemo = false }: CommunityCre
         <label>Nazwa wspólnoty<input required value={manualForm.name} onChange={(event) => setManualForm({ ...manualForm, name: event.target.value })} placeholder="np. Wspólnota Mieszkaniowa Parkowa 8" /></label>
         <label>Adres<input required value={manualForm.address} onChange={(event) => setManualForm({ ...manualForm, address: event.target.value })} placeholder="ul. Parkowa 8, 00-001 Warszawa" /></label>
         <label>NIP <span>— opcjonalnie</span><input value={manualForm.nip} onChange={(event) => setManualForm({ ...manualForm, nip: event.target.value })} inputMode="numeric" placeholder="0000000000" /></label>
+        <label>REGON <span>— opcjonalnie</span><input value={manualForm.regon} onChange={(event) => setManualForm({ ...manualForm, regon: event.target.value })} inputMode="numeric" placeholder="000000000" /></label>
         <button className="button button-primary" type="submit" disabled={manualPending}>{manualPending ? <LoaderCircle className="spin" size={16}/> : <Plus size={16}/>}Dodaj wspólnotę</button>
       </form>
       <div className="community-import">
         <div className="community-add-form__title"><FileSpreadsheet size={19}/><div><h3>Import z pliku Excel</h3><p>Obsługiwany jest zbiorczy wykaz wspólnot na rok 2026.</p></div></div>
-        <p className="community-import__explanation">Z pliku pobieramy nazwę, adres i NIP. Importowane wspólnoty celowo nie będą przypisane do firmy ani konta administratora.</p>
+        <p className="community-import__explanation">Z pliku pobieramy nazwę, adres, NIP i REGON. Nowy import aktualizuje istniejące dane po NIP albo nazwie i adresie, zachowując ręczne przypisanie do firmy.</p>
         <input ref={importInput} className="visually-hidden" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onChange={handleWorkbook}/>
         <button className="button button-ghost" type="button" onClick={() => importInput.current?.click()}><Upload size={16}/>Wybierz plik Excel</button>
-        {importedCommunities.length > 0 && <div className="community-import__preview"><strong>Gotowe do importu: {importedCommunities.length}</strong><ul>{importedCommunities.slice(0, 3).map((community) => <li key={communityKey(community)}><b>{community.name}</b><span>{community.address}{community.sourceAdministrator ? ` · wykaz: ${community.sourceAdministrator}` : ""}</span></li>)}</ul>{importedCommunities.length > 3 && <p className="community-import__more">…oraz {importedCommunities.length - 3} kolejnych wspólnot.</p>}<button className="button button-primary" type="button" onClick={importCommunities} disabled={importPending}>{importPending ? <LoaderCircle className="spin" size={16}/> : <Upload size={16}/>}Zaimportuj nieprzypisane wspólnoty</button></div>}
+        {importedCommunities.length > 0 && <div className="community-import__preview"><strong>Gotowe do odświeżenia: {importedCommunities.length}</strong><ul>{importedCommunities.slice(0, 3).map((community) => <li key={communityKey(community)}><b>{community.name}</b><span>{community.address}{community.nip ? ` · NIP ${community.nip}` : ""}{community.regon ? ` · REGON ${community.regon}` : ""}</span></li>)}</ul>{importedCommunities.length > 3 && <p className="community-import__more">…oraz {importedCommunities.length - 3} kolejnych wspólnot.</p>}<button className="button button-primary" type="button" onClick={importCommunities} disabled={importPending}>{importPending ? <LoaderCircle className="spin" size={16}/> : <Upload size={16}/>}Zaimportuj i odśwież dane</button></div>}
       </div>
     </div>
   </section>;

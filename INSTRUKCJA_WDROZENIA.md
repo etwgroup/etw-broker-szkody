@@ -20,7 +20,7 @@ Przejdź przez kroki po kolei. Nie przechodź do następnego punktu, dopóki bie
 
 ## Krok 2 — uruchom strukturę bazy danych
 
-Trzeba uruchomić pięć plików SQL — **jeden po drugim**.
+Trzeba uruchomić sześć plików SQL — **jeden po drugim**.
 
 1. W lewym menu Supabase kliknij **SQL Editor**.
 2. Kliknij **New query**.
@@ -36,6 +36,7 @@ Trzeba uruchomić pięć plików SQL — **jeden po drugim**.
    2. [202610220003_insurer_claim_number_status.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/supabase/migrations/202610220003_insurer_claim_number_status.sql)
    3. [202610220004_insurer_claim_number_field.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/supabase/migrations/202610220004_insurer_claim_number_field.sql)
    4. [202610220005_administrator_companies.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220005_administrator_companies.sql)
+   5. [202610220006_company_accounts_and_community_refresh.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220006_company_accounts_and_community_refresh.sql)
 
 > Ważne: plików `003` i `004` nie wklejaj do jednego zapytania. Każdy plik musi być uruchomiony osobno i zakończony sukcesem.
 
@@ -100,7 +101,7 @@ Po wykonaniu zapytania wyloguj brokera z aplikacji i zaloguj go ponownie.
 3. Utwórz konto administratora, np. `administrator@twojafirma.pl`.
 4. Ustaw hasło i zapisz konto.
 
-Nie uruchamiaj dodatkowego polecenia SQL dla tego konta. Nowe konto automatycznie otrzymuje rolę `administrator`. Po uruchomieniu migracji `005` kolejne konta twórz wygodnie w panelu brokera: **Obsługiwani Administratorzy → Utwórz konto administratora**. Wybierasz wtedy firmę administrującą albo tworzysz nową.
+Nie uruchamiaj dodatkowego polecenia SQL dla tego konta. Nowe konto automatycznie otrzymuje rolę `administrator`. Po uruchomieniu migracji `006` kolejne konta twórz wygodnie w panelu brokera: najpierw dodaj firmę w **Obsługiwani Administratorzy → Dodaj lub edytuj firmę**, a następnie utwórz dla niej dowolną liczbę kont.
 
 > Na etapie wdrożenia nie dodajemy jeszcze wspólnot. Wspólnoty przypiszemy po uruchomieniu aplikacji, w ramach konfiguracji danych operacyjnych.
 
