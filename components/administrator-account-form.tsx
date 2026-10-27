@@ -6,9 +6,9 @@ import { useRouter } from "next/navigation";
 
 type Company = { id: string; name: string; nip?: string | null };
 type Notice = { kind: "success" | "error"; text: string } | null;
-const emptyForm = { companyId: "", fullName: "", email: "", password: "" };
+const emptyForm = { fullName: "", email: "", password: "" };
 
-export function AdministratorAccountForm({ companies, isDemo = false }: { companies: Company[]; isDemo?: boolean }) {
+export function AdministratorAccountForm({ company, isDemo = false }: { company: Company; isDemo?: boolean }) {
   const router = useRouter();
   const [form, setForm] = useState(emptyForm);
   const [pending, setPending] = useState(false);
@@ -22,7 +22,7 @@ export function AdministratorAccountForm({ companies, isDemo = false }: { compan
       if (isDemo) {
         setNotice({ kind: "success", text: "Tryb demonstracyjny: konto nie jest zapisywane trwale." });
       } else {
-        const response = await fetch("/api/broker/administrator-accounts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+        const response = await fetch("/api/broker/administrator-accounts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...form, companyId: company.id }) });
         const result = await response.json().catch(() => ({}));
         if (!response.ok) throw new Error(result.error || "Nie udało się utworzyć konta administratora.");
         setNotice({ kind: "success", text: "Konto administratora zostało utworzone i przypisane do firmy." });
@@ -37,15 +37,13 @@ export function AdministratorAccountForm({ companies, isDemo = false }: { compan
   };
 
   return <section className="administrator-account-form panel">
-    <div className="administrator-account-form__heading"><span><UserPlus size={19}/></span><div><p className="kicker">Dostępy administratorów</p><h2>Utwórz konto administratora</h2><p>Wybierz firmę. Każdy jej pracownik uzyska dostęp do wspólnot przypisanych do tej firmy.</p></div></div>
+    <div className="administrator-account-form__heading"><span><UserPlus size={19}/></span><div><p className="kicker">Dostępy administratorów</p><h2>Utwórz konto administratora</h2><p>Nowe konto otrzyma dostęp do wspólnot firmy: <b>{company.name}</b>.</p></div></div>
     {notice && <p className={`community-notice community-notice--${notice.kind}`} role="status">{notice.kind === "success" ? <CheckCircle2 size={16}/> : <AlertCircle size={16}/>} {notice.text}</p>}
-    {!companies.length && <p className="community-create__empty"><AlertCircle size={16}/>Najpierw dodaj firmę administrującą.</p>}
     <form className="administrator-account-form__fields" onSubmit={submit}>
-      <label>Firma administrująca<select required disabled={!companies.length} value={form.companyId} onChange={(event) => setForm({ ...form, companyId: event.target.value })}><option value="">Wybierz firmę</option>{companies.map((company) => <option key={company.id} value={company.id}>{company.name}{company.nip ? ` · NIP ${company.nip}` : ""}</option>)}</select></label>
       <label>Imię i nazwisko użytkownika<input required value={form.fullName} onChange={(event) => setForm({ ...form, fullName: event.target.value })} placeholder="np. Anna Kowalska"/></label>
       <label>Adres e-mail<input required type="email" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} placeholder="anna@firma.pl"/></label>
       <label>Hasło tymczasowe<input required type="password" minLength={8} value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} placeholder="co najmniej 8 znaków"/></label>
-      <button className="button button-primary" type="submit" disabled={pending || !companies.length}>{pending ? <LoaderCircle className="spin" size={16}/> : <UserPlus size={16}/>}Utwórz konto</button>
+      <button className="button button-primary" type="submit" disabled={pending}>{pending ? <LoaderCircle className="spin" size={16}/> : <UserPlus size={16}/>}Utwórz konto</button>
     </form>
   </section>;
 }

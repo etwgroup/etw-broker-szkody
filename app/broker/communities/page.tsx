@@ -14,5 +14,5 @@ export default async function BrokerCommunitiesPage() {
       supabase!.from("administrator_companies").select("id, name, nip").order("name"),
     ]);
   const items = isDemo ? demoCommunities.map((community) => ({ ...community, nip: null, regon: null, administrator_company_id: "demo-company" })) : communities || [];
-  return <AppShell profile={profile}><header className="page-top"><div><p className="kicker">Panel brokera</p><h1>Obsługiwane wspólnoty</h1><p className="subtitle">Wspólnoty objęte obsługą ubezpieczeniową ({items.length}).</p></div><Link className="button button-primary" href="/broker">Zgłoszone szkody</Link></header><CommunityCreatePanel companies={companies || []} isDemo={isDemo}/><BrokerCommunitiesDirectory communities={items} companies={companies || []} isDemo={isDemo}/></AppShell>;
+  return <AppShell profile={profile}><header className="page-top"><div><p className="kicker">Panel brokera</p><h1>Obsługiwane wspólnoty</h1><p className="subtitle">Wspólnoty objęte obsługą ubezpieczeniową ({items.length}).</p></div><Link className="button button-primary" href="/broker">Zgłoszone szkody</Link></header><CommunityCreatePanel companies={companies || []} isDemo={isDemo}/><BrokerCommunitiesDirectory communities={items} companies={companies || []}/></AppShell>;
 }

@@ -1,7 +1,5 @@
 import Link from "next/link";
 import { Building2 } from "lucide-react";
-import { AdministratorAccountDirectory } from "@/components/administrator-account-directory";
-import { AdministratorAccountForm } from "@/components/administrator-account-form";
 import { AdministratorCompanyManager } from "@/components/administrator-company-manager";
 import { AppShell } from "@/components/app-shell";
 import { requireProfile } from "@/lib/auth";
@@ -42,7 +40,5 @@ export default async function BrokerAdministratorsPage() {
     <header className="page-top"><div><p className="kicker">Panel brokera</p><h1>Obsługiwani Administratorzy</h1><p className="subtitle">Firmy posiadają wspólnoty, a ich pracownicy otrzymują dostęp przez przypisane konta.</p></div><Link className="button button-secondary" href="/broker/communities"><Building2 size={16}/> Wspólnoty</Link></header>
     <section className="stats stats--five"><article className="stat-card"><span>Firmy administrujące</span><strong>{companyItems.length}</strong></article><article className="stat-card"><span>Konta administratorów</span><strong>{accountItems.length}</strong></article><article className="stat-card"><span>Przypisane wspólnoty</span><strong className="success">{assignedCommunities}</strong></article></section>
     <AdministratorCompanyManager companies={companiesForManager} isDemo={isDemo}/>
-    <AdministratorAccountForm companies={companyItems} isDemo={isDemo}/>
-    <AdministratorAccountDirectory accounts={accountItems} companies={companyItems} isDemo={isDemo}/>
   </AppShell>;
 }
