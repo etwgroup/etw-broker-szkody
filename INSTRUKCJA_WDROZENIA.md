@@ -43,6 +43,7 @@ Trzeba uruchomić osiem plików SQL — **jeden po drugim**.
    9. [202610220010_claim_reporter.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220010_claim_reporter.sql)
    10. [202610220011_claim_payouts_and_internal_notes.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220011_claim_payouts_and_internal_notes.sql)
    11. [202610220012_notifications_center.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220012_notifications_center.sql)
+   12. [202610220013_account_invitations_and_activation.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220013_account_invitations_and_activation.sql)
 
 > Ważne: plików `003` i `004` nie wklejaj do jednego zapytania. Każdy plik musi być uruchomiony osobno i zakończony sukcesem.
 
@@ -64,6 +65,7 @@ Jeżeli zobaczysz czerwony komunikat błędu, nie uruchamiaj kolejnego pliku. Sk
    ```env
    NEXT_PUBLIC_SUPABASE_URL=https://twoj-projekt.supabase.co
    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_tutaj_wklej_calosc
+   NEXT_PUBLIC_APP_URL=https://wspolnoty.etwbroker.pl
    ```
 
 5. Zapisz plik.
@@ -102,12 +104,9 @@ Po wykonaniu zapytania wyloguj brokera z aplikacji i zaloguj go ponownie.
 
 ## Krok 5 — utwórz konto administratora
 
-1. W Supabase wróć do **Authentication → Users**.
-2. Kliknij **Add user → Create new user**.
-3. Utwórz konto administratora, np. `administrator@twojafirma.pl`.
-4. Ustaw hasło i zapisz konto.
+Nie twórz kont administratorów bezpośrednio w Supabase. Po uruchomieniu aplikacji zaloguj się jako broker, przejdź do **Obsługiwani Administratorzy**, otwórz firmę, a następnie podaj wyłącznie imię, nazwisko i e-mail użytkownika. System wyśle zaproszenie z osobistym linkiem do ustawienia hasła.
 
-Nie uruchamiaj dodatkowego polecenia SQL dla tego konta. Nowe konto automatycznie otrzymuje rolę `administrator`. Po uruchomieniu migracji `006` kolejne konta twórz wygodnie w panelu brokera: najpierw dodaj firmę w **Obsługiwani Administratorzy → Dodaj lub edytuj firmę**, a następnie utwórz dla niej dowolną liczbę kont.
+Broker nie widzi ani nie ustawia haseł administratorów. Po ustawieniu hasła przy tym użytkowniku pojawi się status **Konto aktywne**.
 
 > Na etapie wdrożenia nie dodajemy jeszcze wspólnot. Wspólnoty przypiszemy po uruchomieniu aplikacji, w ramach konfiguracji danych operacyjnych.
 
@@ -210,6 +209,7 @@ GitHub służy tu do przechowywania kodu. Polecenia wpisujesz nadal w aplikacji 
    | --- | --- |
    | `NEXT_PUBLIC_SUPABASE_URL` | Project URL z kroku 3 |
    | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Publishable key z kroku 3 |
+   | `NEXT_PUBLIC_APP_URL` | `https://wspolnoty.etwbroker.pl` |
    | `SUPABASE_SECRET_KEY` | Secret key (`sb_secret_...`) z Supabase — prywatna zmienna serwera |
 
 6. Kliknij **Deploy**.
@@ -259,3 +259,16 @@ GitHub służy tu do przechowywania kodu. Polecenia wpisujesz nadal w aplikacji 
 - broker może zmienić status;
 - przy statusie „Przypisany numer szkody przez ubezpieczyciela” pojawia się pole na numer szkody;
 - numer szkody jest widoczny w szczegółach zgłoszenia.
+
+## Krok 11 — zaproszenia do kont i odzyskiwanie hasła
+
+1. W Supabase przejdź do **Authentication → URL Configuration** i upewnij się, że widnieją tam:
+
+   - **Site URL:** `https://wspolnoty.etwbroker.pl`
+   - **Redirect URLs:** `https://wspolnoty.etwbroker.pl/**`
+
+2. Otwórz **Authentication → Email Templates**.
+3. W szablonie **Invite user** ustaw temat `Ustaw hasło do konta ETW Broker`, a następnie wklej zawartość pliku `supabase/email-templates/invite.html`.
+4. W szablonie **Reset password** ustaw temat `Ustaw nowe hasło — ETW Broker`, a następnie wklej zawartość pliku `supabase/email-templates/recovery.html`.
+5. Dla produkcji skonfiguruj własny serwer poczty w **Authentication → SMTP Settings**. W przeciwnym razie standardowa wysyłka Supabase działa tylko testowo i nie wyśle zaproszeń do dowolnych administratorów.
+6. Po wykonaniu migracji `202610220013_account_invitations_and_activation.sql` utwórz testowe konto z poziomu firmy administrującej. Broker wpisuje wyłącznie imię, nazwisko i e-mail, a administrator ustawia hasło z otrzymanego linku. Przy koncie status zmieni się z „Oczekuje na ustawienie hasła” na „Konto aktywne”.

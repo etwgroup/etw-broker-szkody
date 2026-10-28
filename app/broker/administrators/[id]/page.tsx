@@ -10,7 +10,7 @@ import { requireProfile } from "@/lib/auth";
 import { demoCommunities } from "@/lib/demo-data";
 
 type Company = { id: string; name: string; nip: string | null };
-type Administrator = { id: string; full_name: string | null; email: string | null; administrator_company_id: string | null };
+type Administrator = { id: string; full_name: string | null; email: string | null; administrator_company_id: string | null; account_activated_at: string | null };
 type Community = { id: string; name: string; address: string; nip: string | null; regon: string | null };
 
 export default async function BrokerAdministratorCompanyPage({ params }: { params: Promise<{ id: string }> }) {
@@ -23,14 +23,14 @@ export default async function BrokerAdministratorCompanyPage({ params }: { param
   if (isDemo) {
     if (id !== "demo-company") notFound();
     company = { id: "demo-company", name: "ETW Administracja", nip: null };
-    accounts = [{ id: "demo-administrator", full_name: "Anna Administrator", email: "administrator@etw.demo", administrator_company_id: "demo-company" }];
+    accounts = [{ id: "demo-administrator", full_name: "Anna Administrator", email: "administrator@etw.demo", administrator_company_id: "demo-company", account_activated_at: "2026-01-01T12:00:00.000Z" }];
     communities = demoCommunities.map((community) => ({ ...community, nip: null, regon: null }));
   } else {
     const { data: companyData } = await supabase!.from("administrator_companies").select("id, name, nip").eq("id", id).maybeSingle();
     if (!companyData) notFound();
     company = companyData as Company;
     const [{ data: accountData }, { data: communityData }] = await Promise.all([
-      supabase!.from("profiles").select("id, full_name, email, administrator_company_id").eq("role", "administrator").eq("administrator_company_id", id).order("full_name"),
+      supabase!.from("profiles").select("id, full_name, email, administrator_company_id, account_activated_at").eq("role", "administrator").eq("administrator_company_id", id).order("full_name"),
       supabase!.from("communities").select("id, name, address, nip, regon").eq("administrator_company_id", id).order("name"),
     ]);
     accounts = (accountData || []) as Administrator[];

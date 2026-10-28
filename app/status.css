@@ -51,6 +51,59 @@
   }
 }
 
+.password-help-link {
+  justify-self: start;
+  margin-top: -5px;
+  color: var(--red);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.password-helper {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.password-notice {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin: 0;
+  padding: 11px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.password-notice--success {
+  color: #15623a;
+  background: #ecf9f0;
+}
+
+.account-activation {
+  display: inline-flex !important;
+  width: fit-content;
+  gap: 5px;
+  align-items: center;
+  margin-top: 3px;
+  padding: 4px 7px;
+  border-radius: 999px;
+  font-size: 10px !important;
+  font-weight: 800;
+}
+
+.account-activation--active {
+  color: #1d6a42 !important;
+  background: #e5f4ea;
+}
+
+.account-activation--pending {
+  color: #9b5a13 !important;
+  background: #fff5e4;
+}
+
 .community-create {
   margin-bottom: 18px;
   padding: 22px;

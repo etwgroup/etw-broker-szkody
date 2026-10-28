@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { ArrowRight, LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
 export function LoginForm({ variant = "default" }: { variant?: "default" | "hero" }) {
@@ -30,6 +31,7 @@ export function LoginForm({ variant = "default" }: { variant?: "default" | "hero
   return <form className={`form-stack ${variant === "hero" ? "hero-login-form" : ""}`} onSubmit={handleSubmit}>
     <div className="field"><label htmlFor="email">Adres e-mail</label><input id="email" name="email" type="email" placeholder="jan@administracja.pl" autoComplete="email" required/></div>
     <div className="field"><label htmlFor="password">Hasło</label><input id="password" name="password" type="password" autoComplete="current-password" required/></div>
+    {variant === "default" && <Link href="/reset-password" className="password-help-link">Nie pamiętasz hasła?</Link>}
     {error && <p className="error-message">{error}</p>}
     <button className="button button-primary" disabled={loading}>{loading ? <LoaderCircle size={16} className="spin"/> : <>{variant === "hero" ? "Zaloguj się" : "Zaloguj się"} <ArrowRight size={16}/></>}</button>
   </form>;

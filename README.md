@@ -39,6 +39,7 @@ Panel dla administratorów wspólnot mieszkaniowych i brokera ubezpieczeniowego.
    10. `supabase/migrations/202610220010_claim_reporter.sql`
    11. `supabase/migrations/202610220011_claim_payouts_and_internal_notes.sql`
    12. `supabase/migrations/202610220012_notifications_center.sql`
+   13. `supabase/migrations/202610220013_account_invitations_and_activation.sql`
 
    Trzecia i czwarta migracja muszą zostać wykonane osobno. PostgreSQL udostępnia nową wartość statusu dopiero po zatwierdzeniu poprzedniego zapytania.
 
@@ -58,6 +59,13 @@ Panel dla administratorów wspólnot mieszkaniowych i brokera ubezpieczeniowego.
 
    Jeżeli używasz własnej domeny, dodaj również `https://twoja-domena.pl/**`.
 
+6. Aby działały zaproszenia do kont i reset hasła, skonfiguruj wysyłkę e-maili w Supabase:
+
+   - w **Authentication → URL Configuration** ustaw `https://wspolnoty.etwbroker.pl` jako **Site URL** oraz zachowaj `https://wspolnoty.etwbroker.pl/**` w **Redirect URLs**;
+   - w **Authentication → Email Templates** wklej zawartość `supabase/email-templates/invite.html` do szablonu **Invite user**, ustawiając temat `Ustaw hasło do konta ETW Broker`;
+   - do szablonu **Reset password** wklej `supabase/email-templates/recovery.html`, ustawiając temat `Ustaw nowe hasło — ETW Broker`;
+   - w produkcji skonfiguruj własny serwer SMTP w **Authentication → SMTP Settings**. Domyślna poczta Supabase służy tylko do testów i nie wysyła wiadomości na dowolne adresy.
+
 ## 2. Konta, role i dane startowe
 
 1. W **Authentication → Users** utwórz konto e-mail/hasło dla brokera.
@@ -69,7 +77,7 @@ Panel dla administratorów wspólnot mieszkaniowych i brokera ubezpieczeniowego.
    where id = '<UUID użytkownika z Authentication>';
    ```
 
-3. W **Authentication → Users** utwórz osobne konto dla administratora. Nie wymaga ono dodatkowego zapytania SQL — otrzymuje rolę `administrator` automatycznie.
+3. Konta administratorów twórz już z poziomu panelu brokera, po wejściu w firmę administrującą. Broker podaje tylko imię, nazwisko i e-mail, a administrator otrzymuje zaproszenie z linkiem do ustawienia własnego hasła.
 4. Na etapie wdrożenia nie dodawaj jeszcze wspólnot. Ich przypisanie oraz polisy są elementem późniejszej konfiguracji danych operacyjnych.
 
 ## 3. Test lokalny
@@ -85,6 +93,7 @@ Panel dla administratorów wspólnot mieszkaniowych i brokera ubezpieczeniowego.
    ```env
    NEXT_PUBLIC_SUPABASE_URL=https://twoj-projekt.supabase.co
    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=twoj-publishable-key
+   NEXT_PUBLIC_APP_URL=https://wspolnoty.etwbroker.pl
    ```
 
 3. Zainstaluj zależności, sprawdź build i uruchom aplikację:
@@ -123,6 +132,7 @@ Jeżeli `origin` jest już skonfigurowany, pomiń polecenie `git remote add orig
    | --- | --- |
    | `NEXT_PUBLIC_SUPABASE_URL` | Project URL z Supabase |
    | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Publishable key z Supabase |
+   | `NEXT_PUBLIC_APP_URL` | `https://wspolnoty.etwbroker.pl` |
    | `SUPABASE_SECRET_KEY` | Secret key (`sb_secret_...`) z Supabase — prywatna zmienna serwera |
 
 4. Kliknij **Deploy**.
@@ -140,7 +150,7 @@ Gdy aktualizacja zawiera zmiany w `supabase/migrations/`:
 3. Wypchnij kod na `main` lub uruchom redeploy w Vercel.
 4. Sprawdź krytyczną ścieżkę: logowanie, tworzenie firmy i konta administratora, import wspólnot, zgłoszenie szkody i zmianę statusu przez brokera.
 
-Migracje nie powinny być pomijane — nowy status z numerem szkody wymaga zarówno migracji `003`, jak i `004`, wspólny dostęp kont jednej firmy do polis wymaga migracji `007`, czat oraz wymiana dokumentów przy szkodzie wymagają migracji `008`, szybkie powiadomienia o ostatniej odpowiedzi wymagają migracji `009`, dane zgłaszającego wymagają migracji `010`, notatki wewnętrzne i kwoty wypłat wymagają migracji `011`, a centrum powiadomień wymaga migracji `012`.
+Migracje nie powinny być pomijane — nowy status z numerem szkody wymaga zarówno migracji `003`, jak i `004`, wspólny dostęp kont jednej firmy do polis wymaga migracji `007`, czat oraz wymiana dokumentów przy szkodzie wymagają migracji `008`, szybkie powiadomienia o ostatniej odpowiedzi wymagają migracji `009`, dane zgłaszającego wymagają migracji `010`, notatki wewnętrzne i kwoty wypłat wymagają migracji `011`, centrum powiadomień wymaga migracji `012`, a zaproszenia do kont wraz ze statusem aktywacji wymagają migracji `013`.
 
 ## Bezpieczeństwo
 
