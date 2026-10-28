@@ -1,4 +1,4 @@
-import { ArrowLeft, CalendarDays, Download, FileCheck2, FileWarning, ShieldCheck } from "lucide-react";
+import { ArrowLeft, CalendarDays, Download, Eye, FileCheck2, FileWarning, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AppShell } from "@/components/app-shell";
@@ -10,7 +10,7 @@ import { PolicyUploadForm } from "@/components/policy-upload-form";
 import { formatDate } from "@/lib/claims";
 import { requireProfile } from "@/lib/auth";
 import { demoClaims, demoCommunities, demoPolicies } from "@/lib/demo-data";
-import { getCurrentPolicy, type InsurancePolicy } from "@/lib/policies";
+import { getArchivedPolicies, getCurrentPolicy, type InsurancePolicy } from "@/lib/policies";
 
 type CommunityClaim = {
   id: string;
@@ -94,7 +94,7 @@ function BrokerCommunityDetail({
   claims: CommunityClaim[];
 }) {
   const currentPolicy = getCurrentPolicy(policies);
-  const archivedPolicies = policies.filter((policy) => policy.id !== currentPolicy?.id);
+  const archivedPolicies = getArchivedPolicies(policies);
 
   return <AppShell profile={profile}>
     <header className="page-top">
@@ -119,14 +119,14 @@ function BrokerCommunityDetail({
             <div><dt>Numer polisy</dt><dd>{currentPolicy.policy_number}</dd></div>
             <div><dt>Okres ochrony</dt><dd><CalendarDays size={13}/>{formatDate(currentPolicy.valid_from)} – {formatDate(currentPolicy.valid_to)}</dd></div>
           </dl>
-          {currentPolicy.download_url ? <a className="button button-primary" href={currentPolicy.download_url} download={currentPolicy.file_name || "polisa.pdf"}><Download size={16}/> Pobierz polisę</a> : <p className="error-message">Plik polisy nie jest obecnie dostępny do pobrania.</p>}
+          {currentPolicy.download_url ? <div className="policy-actions"><a className="button button-ghost" href={currentPolicy.download_url} target="_blank" rel="noreferrer"><Eye size={16}/> Podgląd polisy</a><a className="button button-primary" href={isDemo ? currentPolicy.download_url : `/api/policies/${currentPolicy.id}/download`} download={isDemo ? currentPolicy.file_name || "polisa.pdf" : undefined}><Download size={16}/> Pobierz polisę</a></div> : <p className="error-message">Plik polisy nie jest obecnie dostępny do pobrania.</p>}
         </> : <div className="policy-empty"><FileWarning size={25}/><div><strong>Brak aktualnej polisy</strong><p>Dodaj dokumentację polisy dla tej wspólnoty.</p></div></div>}
       </section>
       <section className="community-note"><FileCheck2 size={19}/><h3>Widok brokera</h3><p>Dodaj nową polisę poniżej. Wcześniejsze dokumenty pozostaną dostępne w archiwum.</p></section>
     </div>
 
     <PolicyUploadForm communityId={community.id} isDemo={isDemo}/>
-    <PolicyArchive policies={archivedPolicies}/>
+    <PolicyArchive policies={archivedPolicies} isDemo={isDemo}/>
 
     <CommunityLossSummary claims={claims}/>
 

@@ -17,6 +17,12 @@ export function getCurrentPolicy(policies: InsurancePolicy[]) {
     || null;
 }
 
+/** Only documents whose protection period has ended belong in the archive. */
+export function getArchivedPolicies(policies: InsurancePolicy[]) {
+  const today = new Date().toISOString().slice(0, 10);
+  return policies.filter((policy) => policy.valid_to < today);
+}
+
 export function policyYear(policy: InsurancePolicy) {
   return policy.valid_to.slice(0, 4) || policy.valid_from.slice(0, 4);
 }

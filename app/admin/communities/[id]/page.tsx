@@ -1,4 +1,4 @@
-import { ArrowLeft, CalendarDays, Download, FileCheck2, FileWarning, PlusCircle, ShieldCheck } from "lucide-react";
+import { ArrowLeft, CalendarDays, Download, Eye, FileCheck2, FileWarning, PlusCircle, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AppShell } from "@/components/app-shell";
@@ -8,7 +8,7 @@ import { PolicyArchive } from "@/components/policy-archive";
 import { formatDate } from "@/lib/claims";
 import { requireProfile } from "@/lib/auth";
 import { demoClaims, demoCommunities, demoPolicies } from "@/lib/demo-data";
-import { getCurrentPolicy, type InsurancePolicy } from "@/lib/policies";
+import { getArchivedPolicies, getCurrentPolicy, type InsurancePolicy } from "@/lib/policies";
 
 type CommunityClaim = {
   id: string;
@@ -32,6 +32,7 @@ export default async function CommunityDetailPage({ params }: { params: Promise<
     return <CommunityDetail
       profile={profile}
       community={community}
+      isDemo
       policies={demoPolicies.filter((item) => item.community_id === id)}
       claims={demoClaims.filter((item) => item.communities.id === id)}
     />;
@@ -70,16 +71,18 @@ export default async function CommunityDetailPage({ params }: { params: Promise<
 function CommunityDetail({
   profile,
   community,
+  isDemo = false,
   policies,
   claims,
 }: {
   profile: Awaited<ReturnType<typeof requireProfile>>["profile"];
   community: { id: string; name: string; address: string; nip?: string | null; regon?: string | null };
+  isDemo?: boolean;
   policies: InsurancePolicy[];
   claims: CommunityClaim[];
 }) {
   const currentPolicy = getCurrentPolicy(policies);
-  const archivedPolicies = policies.filter((policy) => policy.id !== currentPolicy?.id);
+  const archivedPolicies = getArchivedPolicies(policies);
 
   return <AppShell profile={profile}>
     <header className="page-top">
@@ -103,13 +106,13 @@ function CommunityDetail({
             <div><dt>Numer polisy</dt><dd>{currentPolicy.policy_number}</dd></div>
             <div><dt>Okres ochrony</dt><dd><CalendarDays size={13}/>{formatDate(currentPolicy.valid_from)} – {formatDate(currentPolicy.valid_to)}</dd></div>
           </dl>
-          {currentPolicy.download_url ? <a className="button button-primary" href={currentPolicy.download_url} download={currentPolicy.file_name || "polisa.pdf"}><Download size={16}/> Pobierz polisę</a> : <p className="error-message">Plik polisy nie jest obecnie dostępny do pobrania.</p>}
+          {currentPolicy.download_url ? <div className="policy-actions"><a className="button button-ghost" href={currentPolicy.download_url} target="_blank" rel="noreferrer"><Eye size={16}/> Podgląd polisy</a><a className="button button-primary" href={isDemo ? currentPolicy.download_url : `/api/policies/${currentPolicy.id}/download`} download={isDemo ? currentPolicy.file_name || "polisa.pdf" : undefined}><Download size={16}/> Pobierz polisę</a></div> : <p className="error-message">Plik polisy nie jest obecnie dostępny do pobrania.</p>}
         </> : <div className="policy-empty"><FileWarning size={25}/><div><strong>Brak aktualnej polisy</strong><p>Skontaktuj się z brokerem, aby uzupełnić dokument.</p></div></div>}
       </section>
       <section className="community-note"><FileCheck2 size={19}/><h3>Dokumenty wspólnoty</h3><p>Polisa i jej archiwum są dostępne dla wszystkich kont przypisanych do firmy administrującej.</p></section>
     </div>
 
-    <PolicyArchive policies={archivedPolicies}/>
+    <PolicyArchive policies={archivedPolicies} isDemo={isDemo}/>
 
     <CommunityLossSummary claims={claims}/>
 
