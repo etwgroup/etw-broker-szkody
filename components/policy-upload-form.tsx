@@ -21,6 +21,7 @@ export function PolicyUploadForm({ communityId, isDemo = false }: { communityId:
 
   const uploadPolicy = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const formElement = event.currentTarget;
     setNotice(null);
 
     if (!file) {
@@ -36,7 +37,7 @@ export function PolicyUploadForm({ communityId, isDemo = false }: { communityId:
       return;
     }
 
-    const form = new FormData(event.currentTarget);
+    const form = new FormData(formElement);
     const insurer = String(form.get("insurer") || "").trim();
     const policyNumber = String(form.get("policy_number") || "").trim();
     const year = Number(form.get("policy_year"));
@@ -73,7 +74,7 @@ export function PolicyUploadForm({ communityId, isDemo = false }: { communityId:
       if (policyError) throw policyError;
 
       setFile(null);
-      event.currentTarget.reset();
+      formElement.reset();
       setNotice({ kind: "success", text: "Polisa została dodana. Poprzednie dokumenty pozostają w archiwum." });
       router.refresh();
     } catch (error) {
