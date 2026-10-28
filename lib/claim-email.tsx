@@ -7,9 +7,12 @@ export type ClaimEmailRecipient = {
 
 export type ClaimEmailContext = {
   id: string;
+  created_by: string;
   reference: string;
   title: string;
   status: string;
+  reported_by_name?: string | null;
+  reported_by_email?: string | null;
   insurer_claim_number?: string | null;
   paid_amount?: string | number | null;
   community_name: string;

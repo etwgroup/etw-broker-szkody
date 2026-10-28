@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { sendClaimEmails } from "@/lib/claim-email";
-import { loadAdministratorEmailRecipients, loadBrokerEmailRecipients, loadClaimEmailContext } from "@/lib/claim-email-data";
+import { loadBrokerEmailRecipients, loadClaimEmailContext, loadClaimReporterEmailRecipient } from "@/lib/claim-email-data";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     const emailClaim = await loadClaimEmailContext(admin, claimId);
     if (emailClaim) {
       const recipients = profile.role === "broker"
-        ? await loadAdministratorEmailRecipients(admin, emailClaim.administrator_company_id)
+        ? await loadClaimReporterEmailRecipient(admin, emailClaim)
         : await loadBrokerEmailRecipients(admin);
       await sendClaimEmails({
         request,

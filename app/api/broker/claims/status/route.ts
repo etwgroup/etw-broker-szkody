@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { sendClaimEmails } from "@/lib/claim-email";
-import { loadAdministratorEmailRecipients, loadClaimEmailContext } from "@/lib/claim-email-data";
+import { loadClaimEmailContext, loadClaimReporterEmailRecipient } from "@/lib/claim-email-data";
 import { type ClaimStatus, statusMeta } from "@/lib/claims";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
       const admin = createAdminSupabaseClient();
       const emailClaim = await loadClaimEmailContext(admin, claimId);
       if (emailClaim) {
-        const recipients = await loadAdministratorEmailRecipients(admin, emailClaim.administrator_company_id);
+        const recipients = await loadClaimReporterEmailRecipient(admin, emailClaim);
         await sendClaimEmails({ request, kind: "status_changed", claim: emailClaim, recipients });
       }
     } catch (error) {

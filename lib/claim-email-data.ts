@@ -17,7 +17,7 @@ function firstCommunity(community: CommunityRow): Community | undefined {
 export async function loadClaimEmailContext(admin: SupabaseClient, claimId: string): Promise<ClaimEmailContext | null> {
   const { data, error } = await admin
     .from("claims")
-    .select("id, reference, title, status, insurer_claim_number, paid_amount, communities(name, address, administrator_company_id)")
+    .select("id, created_by, reference, title, status, insurer_claim_number, paid_amount, reported_by_name, reported_by_email, communities(name, address, administrator_company_id)")
     .eq("id", claimId)
     .maybeSingle();
 
@@ -27,9 +27,12 @@ export async function loadClaimEmailContext(admin: SupabaseClient, claimId: stri
 
   return {
     id: data.id,
+    created_by: data.created_by,
     reference: data.reference,
     title: data.title,
     status: data.status,
+    reported_by_name: data.reported_by_name,
+    reported_by_email: data.reported_by_email,
     insurer_claim_number: data.insurer_claim_number,
     paid_amount: data.paid_amount,
     community_name: community.name || "Wspólnota mieszkaniowa",
@@ -57,4 +60,14 @@ export async function loadAdministratorEmailRecipients(admin: SupabaseClient, co
     .not("account_activated_at", "is", null)
     .not("email", "is", null);
   return recipients(data);
+}
+
+/** The reporter is the only administrator who receives claim e-mails. */
+export async function loadClaimReporterEmailRecipient(admin: SupabaseClient, claim: ClaimEmailContext) {
+  if (claim.reported_by_email?.trim()) {
+    return [{ email: claim.reported_by_email, full_name: claim.reported_by_name || null }] satisfies ClaimEmailRecipient[];
+  }
+
+  const { data } = await admin.from("profiles").select("email, full_name").eq("id", claim.created_by).maybeSingle();
+  return recipients(data ? [data] : null);
 }
