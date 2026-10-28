@@ -500,6 +500,13 @@
 }
 
 .broker-community-card {
+  display: block;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.broker-community-card__link {
   display: flex;
   gap: 12px;
   padding: 16px;
@@ -516,6 +523,72 @@
   color: var(--muted);
   font-size: 10px;
   font-weight: 700;
+}
+
+.broker-community-card__assignment {
+  padding: 13px 16px 15px;
+  border-top: 1px solid var(--line);
+  background: #fffafa;
+}
+
+.broker-community-card__assignment form {
+  display: grid;
+  gap: 7px;
+}
+
+.broker-community-card__assignment label {
+  color: #5f5a61;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.broker-community-card__assignment form > div {
+  display: flex;
+  gap: 8px;
+}
+
+.broker-community-card__assignment select {
+  width: 100%;
+  min-width: 0;
+  min-height: 35px;
+  flex: 1;
+  padding: 0 8px;
+  color: var(--ink);
+  border: 1px solid #d9d7da;
+  border-radius: 4px;
+  outline-color: var(--red);
+  background: #fff;
+  font: 600 11px "Space Grotesk", Manrope, sans-serif;
+}
+
+.broker-community-card__assignment .button {
+  min-height: 35px;
+  padding: 0 11px;
+  font-size: 11px;
+}
+
+.broker-community-card__assignment > p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.broker-community-card__notice {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 9px 0 0;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.broker-community-card__notice--success {
+  color: #15623a;
+}
+
+.broker-community-card__notice--error {
+  color: #a31530;
 }
 
 .company-overview {
