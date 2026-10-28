@@ -11,7 +11,8 @@ type Role = "administrator" | "broker";
 
 export function NotificationsNavLink({ role, demo = false }: { role: Role; demo?: boolean }) {
   const pathname = usePathname();
-  const href = `/${role}/notifications`;
+  const panelPath = role === "administrator" ? "/admin" : "/broker";
+  const href = `${panelPath}/notifications`;
   const [count, setCount] = useState(demo ? demoNotifications.filter((item) => item.recipient_role === role && !item.read_at).length : 0);
   const refreshCount = useCallback(async () => {
     if (demo) return;
