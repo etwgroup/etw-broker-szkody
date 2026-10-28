@@ -89,12 +89,14 @@ export function ClaimConversation({ claimId, role, messages, demo = false }: { c
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Sesja wygasła. Zaloguj się ponownie.");
 
-      const { data: message, error: messageError } = await supabase
-        .from("claim_messages")
-        .insert({ claim_id: claimId, sender_id: user.id, body: messageBody })
-        .select("id")
-        .single();
-      if (messageError || !message) throw messageError || new Error("Nie udało się zapisać odpowiedzi.");
+      const messageResponse = await fetch("/api/claims/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ claimId, body: messageBody }),
+      });
+      const messageResult = await messageResponse.json().catch(() => null) as { message?: { id?: string }; error?: string } | null;
+      if (!messageResponse.ok || !messageResult?.message?.id) throw new Error(messageResult?.error || "Nie udało się zapisać odpowiedzi.");
+      const message = { id: messageResult.message.id };
 
       const failed: string[] = [];
       for (const file of files) {

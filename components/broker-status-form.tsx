@@ -4,7 +4,6 @@ import { FormEvent, useState } from "react";
 import { LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ClaimStatus, statusMeta } from "@/lib/claims";
-import { createClient } from "@/lib/supabase/client";
 
 export function BrokerStatusForm({ claimId, status, insurerClaimNumber, paidAmount, demo = false }: { claimId: string; status: ClaimStatus; insurerClaimNumber?: string | null; paidAmount?: string | number | null; demo?: boolean }) {
   const router = useRouter(); const [nextStatus, setNextStatus] = useState<ClaimStatus>(status); const [number, setNumber] = useState(insurerClaimNumber || ""); const [payoutAmount, setPayoutAmount] = useState(paidAmount == null ? "" : String(paidAmount)); const [loading, setLoading] = useState(false); const [error, setError] = useState<string | null>(null); const [demoSaved, setDemoSaved] = useState(false);
@@ -22,11 +21,18 @@ export function BrokerStatusForm({ claimId, status, insurerClaimNumber, paidAmou
       return;
     }
     try {
-      const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Sesja wygasła.");
-      const { error: updateError } = await supabase.from("claims").update({ status: nextStatus, insurer_claim_number: number.trim() || null, ...(nextStatus === "paid" ? { paid_amount: parsedPayout } : {}), updated_at: new Date().toISOString() }).eq("id", claimId);
-      if (updateError) throw updateError;
+      const response = await fetch("/api/broker/claims/status", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          claimId,
+          status: nextStatus,
+          insurerClaimNumber: number.trim(),
+          paidAmount: nextStatus === "paid" ? parsedPayout : null,
+        }),
+      });
+      const result = await response.json().catch(() => null) as { error?: string } | null;
+      if (!response.ok) throw new Error(result?.error || "Nie udało się zmienić statusu.");
       router.refresh();
     } catch (reason) { setError(reason instanceof Error ? reason.message : "Nie udało się zmienić statusu."); }
     finally { setLoading(false); }

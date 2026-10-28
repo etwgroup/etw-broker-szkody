@@ -71,17 +71,23 @@ export function ClaimForm({ communities, defaultCommunityId, demo = false }: { c
       return;
     }
     try {
+      const createResponse = await fetch("/api/claims", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          communityId: String(form.get("community_id")),
+          title,
+          description,
+          occurredAt: String(form.get("occurred_at")),
+        }),
+      });
+      const createResult = await createResponse.json().catch(() => null) as { claim?: { id?: string }; error?: string } | null;
+      if (!createResponse.ok || !createResult?.claim?.id) throw new Error(createResult?.error || "Nie udało się utworzyć zgłoszenia.");
+      const claim = { id: createResult.claim.id };
+
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Sesja wygasła. Zaloguj się ponownie.");
-      const { data: claim, error: claimError } = await supabase.from("claims").insert({
-        community_id: String(form.get("community_id")),
-        created_by: user.id,
-        title,
-        description,
-        occurred_at: String(form.get("occurred_at")),
-      }).select("id").single();
-      if (claimError || !claim) throw claimError || new Error("Nie udało się utworzyć zgłoszenia.");
 
       const failed: string[] = [];
       for (const file of files) {
