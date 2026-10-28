@@ -8,7 +8,6 @@ create table public.claim_messages (
   sender_role public.user_role not null,
   sender_name text,
   body text not null default '' check (char_length(body) <= 2000),
-  requires_action boolean not null default false,
   created_at timestamptz not null default now()
 );
 
@@ -59,10 +58,6 @@ begin
   new.sender_role := profile_role;
   new.sender_name := coalesce(nullif(btrim(profile_name), ''), case when profile_role = 'broker' then 'Broker ETW' else 'Administrator' end);
   new.body := btrim(coalesce(new.body, ''));
-
-  if new.requires_action and profile_role <> 'broker' then
-    raise exception 'Tylko broker może oznaczyć wiadomość jako wymagającą działania.';
-  end if;
 
   return new;
 end;

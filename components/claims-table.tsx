@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, MessageCircleMore } from "lucide-react";
 import { KeyboardEvent } from "react";
 import { useRouter } from "next/navigation";
 import { formatDate } from "@/lib/claims";
 import { StatusBadge } from "@/components/status-badge";
 
 type Community = { name?: string; address?: string };
-type Claim = { id: string; reference: string; title: string; status: string; occurred_at: string; created_at: string; communities?: Community | Community[] | null };
+type Claim = { id: string; reference: string; title: string; status: string; occurred_at: string; created_at: string; counterparty_reply_at?: string; counterparty_reply_from?: "administrator" | "broker"; communities?: Community | Community[] | null };
 
 export function ClaimsTable({ claims, panel = "admin" }: { claims: Claim[]; panel?: "admin" | "broker" }) {
   const router = useRouter();
@@ -30,7 +30,7 @@ export function ClaimsTable({ claims, panel = "admin" }: { claims: Claim[]; pane
         <td><span className="claim-title">{claim.reference}</span><span className="claim-meta">zgłoszono {formatDate(claim.created_at)}</span></td>
         <td><span className="claim-title">{claim.title}</span>{community && <span className="claim-meta">{community.name}{panel === "broker" && community.address ? ` · ${community.address}` : ""}</span>}</td>
         <td>{formatDate(claim.occurred_at)}</td>
-        <td><StatusBadge status={claim.status}/></td>
+        <td><div className="claim-status-cell"><StatusBadge status={claim.status}/>{claim.counterparty_reply_at && <span className="broker-reply-badge"><MessageCircleMore size={11}/> Odpowiedź {claim.counterparty_reply_from === "administrator" ? "administratora" : "brokera"}</span>}</div></td>
         <td><Link aria-label="Otwórz szkodę" href={href} onClick={(event) => event.stopPropagation()}><ArrowUpRight size={16} color="#c9002b"/></Link></td>
       </tr>;
     })}

@@ -17,7 +17,6 @@ export type ClaimMessage = {
   sender_role: "administrator" | "broker";
   sender_name: string | null;
   body: string;
-  requires_action: boolean;
   created_at: string;
   attachments: ClaimMessageAttachment[];
 };
@@ -25,7 +24,7 @@ export type ClaimMessage = {
 export async function loadClaimConversation(supabase: SupabaseClient, claimId: string): Promise<ClaimMessage[]> {
   const { data: messages } = await supabase
     .from("claim_messages")
-    .select("id, claim_id, sender_id, sender_role, sender_name, body, requires_action, created_at")
+    .select("id, claim_id, sender_id, sender_role, sender_name, body, created_at")
     .eq("claim_id", claimId)
     .order("created_at");
 

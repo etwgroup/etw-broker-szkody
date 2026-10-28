@@ -25,7 +25,7 @@ export function AdministratorAccountDirectory({ accounts, companies, isDemo = fa
       if (isDemo) {
         setNotice({ kind: "success", text: "Tryb demonstracyjny: dane nie są zapisywane trwale." });
       } else {
-        const response = await fetch("/api/broker/administrator-accounts", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(editing) });
+        const response = await fetch("/api/broker/administrator-accounts", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ accountId: editing.id, fullName: editing.fullName, email: editing.email, companyId: editing.companyId, password: editing.password }) });
         const result = await response.json().catch(() => ({}));
         if (!response.ok) throw new Error(result.error || "Nie udało się zapisać konta administratora.");
         setNotice({ kind: "success", text: "Dane konta administratora zostały zapisane." });

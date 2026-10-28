@@ -1,7 +1,7 @@
 "use client";
 
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
-import { AlertCircle, CheckCircle2, Download, FileText, LoaderCircle, MessageCircleMore, Paperclip, SendHorizonal, ShieldAlert, X } from "lucide-react";
+import { AlertCircle, CheckCircle2, Download, FileText, LoaderCircle, MessageCircleMore, Paperclip, SendHorizontal, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { formatDateTime } from "@/lib/claims";
 import { createClient } from "@/lib/supabase/client";
@@ -24,10 +24,11 @@ export function ClaimConversation({ claimId, role, messages, demo = false }: { c
   const [displayMessages, setDisplayMessages] = useState(messages);
   const [body, setBody] = useState("");
   const [files, setFiles] = useState<File[]>([]);
-  const [requiresAction, setRequiresAction] = useState(role === "broker");
   const [notice, setNotice] = useState<Notice>(null);
   const [pending, setPending] = useState(false);
-  const requiresAdministratorAction = useMemo(() => role === "administrator" && displayMessages.some((message) => message.sender_role === "broker" && message.requires_action), [displayMessages, role]);
+  const replySender = role === "administrator" ? "broker" : "administrator";
+  const hasReplyFromOtherSide = useMemo(() => displayMessages.some((message) => message.sender_role === replySender), [displayMessages, replySender]);
+  const otherSideLabel = role === "administrator" ? "Broker odpowiedział w tej sprawie" : "Administrator odpowiedział w tej sprawie";
 
   useEffect(() => setDisplayMessages(messages), [messages]);
 
@@ -69,9 +70,8 @@ export function ClaimConversation({ claimId, role, messages, demo = false }: { c
           claim_id: claimId,
           sender_id: `demo-${role}`,
           sender_role: role,
-          sender_name: role === "broker" ? "Marta Broker" : "Anna Administrator",
+          sender_name: role === "broker" ? "Jessica Klimiuk-Waszczuk" : "Anna Administrator",
           body: messageBody,
-          requires_action: role === "broker" ? requiresAction : false,
           created_at: new Date().toISOString(),
           attachments: files.map((file, index) => ({ id: `demo-attachment-${Date.now()}-${index}`, message_id: "", file_name: file.name, mime_type: file.type, size_bytes: file.size })),
         }]);
@@ -87,7 +87,7 @@ export function ClaimConversation({ claimId, role, messages, demo = false }: { c
 
       const { data: message, error: messageError } = await supabase
         .from("claim_messages")
-        .insert({ claim_id: claimId, sender_id: user.id, body: messageBody, requires_action: role === "broker" ? requiresAction : false })
+        .insert({ claim_id: claimId, sender_id: user.id, body: messageBody })
         .select("id")
         .single();
       if (messageError || !message) throw messageError || new Error("Nie udało się zapisać odpowiedzi.");
@@ -126,12 +126,11 @@ export function ClaimConversation({ claimId, role, messages, demo = false }: { c
       <span>{displayMessages.length === 1 ? "1 wiadomość" : `${displayMessages.length} wiadomości`}</span>
     </header>
 
-    {requiresAdministratorAction && <div className="claim-conversation__action-alert"><ShieldAlert size={20}/><div><strong>Odpowiedź brokera wymaga Twojego działania</strong><p>Zapoznaj się z wiadomością i prześlij odpowiedź lub wymagane dokumenty.</p></div></div>}
+    {hasReplyFromOtherSide && <div className="claim-conversation__reply-alert"><MessageCircleMore size={20}/><div><strong>{otherSideLabel}</strong><p>Otwórz historię wiadomości, aby zapoznać się z odpowiedzią i załącznikami.</p></div></div>}
 
     <div className="claim-conversation__thread">
       {displayMessages.length ? displayMessages.map((message) => <article className={`claim-message claim-message--${message.sender_role}`} key={message.id}>
-        <div className="claim-message__meta"><strong>{message.sender_name || (message.sender_role === "broker" ? "Broker ETW" : "Administrator")}</strong><span>{message.sender_role === "broker" ? "Broker ubezpieczeniowy" : "Administrator wspólnoty"} · {formatDateTime(message.created_at)}</span></div>
-        {message.requires_action && message.sender_role === "broker" && <p className="claim-message__action"><ShieldAlert size={14}/> Wymaga działania administratora</p>}
+        <div className="claim-message__meta"><strong>{message.sender_role === "broker" ? "Jessica Klimiuk-Waszczuk" : message.sender_name || "Administrator"}</strong><span>{message.sender_role === "broker" ? "Broker ubezpieczeniowy" : "Administrator wspólnoty"} · {formatDateTime(message.created_at)}</span></div>
         {message.body && <p className="claim-message__body">{message.body}</p>}
         {message.attachments.length > 0 && <div className="claim-message__files">{message.attachments.map((attachment) => attachment.url ? <a key={attachment.id} href={attachment.url} target="_blank" rel="noreferrer"><FileText size={14}/><span>{attachment.file_name}</span><Download size={13}/></a> : <span key={attachment.id}><FileText size={14}/>{attachment.file_name}</span>)}</div>}
       </article>) : <div className="claim-conversation__empty"><MessageCircleMore size={23}/><p>Brak odpowiedzi. Możesz rozpocząć komunikację w tej sprawie.</p></div>}
@@ -142,8 +141,7 @@ export function ClaimConversation({ claimId, role, messages, demo = false }: { c
       <textarea id={`reply-${claimId}`} value={body} onChange={(event) => setBody(event.target.value)} maxLength={2000} placeholder={role === "broker" ? "Opisz kolejne kroki lub potrzebne informacje…" : "Przekaż odpowiedź albo dodatkowe informacje…"}/>
       <div className="claim-conversation__tools">
         <label className="claim-conversation__file"><Paperclip size={15}/><span>Dodaj dokument</span><input type="file" multiple accept="image/*,.pdf,.xlsx,.xls,.doc,.docx" onChange={addFiles}/></label>
-        {role === "broker" && <label className="claim-conversation__switch"><input type="checkbox" checked={requiresAction} onChange={(event) => setRequiresAction(event.target.checked)}/> Wymaga działania administratora</label>}
-        <button className="button button-primary" type="submit" disabled={pending}>{pending ? <LoaderCircle className="spin" size={16}/> : <SendHorizonal size={16}/>} Wyślij odpowiedź</button>
+        <button className="button button-primary" type="submit" disabled={pending}>{pending ? <LoaderCircle className="spin" size={16}/> : <SendHorizontal size={16}/>} Wyślij odpowiedź</button>
       </div>
       {files.length > 0 && <div className="claim-conversation__selected-files">{files.map((file) => <span key={fileKey(file)}><FileText size={13}/>{file.name}<button type="button" aria-label={`Usuń plik ${file.name}`} onClick={() => removeFile(file)}><X size={13}/></button></span>)}</div>}
       {notice && <p className={`claim-conversation__notice claim-conversation__notice--${notice.kind}`} role="status">{notice.kind === "success" ? <CheckCircle2 size={15}/> : <AlertCircle size={15}/>} {notice.text}</p>}
