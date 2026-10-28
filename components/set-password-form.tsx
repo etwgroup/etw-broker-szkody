@@ -3,7 +3,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { ArrowRight, CheckCircle2, LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { createPasswordLinkClient } from "@/lib/supabase/client";
 
 export function SetPasswordForm() {
   const router = useRouter();
@@ -16,16 +16,16 @@ export function SetPasswordForm() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const supabase = createClient();
+    const supabase = createPasswordLinkClient();
     let mounted = true;
-    void supabase.auth.getSession().then(({ data }) => {
-      if (!mounted) return;
-      setReady(Boolean(data.session));
-      setChecking(false);
-    });
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!mounted) return;
       setReady(Boolean(session));
+      setChecking(false);
+    });
+    void supabase.auth.getSession().then(({ data }) => {
+      if (!mounted) return;
+      setReady(Boolean(data.session));
       setChecking(false);
     });
     return () => { mounted = false; listener.subscription.unsubscribe(); };
@@ -39,7 +39,7 @@ export function SetPasswordForm() {
     if (password !== confirmation) return setError("Wpisane hasła nie są takie same.");
     setPending(true);
     try {
-      const supabase = createClient();
+      const supabase = createPasswordLinkClient();
       const { error: updateError } = await supabase.auth.updateUser({ password });
       if (updateError) throw updateError;
       const { error: activationError } = await supabase.rpc("activate_own_account");
