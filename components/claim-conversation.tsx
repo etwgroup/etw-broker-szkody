@@ -27,7 +27,11 @@ export function ClaimConversation({ claimId, role, messages, demo = false }: { c
   const [notice, setNotice] = useState<Notice>(null);
   const [pending, setPending] = useState(false);
   const replySender = role === "administrator" ? "broker" : "administrator";
-  const hasReplyFromOtherSide = useMemo(() => displayMessages.some((message) => message.sender_role === replySender), [displayMessages, replySender]);
+  const latestMessage = useMemo(() => displayMessages.reduce<ClaimMessage | undefined>((latest, message) => {
+    if (!latest || new Date(message.created_at).getTime() > new Date(latest.created_at).getTime()) return message;
+    return latest;
+  }, undefined), [displayMessages]);
+  const hasReplyFromOtherSide = latestMessage?.sender_role === replySender;
   const otherSideLabel = role === "administrator" ? "Broker odpowiedział w tej sprawie" : "Administrator odpowiedział w tej sprawie";
 
   useEffect(() => setDisplayMessages(messages), [messages]);
