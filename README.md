@@ -10,7 +10,7 @@ Panel dla administratorów wspólnot mieszkaniowych i brokera ubezpieczeniowego.
 - zgłoszenia szkód z opisem, datą zdarzenia oraz plikami (zdjęcia, faktury, kosztorysy);
 - statusy: nowa, przyjęta, zgłoszona do ubezpieczyciela, przypisany numer szkody przez ubezpieczyciela, odrzucona, zaakceptowana i wypłacona;
 - wymagany numer szkody, gdy broker wybierze status „Przypisany numer szkody przez ubezpieczyciela”;
-- prywatne dokumenty szkód i polis, reguły RLS oraz historia statusów;
+- prywatne dokumenty szkód i polis, reguły RLS, historia statusów oraz dwustronna komunikacja przy szkodzie;
 - widoki dla brokera: szkody, wspólnoty i administratorzy;
 - ręczne dodawanie wspólnot do firmy oraz import zbiorczego wykazu Excel jako wspólnot nieprzypisanych.
 
@@ -34,6 +34,7 @@ Panel dla administratorów wspólnot mieszkaniowych i brokera ubezpieczeniowego.
    5. `supabase/migrations/202610220005_administrator_companies.sql`
    6. `supabase/migrations/202610220006_company_accounts_and_community_refresh.sql`
    7. `supabase/migrations/202610220007_policy_company_access.sql`
+   8. `supabase/migrations/202610220008_claim_conversation.sql`
 
    Trzecia i czwarta migracja muszą zostać wykonane osobno. PostgreSQL udostępnia nową wartość statusu dopiero po zatwierdzeniu poprzedniego zapytania.
 
@@ -135,7 +136,7 @@ Gdy aktualizacja zawiera zmiany w `supabase/migrations/`:
 3. Wypchnij kod na `main` lub uruchom redeploy w Vercel.
 4. Sprawdź krytyczną ścieżkę: logowanie, tworzenie firmy i konta administratora, import wspólnot, zgłoszenie szkody i zmianę statusu przez brokera.
 
-Migracje nie powinny być pomijane — nowy status z numerem szkody wymaga zarówno migracji `003`, jak i `004`, a wspólny dostęp kont jednej firmy do polis wymaga migracji `007`.
+Migracje nie powinny być pomijane — nowy status z numerem szkody wymaga zarówno migracji `003`, jak i `004`, wspólny dostęp kont jednej firmy do polis wymaga migracji `007`, a czat oraz wymiana dokumentów przy szkodzie wymagają migracji `008`.
 
 ## Bezpieczeństwo
 

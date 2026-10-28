@@ -955,6 +955,379 @@
   background: #f9e7eb;
 }
 
+.login-card .login-brand {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.login-card .login-brand .brand {
+  margin: 0;
+}
+
+.login-card .login-brand .brand-logo,
+.login-card .login-brand .brand-logo img {
+  width: 72px;
+  height: 72px;
+}
+
+.claim-row {
+  cursor: pointer;
+}
+
+.claim-row:focus {
+  position: relative;
+  z-index: 1;
+  outline: 2px solid var(--red);
+  outline-offset: -2px;
+}
+
+.claim-row td:last-child a {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+}
+
+.claim-row:hover td:last-child a {
+  background: var(--red-pale);
+}
+
+.claim-conversation {
+  margin-top: 18px;
+  overflow: hidden;
+}
+
+.claim-conversation__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.claim-conversation__header .kicker {
+  margin-bottom: 4px;
+}
+
+.claim-conversation__header h2 {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  font-size: 16px;
+}
+
+.claim-conversation__header h2 svg {
+  color: var(--red);
+}
+
+.claim-conversation__header > span {
+  padding: 5px 8px;
+  color: var(--muted);
+  background: #f6f5f6;
+  border-radius: 50px;
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.claim-conversation__action-alert {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 16px 22px 0;
+  padding: 13px 14px;
+  color: #7c1700;
+  background: #fff1e6;
+  border-left: 3px solid #ec6300;
+  border-radius: 4px;
+}
+
+.claim-conversation__action-alert svg {
+  flex: 0 0 auto;
+  color: #db5400;
+}
+
+.claim-conversation__action-alert strong {
+  display: block;
+  font-size: 12px;
+}
+
+.claim-conversation__action-alert p {
+  margin: 3px 0 0;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.claim-conversation__thread {
+  display: grid;
+  gap: 12px;
+  padding: 20px 22px;
+  background: #fcfbfc;
+}
+
+.claim-message {
+  max-width: min(780px, 92%);
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.claim-message--broker {
+  justify-self: start;
+  border-left: 3px solid var(--red);
+}
+
+.claim-message--administrator {
+  justify-self: end;
+  border-right: 3px solid #8d8a8e;
+  background: #f7f6f7;
+}
+
+.claim-message__meta {
+  display: grid;
+  gap: 2px;
+}
+
+.claim-message__meta strong {
+  color: var(--ink);
+  font-size: 12px;
+}
+
+.claim-message__meta span {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.claim-message__body {
+  margin: 10px 0 0;
+  color: #454248;
+  font-size: 12px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+
+.claim-message__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin: 10px 0 0;
+  padding: 5px 7px;
+  color: #964500;
+  background: #fff0df;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.claim-message__files {
+  display: grid;
+  gap: 6px;
+  margin-top: 11px;
+}
+
+.claim-message__files a,
+.claim-message__files > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 8px 9px;
+  color: #555158;
+  background: #f9f4f5;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+.claim-message__files a:hover {
+  color: var(--red);
+  background: var(--red-pale);
+}
+
+.claim-message__files a span {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.claim-conversation__empty {
+  padding: 24px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.claim-conversation__empty svg {
+  margin-bottom: 7px;
+  color: #aaa7ad;
+}
+
+.claim-conversation__empty p {
+  margin: 0;
+  font-size: 12px;
+}
+
+.claim-conversation__composer {
+  display: grid;
+  gap: 9px;
+  padding: 20px 22px;
+  border-top: 1px solid var(--line);
+  background: #fff;
+}
+
+.claim-conversation__composer > label {
+  color: #4e4d51;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.claim-conversation__composer textarea {
+  width: 100%;
+  min-height: 94px;
+  padding: 10px 11px;
+  color: var(--ink);
+  border: 1px solid #d9d7da;
+  border-radius: 4px;
+  outline-color: var(--red);
+  resize: vertical;
+}
+
+.claim-conversation__tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.claim-conversation__file {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 10px;
+  overflow: hidden;
+  color: var(--red);
+  background: var(--red-pale);
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.claim-conversation__file input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.claim-conversation__switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: auto;
+  color: #615d63;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.claim-conversation__switch input {
+  accent-color: var(--red);
+}
+
+.claim-conversation__tools .button {
+  min-height: 35px;
+  padding: 0 12px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.claim-conversation__selected-files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.claim-conversation__selected-files > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 100%;
+  padding: 6px 7px;
+  color: #575257;
+  background: #faf6f7;
+  border-radius: 4px;
+  font-size: 10px;
+}
+
+.claim-conversation__selected-files button {
+  display: inline-grid;
+  place-items: center;
+  padding: 1px;
+  color: #8d5260;
+  border: 0;
+  background: transparent;
+}
+
+.claim-conversation__selected-files button:hover {
+  color: var(--red);
+}
+
+.claim-conversation__notice {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.claim-conversation__notice--success {
+  color: #15623a;
+}
+
+.claim-conversation__notice--error {
+  color: #a31530;
+}
+
+.claim-conversation + .status-form {
+  margin-top: 18px;
+}
+
+@media (max-width: 700px) {
+  .claim-conversation__header,
+  .claim-conversation__thread,
+  .claim-conversation__composer {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .claim-conversation__action-alert {
+    margin-right: 16px;
+    margin-left: 16px;
+  }
+
+  .claim-conversation__tools {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .claim-conversation__switch {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .claim-conversation__tools .button {
+    flex: 1;
+  }
+}
+
 .administrator-account-form {
   display: grid;
   gap: 18px;

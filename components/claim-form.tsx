@@ -61,6 +61,9 @@ export function ClaimForm({ communities, demo = false }: { communities: Communit
       setError(`Plik „${tooLargeFile.name}” jest większy niż 20 MB.`);
       return;
     }
+    if (!files.length && !window.confirm("Czy na pewno chcesz wysłać zgłoszenie bez załączników?")) {
+      return;
+    }
 
     setLoading(true);
     if (demo) {

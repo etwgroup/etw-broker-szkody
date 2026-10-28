@@ -27,6 +27,31 @@ export const demoHistory = [
   { id: "demo-history-1", status: "new", created_at: "2026-10-20T09:42:00+02:00", note: "Szkoda zgłoszona przez administratora." },
 ];
 
+export const demoClaimMessages = [
+  {
+    id: "demo-message-1",
+    claim_id: "demo-claim-1",
+    sender_id: "demo-broker",
+    sender_role: "broker" as const,
+    sender_name: "Marta Broker",
+    body: "Proszę o dosłanie zdjęć miejsca zdarzenia oraz kosztorysu pierwszych prac zabezpieczających.",
+    requires_action: true,
+    created_at: "2026-10-20T12:15:00+02:00",
+    attachments: [{ id: "demo-message-file-1", message_id: "demo-message-1", file_name: "lista-wymaganych-dokumentow.pdf", mime_type: "application/pdf", size_bytes: 120000, url: "data:text/plain;charset=utf-8,ETW%20Broker%20-%20lista%20wymaganych%20dokumentow" }],
+  },
+  {
+    id: "demo-message-2",
+    claim_id: "demo-claim-1",
+    sender_id: "demo-administrator",
+    sender_role: "administrator" as const,
+    sender_name: "Anna Administrator",
+    body: "Dokumenty są w przygotowaniu. Prześlemy je po otrzymaniu kosztorysu od wykonawcy.",
+    requires_action: false,
+    created_at: "2026-10-20T13:04:00+02:00",
+    attachments: [],
+  },
+];
+
 export const demoPolicies = [
   { id: "demo-policy-1", community_id: "demo-community-1", insurer: "PZU S.A.", policy_number: "PZU/WM/2026/001284", valid_from: "2026-01-01", valid_to: "2026-12-31", file_name: "polisa-wspolnota-sloneczna-12.pdf", download_url: "data:text/plain;charset=utf-8,ETW%20Broker%20-%20demonstracyjna%20polisa%20Wspolnoty%20Sloneczna%2012" },
   { id: "demo-policy-archive-1", community_id: "demo-community-1", insurer: "PZU S.A.", policy_number: "PZU/WM/2025/000917", valid_from: "2025-01-01", valid_to: "2025-12-31", file_name: "polisa-wspolnota-sloneczna-12-2025.pdf", download_url: "data:text/plain;charset=utf-8,ETW%20Broker%20-%20archiwalna%20polisa%20Wspolnoty%20Sloneczna%2012%202025" },

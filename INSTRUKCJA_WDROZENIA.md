@@ -20,7 +20,7 @@ Przejdź przez kroki po kolei. Nie przechodź do następnego punktu, dopóki bie
 
 ## Krok 2 — uruchom strukturę bazy danych
 
-Trzeba uruchomić siedem plików SQL — **jeden po drugim**.
+Trzeba uruchomić osiem plików SQL — **jeden po drugim**.
 
 1. W lewym menu Supabase kliknij **SQL Editor**.
 2. Kliknij **New query**.
@@ -38,6 +38,7 @@ Trzeba uruchomić siedem plików SQL — **jeden po drugim**.
    4. [202610220005_administrator_companies.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220005_administrator_companies.sql)
    5. [202610220006_company_accounts_and_community_refresh.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220006_company_accounts_and_community_refresh.sql)
    6. [202610220007_policy_company_access.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220007_policy_company_access.sql)
+   7. [202610220008_claim_conversation.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220008_claim_conversation.sql)
 
 > Ważne: plików `003` i `004` nie wklejaj do jednego zapytania. Każdy plik musi być uruchomiony osobno i zakończony sukcesem.
 
