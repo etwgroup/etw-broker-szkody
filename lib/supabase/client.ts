@@ -1,4 +1,5 @@
 import { createBrowserClient } from "@supabase/ssr";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 
 function credentials() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -23,8 +24,10 @@ export function createClient() {
  */
 export function createPasswordLinkClient() {
   const { url, key } = credentials();
-  return createBrowserClient(url, key, {
-    isSingleton: false,
+  // createBrowserClient wymusza PKCE dla aplikacji SSR. Linki wysłane przez
+  // inviteUserByEmail nie obsługują PKCE i przekazują sesję w fragmencie URL,
+  // dlatego strona ustawienia hasła potrzebuje osobnego klienta implicit.
+  return createSupabaseClient(url, key, {
     auth: {
       flowType: "implicit",
       detectSessionInUrl: true,

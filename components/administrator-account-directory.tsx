@@ -13,13 +13,14 @@ export function AdministratorAccountDirectory({ accounts, companies, isDemo = fa
   const router = useRouter();
   const [editing, setEditing] = useState<EditingAccount | null>(null);
   const [notice, setNotice] = useState<Notice>(null);
-  const [pending, setPending] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [resendingAccountIds, setResendingAccountIds] = useState<Set<string>>(() => new Set());
 
   const startEditing = (account: Account) => setEditing({ id: account.id, fullName: account.full_name || "", email: account.email || "", companyId: account.administrator_company_id || "" });
   const save = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!editing) return;
-    setPending(true);
+    setSaving(true);
     setNotice(null);
     try {
       if (isDemo) {
@@ -35,12 +36,12 @@ export function AdministratorAccountDirectory({ accounts, companies, isDemo = fa
     } catch (error) {
       setNotice({ kind: "error", text: error instanceof Error ? error.message : "Nie udało się zapisać konta administratora." });
     } finally {
-      setPending(false);
+      setSaving(false);
     }
   };
 
   const resendActivationLink = async (account: Account) => {
-    setPending(true);
+    setResendingAccountIds((ids) => new Set(ids).add(account.id));
     setNotice(null);
     try {
       if (isDemo) {
@@ -59,14 +60,18 @@ export function AdministratorAccountDirectory({ accounts, companies, isDemo = fa
     } catch (error) {
       setNotice({ kind: "error", text: error instanceof Error ? error.message : "Nie udało się wysłać linku aktywacyjnego." });
     } finally {
-      setPending(false);
+      setResendingAccountIds((ids) => {
+        const nextIds = new Set(ids);
+        nextIds.delete(account.id);
+        return nextIds;
+      });
     }
   };
 
   return <section className="account-directory panel">
     <div className="account-directory__heading"><span><UsersRound size={19}/></span><div><p className="kicker">Konta administratorów</p><h2>Edytuj konto</h2><p>Możesz zmienić dane użytkownika lub przenieść konto do innej firmy. Hasłem zarządza wyłącznie jego właściciel.</p></div></div>
     {notice && <p className={`community-notice community-notice--${notice.kind}`} role="status">{notice.kind === "success" ? <CheckCircle2 size={16}/> : <AlertCircle size={16}/>} {notice.text}</p>}
-    {editing && <form className="account-directory__form" onSubmit={save}><label>Firma administrująca<select required value={editing.companyId} onChange={(event) => setEditing({ ...editing, companyId: event.target.value })}><option value="">Wybierz firmę</option>{companies.map((company) => <option value={company.id} key={company.id}>{company.name}</option>)}</select></label><label>Imię i nazwisko<input required value={editing.fullName} onChange={(event) => setEditing({ ...editing, fullName: event.target.value })}/></label><label>E-mail<input required type="email" value={editing.email} onChange={(event) => setEditing({ ...editing, email: event.target.value })}/></label><button className="button button-primary" type="submit" disabled={pending}>{pending ? <LoaderCircle className="spin" size={16}/> : "Zapisz konto"}</button><button className="button button-ghost" type="button" onClick={() => setEditing(null)}>Anuluj</button></form>}
-    {!accounts.length ? <div className="empty-state"><UsersRound size={24}/><p>Nie dodano jeszcze kont administratorów.</p></div> : <div className="account-directory__list">{accounts.map((account) => <article key={account.id} className="account-directory__item"><div><strong>{account.full_name || "Administrator bez nazwy"}</strong><span>{account.email || "Brak e-maila"}</span><small>{companies.find((company) => company.id === account.administrator_company_id)?.name || "Brak przypisanej firmy"}</small><small className={`account-activation ${account.account_activated_at ? "account-activation--active" : "account-activation--pending"}`}>{account.account_activated_at ? <><BadgeCheck size={13}/>Konto aktywne</> : <><Clock3 size={13}/>Oczekuje na ustawienie hasła</>}</small></div><div className="account-directory__actions">{!account.account_activated_at && <button className="button button-ghost account-resend-button" type="button" disabled={pending} onClick={() => resendActivationLink(account)}>{pending ? <LoaderCircle className="spin" size={14}/> : <MailCheck size={14}/>}Wyślij link aktywacyjny ponownie</button>}<button className="button button-ghost" type="button" disabled={pending} onClick={() => startEditing(account)}><Pencil size={14}/>Edytuj</button></div></article>)}</div>}
+    {editing && <form className="account-directory__form" onSubmit={save}><label>Firma administrująca<select required value={editing.companyId} onChange={(event) => setEditing({ ...editing, companyId: event.target.value })}><option value="">Wybierz firmę</option>{companies.map((company) => <option value={company.id} key={company.id}>{company.name}</option>)}</select></label><label>Imię i nazwisko<input required value={editing.fullName} onChange={(event) => setEditing({ ...editing, fullName: event.target.value })}/></label><label>E-mail<input required type="email" value={editing.email} onChange={(event) => setEditing({ ...editing, email: event.target.value })}/></label><button className="button button-primary" type="submit" disabled={saving}>{saving ? <LoaderCircle className="spin" size={16}/> : "Zapisz konto"}</button><button className="button button-ghost" type="button" onClick={() => setEditing(null)}>Anuluj</button></form>}
+    {!accounts.length ? <div className="empty-state"><UsersRound size={24}/><p>Nie dodano jeszcze kont administratorów.</p></div> : <div className="account-directory__list">{accounts.map((account) => <article key={account.id} className="account-directory__item"><div><strong>{account.full_name || "Administrator bez nazwy"}</strong><span>{account.email || "Brak e-maila"}</span><small>{companies.find((company) => company.id === account.administrator_company_id)?.name || "Brak przypisanej firmy"}</small><small className={`account-activation ${account.account_activated_at ? "account-activation--active" : "account-activation--pending"}`}>{account.account_activated_at ? <><BadgeCheck size={13}/>Konto aktywne</> : <><Clock3 size={13}/>Oczekuje na ustawienie hasła</>}</small></div><div className="account-directory__actions">{!account.account_activated_at && <button className="button button-ghost account-resend-button" type="button" disabled={resendingAccountIds.has(account.id)} onClick={() => resendActivationLink(account)}>{resendingAccountIds.has(account.id) ? <LoaderCircle className="spin" size={14}/> : <MailCheck size={14}/>}Wyślij link aktywacyjny ponownie</button>}<button className="button button-ghost" type="button" disabled={saving} onClick={() => startEditing(account)}><Pencil size={14}/>Edytuj</button></div></article>)}</div>}
   </section>;
 }
