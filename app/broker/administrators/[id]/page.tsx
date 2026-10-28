@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AdministratorAccountDirectory } from "@/components/administrator-account-directory";
 import { AdministratorAccountForm } from "@/components/administrator-account-form";
+import { AdministratorCompanyEditForm } from "@/components/administrator-company-edit-form";
 import { AppShell } from "@/components/app-shell";
 import { CommunitiesList } from "@/components/communities-list";
 import { requireProfile } from "@/lib/auth";
@@ -39,6 +40,7 @@ export default async function BrokerAdministratorCompanyPage({ params }: { param
   return <AppShell profile={profile}>
     <header className="page-top"><div><Link className="kicker" href="/broker/administrators"><ArrowLeft size={12}/> Wróć do firm administrujących</Link><h1>{company.name}</h1><p className="subtitle">{company.nip ? `NIP ${company.nip} · ` : ""}{accounts.length} kont administratorów · {communities.length} obsługiwanych wspólnot</p></div></header>
     <section className="company-overview panel"><span className="community-icon"><Building2 size={20}/></span><div><p className="kicker">Firma administrująca</p><h2>{company.name}</h2><p>Każde konto przypisane do tej firmy ma wgląd do wspólnot widocznych poniżej.</p></div></section>
+    <AdministratorCompanyEditForm company={company} isDemo={isDemo}/>
     <AdministratorAccountForm company={company} isDemo={isDemo}/>
     <AdministratorAccountDirectory accounts={accounts} companies={[company]} isDemo={isDemo}/>
     <section className="company-communities panel"><div className="panel-header"><div><p className="kicker">Portfel firmy</p><h2><UsersRound size={16}/> Obsługiwane wspólnoty ({communities.length})</h2></div><Link href="/broker/communities" className="text-button">Zarządzaj wspólnotami</Link></div><div className="company-communities__content"><CommunitiesList communities={communities} basePath="/broker/communities"/></div></section>

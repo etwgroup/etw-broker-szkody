@@ -20,23 +20,24 @@ Przejdź przez kroki po kolei. Nie przechodź do następnego punktu, dopóki bie
 
 ## Krok 2 — uruchom strukturę bazy danych
 
-Trzeba uruchomić sześć plików SQL — **jeden po drugim**.
+Trzeba uruchomić siedem plików SQL — **jeden po drugim**.
 
 1. W lewym menu Supabase kliknij **SQL Editor**.
 2. Kliknij **New query**.
 3. Otwórz pierwszy plik z projektu:
 
-   [202610220001_initial_schema.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/supabase/migrations/202610220001_initial_schema.sql)
+   [202610220001_initial_schema.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220001_initial_schema.sql)
 
 4. Zaznacz całą jego zawartość, skopiuj ją do pola edytora SQL w Supabase i kliknij **Run**.
 5. Poczekaj na zielony komunikat powodzenia. Dopiero wtedy utwórz kolejne **New query**.
 6. W identyczny sposób uruchom następne pliki, w tej dokładnej kolejności:
 
-   1. [202610220002_insurance_policies.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/supabase/migrations/202610220002_insurance_policies.sql)
-   2. [202610220003_insurer_claim_number_status.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/supabase/migrations/202610220003_insurer_claim_number_status.sql)
-   3. [202610220004_insurer_claim_number_field.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/supabase/migrations/202610220004_insurer_claim_number_field.sql)
+   1. [202610220002_insurance_policies.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220002_insurance_policies.sql)
+   2. [202610220003_insurer_claim_number_status.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220003_insurer_claim_number_status.sql)
+   3. [202610220004_insurer_claim_number_field.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220004_insurer_claim_number_field.sql)
    4. [202610220005_administrator_companies.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220005_administrator_companies.sql)
    5. [202610220006_company_accounts_and_community_refresh.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220006_company_accounts_and_community_refresh.sql)
+   6. [202610220007_policy_company_access.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220007_policy_company_access.sql)
 
 > Ważne: plików `003` i `004` nie wklejaj do jednego zapytania. Każdy plik musi być uruchomiony osobno i zakończony sukcesem.
 

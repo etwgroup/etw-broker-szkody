@@ -29,6 +29,7 @@ export const demoHistory = [
 
 export const demoPolicies = [
   { id: "demo-policy-1", community_id: "demo-community-1", insurer: "PZU S.A.", policy_number: "PZU/WM/2026/001284", valid_from: "2026-01-01", valid_to: "2026-12-31", file_name: "polisa-wspolnota-sloneczna-12.pdf", download_url: "data:text/plain;charset=utf-8,ETW%20Broker%20-%20demonstracyjna%20polisa%20Wspolnoty%20Sloneczna%2012" },
+  { id: "demo-policy-archive-1", community_id: "demo-community-1", insurer: "PZU S.A.", policy_number: "PZU/WM/2025/000917", valid_from: "2025-01-01", valid_to: "2025-12-31", file_name: "polisa-wspolnota-sloneczna-12-2025.pdf", download_url: "data:text/plain;charset=utf-8,ETW%20Broker%20-%20archiwalna%20polisa%20Wspolnoty%20Sloneczna%2012%202025" },
   { id: "demo-policy-2", community_id: "demo-community-2", insurer: "Warta S.A.", policy_number: "WARTA/WM/2026/04591", valid_from: "2026-03-01", valid_to: "2027-02-28", file_name: "polisa-wspolnota-parkowa-8.pdf", download_url: "data:text/plain;charset=utf-8,ETW%20Broker%20-%20demonstracyjna%20polisa%20Wspolnoty%20Parkowa%208" },
 ];
 
