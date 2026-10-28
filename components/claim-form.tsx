@@ -24,7 +24,7 @@ function submissionError(reason: unknown) {
   return "Nie udało się wysłać zgłoszenia.";
 }
 
-export function ClaimForm({ communities, demo = false }: { communities: Community[]; demo?: boolean }) {
+export function ClaimForm({ communities, defaultCommunityId, demo = false }: { communities: Community[]; defaultCommunityId?: string; demo?: boolean }) {
   const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -104,7 +104,7 @@ export function ClaimForm({ communities, demo = false }: { communities: Communit
   return <form className="form-panel panel form-stack" onSubmit={handleSubmit}>
     <h2>Dane zdarzenia</h2>
     <div className="form-grid">
-      <div className="field full"><label htmlFor="community_id">Wspólnota mieszkaniowa</label><select id="community_id" name="community_id" required defaultValue=""><option value="" disabled>Wybierz wspólnotę…</option>{communities.map((community) => <option key={community.id} value={community.id}>{community.name} — {community.address}</option>)}</select></div>
+      <div className="field full"><label htmlFor="community_id">Wspólnota mieszkaniowa</label><select id="community_id" name="community_id" required defaultValue={defaultCommunityId || ""}><option value="" disabled>Wybierz wspólnotę…</option>{communities.map((community) => <option key={community.id} value={community.id}>{community.name} — {community.address}</option>)}</select></div>
       <div className="field"><label htmlFor="title">Tytuł szkody</label><input id="title" name="title" placeholder="np. Zalanie pionu w lokalu 14" required minLength={3} maxLength={140}/></div>
       <div className="field"><label htmlFor="occurred_at">Data zdarzenia</label><input id="occurred_at" name="occurred_at" type="date" required/></div>
       <div className="field full"><label htmlFor="description">Opis szkody <span className="field-hint">(minimum 10 znaków)</span></label><textarea id="description" name="description" placeholder="Opisz co się wydarzyło, jakie są widoczne uszkodzenia i jakie działania zostały już podjęte." required minLength={10} maxLength={5000}/></div>

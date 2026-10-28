@@ -27,7 +27,7 @@ export default async function BrokerClaimDetail({ params }: { params: Promise<{ 
 
   const { data: claim } = await supabase!
     .from("claims")
-    .select("id, reference, title, description, status, insurer_claim_number, occurred_at, created_at, communities(name, address)")
+    .select("id, reference, title, description, status, insurer_claim_number, occurred_at, created_at, reported_by_name, reported_by_email, communities(name, address)")
     .eq("id", id)
     .single();
   if (!claim) notFound();

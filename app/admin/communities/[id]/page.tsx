@@ -1,4 +1,4 @@
-import { ArrowLeft, CalendarDays, Download, FileCheck2, FileWarning, ShieldCheck } from "lucide-react";
+import { ArrowLeft, CalendarDays, Download, FileCheck2, FileWarning, PlusCircle, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AppShell } from "@/components/app-shell";
@@ -85,6 +85,7 @@ function CommunityDetail({
         <h1>{community.name}</h1>
         <p className="subtitle">{community.address}{community.nip ? ` · NIP ${community.nip}` : ""}{community.regon ? ` · REGON ${community.regon}` : ""}</p>
       </div>
+      <Link className="button button-primary" href={`/admin/damages/new?community=${encodeURIComponent(community.id)}`}><PlusCircle size={16}/> Zgłoś szkodę</Link>
     </header>
 
     <div className="community-detail-grid">

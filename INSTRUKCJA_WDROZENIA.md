@@ -40,6 +40,7 @@ Trzeba uruchomić osiem plików SQL — **jeden po drugim**.
    6. [202610220007_policy_company_access.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220007_policy_company_access.sql)
    7. [202610220008_claim_conversation.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220008_claim_conversation.sql)
    8. [202610220009_claim_last_message.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220009_claim_last_message.sql)
+   9. [202610220010_claim_reporter.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220010_claim_reporter.sql)
 
 > Ważne: plików `003` i `004` nie wklejaj do jednego zapytania. Każdy plik musi być uruchomiony osobno i zakończony sukcesem.
 
