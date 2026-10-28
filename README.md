@@ -35,6 +35,7 @@ Panel dla administratorów wspólnot mieszkaniowych i brokera ubezpieczeniowego.
    6. `supabase/migrations/202610220006_company_accounts_and_community_refresh.sql`
    7. `supabase/migrations/202610220007_policy_company_access.sql`
    8. `supabase/migrations/202610220008_claim_conversation.sql`
+   9. `supabase/migrations/202610220009_claim_last_message.sql`
 
    Trzecia i czwarta migracja muszą zostać wykonane osobno. PostgreSQL udostępnia nową wartość statusu dopiero po zatwierdzeniu poprzedniego zapytania.
 
@@ -136,7 +137,7 @@ Gdy aktualizacja zawiera zmiany w `supabase/migrations/`:
 3. Wypchnij kod na `main` lub uruchom redeploy w Vercel.
 4. Sprawdź krytyczną ścieżkę: logowanie, tworzenie firmy i konta administratora, import wspólnot, zgłoszenie szkody i zmianę statusu przez brokera.
 
-Migracje nie powinny być pomijane — nowy status z numerem szkody wymaga zarówno migracji `003`, jak i `004`, wspólny dostęp kont jednej firmy do polis wymaga migracji `007`, a czat oraz wymiana dokumentów przy szkodzie wymagają migracji `008`.
+Migracje nie powinny być pomijane — nowy status z numerem szkody wymaga zarówno migracji `003`, jak i `004`, wspólny dostęp kont jednej firmy do polis wymaga migracji `007`, czat oraz wymiana dokumentów przy szkodzie wymagają migracji `008`, a szybkie powiadomienia o ostatniej odpowiedzi wymagają migracji `009`.
 
 ## Bezpieczeństwo
 

@@ -12,29 +12,27 @@ export default async function AdminDashboard() {
   const { supabase, profile, isDemo } = await requireProfile("administrator");
   const { data: claims } = isDemo
     ? { data: null }
-    : await supabase!.from("claims").select("id, reference, title, status, occurred_at, created_at, communities(name, address)").order("created_at", { ascending: false });
+    : await supabase!.from("claims").select("id, reference, title, status, occurred_at, created_at, last_message_at, last_message_sender_role, communities(name, address)").order("created_at", { ascending: false });
   const { data: communities } = isDemo ? { data: null } : await supabase!.from("communities").select("id");
-  const baseItems = isDemo ? demoClaims : claims || [];
-  const claimIds = baseItems.map((claim) => claim.id);
-  const { data: claimMessages } = isDemo || !claimIds.length
-    ? { data: null }
-    : await supabase!.from("claim_messages").select("claim_id, sender_role, created_at").in("claim_id", claimIds).order("created_at", { ascending: false });
-  const messages: Message[] = isDemo
-    ? demoClaimMessages.map((message) => ({ claim_id: message.claim_id, sender_role: message.sender_role, created_at: message.created_at }))
-    : (claimMessages || []) as Message[];
   const latestMessageByClaim = new Map<string, Message>();
-  messages.forEach((message) => {
+  demoClaimMessages.forEach((message) => {
     const latest = latestMessageByClaim.get(message.claim_id);
     if (!latest || new Date(message.created_at).getTime() > new Date(latest.created_at).getTime()) latestMessageByClaim.set(message.claim_id, message);
   });
-  const items = baseItems.map((claim) => {
-    const latestMessage = latestMessageByClaim.get(claim.id);
-    return {
+  const items = isDemo
+    ? demoClaims.map((claim) => {
+      const latestMessage = latestMessageByClaim.get(claim.id);
+      return {
+        ...claim,
+        counterparty_reply_at: latestMessage?.sender_role === "broker" ? latestMessage.created_at : undefined,
+        counterparty_reply_from: "broker" as const,
+      };
+    })
+    : (claims || []).map((claim) => ({
       ...claim,
-      counterparty_reply_at: latestMessage?.sender_role === "broker" ? latestMessage.created_at : undefined,
+      counterparty_reply_at: claim.last_message_sender_role === "broker" ? claim.last_message_at || undefined : undefined,
       counterparty_reply_from: "broker" as const,
-    };
-  });
+    }));
   const repliedClaims = items.filter((claim) => claim.counterparty_reply_at);
   const communityCount = isDemo ? demoCommunities.length : communities?.length || 0;
   const active = items.filter((claim) => !["rejected", "paid"].includes(claim.status));
