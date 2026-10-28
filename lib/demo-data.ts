@@ -7,13 +7,13 @@ export const demoCommunities = [
 
 export type DemoClaim = {
   id: string; reference: string; title: string; description: string; status: ClaimStatus;
-  occurred_at: string; created_at: string; insurer_claim_number?: string | null; reported_by_name?: string | null; reported_by_email?: string | null; communities: (typeof demoCommunities)[number];
+  occurred_at: string; created_at: string; insurer_claim_number?: string | null; paid_amount?: number | null; paid_at?: string | null; reported_by_name?: string | null; reported_by_email?: string | null; communities: (typeof demoCommunities)[number];
 };
 
 export const demoClaims: DemoClaim[] = [
   { id: "demo-claim-1", reference: "ETW-2026-01001", title: "Zalanie pionu w lokalu 14", description: "W wyniku awarii instalacji wodnej doszło do zalania ściany oraz sufitu w korytarzu na II piętrze. Miejsce zostało zabezpieczone, a administrator zlecił wstępne oględziny.", status: "received", occurred_at: "2026-10-19", created_at: "2026-10-20T09:42:00+02:00", reported_by_name: "Anna Administrator", reported_by_email: "administrator@etw.demo", communities: demoCommunities[0] },
   { id: "demo-claim-2", reference: "ETW-2026-00984", title: "Uszkodzenie bramy wjazdowej", description: "Mechanizm bramy wjazdowej został uszkodzony. Do zgłoszenia dołączono zdjęcia oraz kosztorys naprawy.", status: "insurer_claim_number_assigned", insurer_claim_number: "WARTA/2026/00984", occurred_at: "2026-10-13", created_at: "2026-10-14T13:18:00+02:00", reported_by_name: "Anna Administrator", reported_by_email: "administrator@etw.demo", communities: demoCommunities[1] },
-  { id: "demo-claim-3", reference: "ETW-2026-00935", title: "Szkoda po silnym wietrze", description: "Silny wiatr uszkodził obróbkę blacharską na dachu budynku. Naprawa została wykonana i rozliczona.", status: "paid", occurred_at: "2026-09-27", created_at: "2026-09-28T08:12:00+02:00", reported_by_name: "Anna Administrator", reported_by_email: "administrator@etw.demo", communities: demoCommunities[0] },
+  { id: "demo-claim-3", reference: "ETW-2026-00935", title: "Szkoda po silnym wietrze", description: "Silny wiatr uszkodził obróbkę blacharską na dachu budynku. Naprawa została wykonana i rozliczona.", status: "paid", occurred_at: "2026-09-27", created_at: "2026-09-28T08:12:00+02:00", paid_amount: 4800, paid_at: "2026-10-08", reported_by_name: "Anna Administrator", reported_by_email: "administrator@etw.demo", communities: demoCommunities[0] },
 ];
 
 export const demoAttachments = [
@@ -47,6 +47,16 @@ export const demoClaimMessages = [
     body: "Dokumenty są w przygotowaniu. Prześlemy je po otrzymaniu kosztorysu od wykonawcy.",
     created_at: "2026-10-20T13:04:00+02:00",
     attachments: [],
+  },
+];
+
+export const demoInternalNotes = [
+  {
+    id: "demo-internal-note-1",
+    claim_id: "demo-claim-1",
+    author_name: "Jessica Klimiuk-Waszczuk",
+    body: "Oczekujemy na kosztorys prac zabezpieczających. Po otrzymaniu dokumentu należy przekazać komplet do ubezpieczyciela.",
+    created_at: "2026-10-20T12:22:00+02:00",
   },
 ];
 

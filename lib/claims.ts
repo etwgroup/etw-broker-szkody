@@ -19,3 +19,9 @@ export function formatDateTime(value?: string | null) {
   if (!value) return "—";
   return new Intl.DateTimeFormat("pl-PL", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }).format(new Date(value));
 }
+
+export function formatCurrency(value?: string | number | null) {
+  const amount = typeof value === "string" ? Number(value) : value;
+  if (typeof amount !== "number" || !Number.isFinite(amount)) return "—";
+  return new Intl.NumberFormat("pl-PL", { style: "currency", currency: "PLN", minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount);
+}

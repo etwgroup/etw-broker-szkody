@@ -44,6 +44,6 @@ export default async function AdminDashboard() {
       <div className="counterparty-replies-panel__list">{repliedClaims.map((claim) => <Link key={claim.id} href={`/admin/damages/${claim.id}`} className="counterparty-replies-panel__item"><span className="counterparty-replies-panel__icon"><MessageCircleMore size={17}/></span><span><strong>{claim.reference} · {claim.title}</strong><small>Odpowiedź brokera: {formatDateTime(claim.counterparty_reply_at)}</small></span></Link>)}</div>
     </section>}
     <section className="stats"><article className="stat-card"><span>Obsługiwane wspólnoty</span><strong className="success">{communityCount}</strong></article><article className="stat-card"><span>Zgłoszone szkody</span><strong>{items.length}</strong></article><article className="stat-card"><span>Szkody w trakcie obsługi</span><strong className="warning">{active.length}</strong></article><article className="stat-card"><span>Wypłacone</span><strong className="success">{items.filter((claim) => claim.status === "paid").length}</strong></article></section>
-    <section className="panel"><div className="panel-header"><h2>Ostatnio zgłoszone szkody</h2><Link href="/admin/damages/new">Nowe zgłoszenie</Link></div><ClaimsTable claims={items}/></section>
+    <section className="panel"><div className="panel-header"><h2>Ostatnio zgłoszone szkody</h2><Link href="/admin/damages/new">Nowe zgłoszenie</Link></div><ClaimsTable claims={items} showFilters/></section>
   </AppShell>;
 }

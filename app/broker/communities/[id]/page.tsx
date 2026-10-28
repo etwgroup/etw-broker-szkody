@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AppShell } from "@/components/app-shell";
 import { ClaimsTable } from "@/components/claims-table";
+import { CommunityLossSummary } from "@/components/community-loss-summary";
 import { CommunityEditForm } from "@/components/community-edit-form";
 import { PolicyArchive } from "@/components/policy-archive";
 import { PolicyUploadForm } from "@/components/policy-upload-form";
@@ -18,6 +19,8 @@ type CommunityClaim = {
   status: string;
   occurred_at: string;
   created_at: string;
+  paid_amount?: string | number | null;
+  paid_at?: string | null;
   communities: { name: string; address: string } | { name: string; address: string }[];
 };
 
@@ -54,7 +57,7 @@ export default async function BrokerCommunityDetailPage({ params }: { params: Pr
       .order("created_at", { ascending: false }),
     supabase!
       .from("claims")
-      .select("id, reference, title, status, occurred_at, created_at, communities(name, address)")
+      .select("id, reference, title, status, occurred_at, created_at, paid_amount, paid_at, communities(name, address)")
       .eq("community_id", id)
       .order("created_at", { ascending: false }),
     supabase!.from("administrator_companies").select("id, name").order("name"),
@@ -124,6 +127,8 @@ function BrokerCommunityDetail({
 
     <PolicyUploadForm communityId={community.id} isDemo={isDemo}/>
     <PolicyArchive policies={archivedPolicies}/>
+
+    <CommunityLossSummary claims={claims}/>
 
     <section className="panel claims-by-community">
       <div className="panel-header"><h2>Zgłoszone szkody ({claims.length})</h2></div>

@@ -43,6 +43,6 @@ export default async function BrokerDashboard() {
       <div className="counterparty-replies-panel__list">{repliedClaims.map((claim) => <Link key={claim.id} href={`/broker/damages/${claim.id}`} className="counterparty-replies-panel__item"><span className="counterparty-replies-panel__icon"><MessageCircleMore size={17}/></span><span><strong>{claim.reference} · {claim.title}</strong><small>Odpowiedź administratora: {formatDateTime(claim.counterparty_reply_at)}</small></span></Link>)}</div>
     </section>}
     <section className="stats"><article className="stat-card"><span>Zgłoszone szkody</span><strong>{items.length}</strong></article><article className="stat-card"><span>Nowe do weryfikacji</span><strong className="warning">{fresh.length}</strong></article><article className="stat-card"><span>U ubezpieczyciela</span><strong>{insurer.length}</strong></article><article className="stat-card"><span>Wypłacone</span><strong className="success">{items.filter((claim) => claim.status === "paid").length}</strong></article></section>
-    <section className="panel"><div className="panel-header"><h2>Zgłoszone szkody</h2><span className="kicker">{items.length} spraw</span></div><ClaimsTable claims={items} panel="broker"/></section>
+    <section className="panel"><div className="panel-header"><h2>Zgłoszone szkody</h2><span className="kicker">{items.length} spraw</span></div><ClaimsTable claims={items} panel="broker" showFilters/></section>
   </AppShell>;
 }

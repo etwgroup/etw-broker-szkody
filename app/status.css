@@ -660,6 +660,329 @@
   }
 }
 
+.payout-amount {
+  color: #513b82 !important;
+}
+
+.claim-conversation + .broker-notes,
+.broker-notes + .status-form {
+  margin-top: 18px;
+}
+
+.broker-notes {
+  padding: 20px 22px;
+}
+
+.broker-notes > header,
+.community-loss > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.broker-notes .kicker,
+.community-loss .kicker {
+  margin-bottom: 4px;
+}
+
+.broker-notes h2,
+.community-loss h2,
+.report-table h2 {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  font-size: 16px;
+}
+
+.broker-notes h2 svg,
+.community-loss h2 svg,
+.report-table h2 svg {
+  color: var(--red);
+}
+
+.broker-notes > header > span {
+  padding: 5px 8px;
+  color: #8c1731;
+  background: var(--red-pale);
+  border-radius: 50px;
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.broker-notes form {
+  display: grid;
+  gap: 9px;
+  margin-top: 16px;
+}
+
+.broker-notes textarea {
+  width: 100%;
+  min-height: 92px;
+  resize: vertical;
+  padding: 10px;
+  color: var(--ink);
+  border: 1px solid #d9d7da;
+  border-radius: 4px;
+  outline-color: var(--red);
+  font: 600 12px/1.5 "Space Grotesk", Manrope, sans-serif;
+}
+
+.broker-notes form .button {
+  justify-self: start;
+  margin: 0;
+}
+
+.broker-notes__notice {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 12px 0 0;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.broker-notes__notice--success { color: #15623a; }
+.broker-notes__notice--error { color: #a31530; }
+
+.broker-notes__list {
+  display: grid;
+  gap: 9px;
+  margin-top: 16px;
+}
+
+.broker-notes__list article {
+  padding: 12px 13px;
+  border-left: 3px solid #47434a;
+  border-radius: 3px;
+  background: #f7f6f7;
+}
+
+.broker-notes__list strong {
+  color: var(--ink);
+  font-size: 12px;
+}
+
+.broker-notes__list article > span {
+  margin-left: 7px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.broker-notes__list p,
+.broker-notes__empty {
+  margin: 7px 0 0;
+  color: #565259;
+  font-size: 12px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+.broker-notes__empty { margin-top: 0; color: var(--muted); }
+
+.community-loss {
+  margin-top: 18px;
+  padding: 20px 22px;
+}
+
+.community-loss > header > label,
+.report-year label {
+  display: grid;
+  gap: 5px;
+  color: #5f5a61;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.community-loss select,
+.report-year select {
+  min-height: 35px;
+  padding: 0 26px 0 9px;
+  color: var(--ink);
+  border: 1px solid #d9d7da;
+  border-radius: 4px;
+  outline-color: var(--red);
+  background: #fff;
+  font: 700 11px "Space Grotesk", Manrope, sans-serif;
+}
+
+.community-loss__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 17px;
+}
+
+.community-loss__stats article {
+  display: grid;
+  gap: 4px;
+  padding: 13px;
+  background: #fbfafb;
+  border-radius: 4px;
+}
+
+.community-loss__stats article > svg { color: var(--red); }
+
+.community-loss__stats span {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.community-loss__stats strong {
+  color: var(--ink);
+  font: 700 20px "Space Grotesk", Manrope, sans-serif;
+}
+
+.community-loss > p,
+.report-year > p {
+  margin: 13px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.claims-filters {
+  display: grid;
+  grid-template-columns: auto minmax(200px, 1.8fr) minmax(150px, .9fr) minmax(120px, .7fr) minmax(120px, .7fr) auto auto;
+  align-items: end;
+  gap: 9px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line);
+  background: #fcfbfc;
+}
+
+.claims-filters__heading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  align-self: center;
+  color: #59555b;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.claims-filters__heading svg,
+.claims-filters__search svg { color: var(--red); }
+
+.claims-filters > label {
+  display: grid;
+  gap: 5px;
+  color: #5f5a61;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.claims-filters input,
+.claims-filters select {
+  width: 100%;
+  min-width: 0;
+  min-height: 35px;
+  padding: 0 9px;
+  color: var(--ink);
+  border: 1px solid #d9d7da;
+  border-radius: 4px;
+  outline-color: var(--red);
+  background: #fff;
+  font: 600 11px "Space Grotesk", Manrope, sans-serif;
+}
+
+.claims-filters__search {
+  position: relative;
+  display: flex !important;
+  align-items: center;
+}
+
+.claims-filters__search svg {
+  position: absolute;
+  left: 10px;
+}
+
+.claims-filters__search input { padding-left: 32px; }
+
+.claims-filters .button {
+  min-height: 35px;
+  margin: 0;
+  padding: 0 9px;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.claims-filters__count {
+  align-self: center;
+  color: var(--muted);
+  font: 500 10px DM Mono, monospace;
+  white-space: nowrap;
+}
+
+.table-empty {
+  padding: 15px 0;
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+.report-year {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 18px;
+  padding: 16px 20px;
+}
+
+.report-year form {
+  display: flex;
+  align-items: end;
+  gap: 9px;
+}
+
+.report-year .button { min-height: 35px; margin: 0; }
+
+.report-year > p { max-width: 470px; margin: 0; }
+
+.stats--reports .stat-card span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.stats--reports .stat-card span svg { color: var(--red); }
+
+.report-table .panel-header h2 { font-size: 15px; }
+
+.report-table__community {
+  display: grid;
+  gap: 3px;
+}
+
+.report-table__community strong { color: var(--ink); font-size: 12px; }
+.report-table__community span { color: var(--muted); font-size: 10px; }
+.report-table__amount { color: #513b82; font-weight: 800; }
+
+@media (max-width: 1050px) {
+  .claims-filters { grid-template-columns: 1fr 1fr 1fr; }
+  .claims-filters__heading { grid-column: 1 / -1; }
+  .claims-filters__search { grid-column: span 2; }
+}
+
+@media (max-width: 700px) {
+  .broker-notes,
+  .community-loss { padding: 17px; }
+  .broker-notes > header,
+  .community-loss > header,
+  .report-year { align-items: flex-start; flex-direction: column; }
+  .community-loss__stats { grid-template-columns: 1fr; }
+  .claims-filters { grid-template-columns: 1fr; padding: 14px 16px; }
+  .claims-filters__search { grid-column: auto; }
+  .claims-filters__count { align-self: auto; }
+  .report-year form { width: 100%; }
+  .report-year form label { flex: 1; }
+}
+
 .policy-upload,
 .policy-archive {
   margin-bottom: 18px;
