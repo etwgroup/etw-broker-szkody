@@ -983,6 +983,138 @@
   .report-year form label { flex: 1; }
 }
 
+.notification-nav-link {
+  position: relative;
+}
+
+.notification-nav-link b {
+  display: grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  margin-left: auto;
+  padding: 0 4px;
+  color: #fff;
+  background: var(--red);
+  border-radius: 50px;
+  font-size: 9px;
+  line-height: 1;
+}
+
+.notifications-center {
+  max-width: 940px;
+}
+
+.notifications-center > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 24px 25px;
+  border-bottom: 1px solid var(--line);
+}
+
+.notifications-center h1 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  font: 700 25px "Space Grotesk", Manrope, sans-serif;
+  letter-spacing: -1px;
+}
+
+.notifications-center h1 svg { color: var(--red); }
+
+.notifications-center > header p:last-child {
+  max-width: 560px;
+  margin: 7px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.notifications-center > header .button {
+  flex: 0 0 auto;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.notifications-center__summary {
+  padding: 12px 25px;
+  color: #7d2d3e;
+  background: #fff7f8;
+  border-bottom: 1px solid #f2dce1;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.notifications-center__list {
+  display: grid;
+}
+
+.notification-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 12px;
+  padding: 17px 25px;
+  border-bottom: 1px solid var(--line);
+  transition: background .15s;
+}
+
+.notification-item:hover { background: #fffafb; }
+
+.notification-item:not(.notification-item--read) { background: #fff9fa; }
+
+.notification-item__icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  color: var(--red);
+  background: var(--red-pale);
+  border-radius: 50%;
+}
+
+.notification-item > span:nth-child(2) {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.notification-item strong { color: var(--ink); font-size: 13px; }
+
+.notification-item p {
+  margin: 0;
+  color: #58545a;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.notification-item small { color: var(--muted); font-size: 10px; }
+
+.notification-item i {
+  display: block;
+  width: 8px;
+  height: 8px;
+  margin-top: 4px;
+  background: var(--red);
+  border-radius: 50%;
+}
+
+@media (max-width: 700px) {
+  .notifications-center > header {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 19px 17px;
+  }
+
+  .notifications-center h1 { font-size: 21px; }
+  .notifications-center__summary { padding: 11px 17px; }
+  .notification-item { padding: 15px 17px; }
+}
+
 .policy-upload,
 .policy-archive {
   margin-bottom: 18px;

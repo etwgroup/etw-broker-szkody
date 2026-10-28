@@ -1,4 +1,5 @@
 import type { ClaimStatus } from "@/lib/claims";
+import type { AppNotification } from "@/lib/notifications";
 
 export const demoCommunities = [
   { id: "demo-community-1", name: "Wspólnota Słoneczna 12", address: "ul. Słoneczna 12, Warszawa" },
@@ -58,6 +59,12 @@ export const demoInternalNotes = [
     body: "Oczekujemy na kosztorys prac zabezpieczających. Po otrzymaniu dokumentu należy przekazać komplet do ubezpieczyciela.",
     created_at: "2026-10-20T12:22:00+02:00",
   },
+];
+
+export const demoNotifications: Array<AppNotification & { recipient_role: "administrator" | "broker" }> = [
+  { id: "demo-notification-1", recipient_role: "broker" as const, notification_type: "claim_created", claim_id: "demo-claim-1", title: "Nowe zgłoszenie szkody", body: "Szkoda ETW-2026-01001: Zalanie pionu w lokalu 14", created_at: "2026-10-20T09:42:00+02:00", read_at: null },
+  { id: "demo-notification-2", recipient_role: "broker" as const, notification_type: "claim_message", claim_id: "demo-claim-1", title: "Nowa odpowiedź administratora", body: "Szkoda ETW-2026-01001: Zalanie pionu w lokalu 14", created_at: "2026-10-20T13:04:00+02:00", read_at: null },
+  { id: "demo-notification-3", recipient_role: "administrator" as const, notification_type: "claim_status_changed", claim_id: "demo-claim-2", title: "Ubezpieczyciel nadał numer szkody", body: "Szkoda ETW-2026-00984: Uszkodzenie bramy wjazdowej", created_at: "2026-10-16T12:20:00+02:00", read_at: null },
 ];
 
 export const demoPolicies = [

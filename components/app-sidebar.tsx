@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import type { AppProfile } from "@/lib/auth";
+import { NotificationsNavLink } from "@/components/notifications-nav-link";
 
 const adminNavigation = [
   { href: "/admin", label: "Pulpit", icon: LayoutDashboard },
@@ -37,6 +38,7 @@ export function AppSidebar({ profile }: { profile: AppProfile }) {
     <nav className="nav-group">
       <p className="nav-label">{profile.role === "broker" ? "Panel brokera" : "Panel administratora"}</p>
       {nav.map(({ href, label, icon: Icon }) => <Link key={href} href={href} className={`nav-link ${pathname === href || (href !== "/admin" && href !== "/broker" && pathname.startsWith(href)) || (href === "/broker" && pathname.startsWith("/broker/damages")) ? "active" : ""}`}><Icon size={17}/><span>{label}</span></Link>)}
+      <NotificationsNavLink role={profile.role} demo={profile.isDemo}/>
     </nav>
     <div className="sidebar-user">
       <ShieldCheck size={15} />
