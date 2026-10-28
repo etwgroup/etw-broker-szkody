@@ -552,6 +552,20 @@
   margin: 0;
 }
 
+.account-directory__actions {
+  display: flex !important;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.account-resend-button {
+  color: #8c1731;
+  border-color: #eab5c1 !important;
+  background: #fff7f8 !important;
+}
+
 .broker-community-card {
   display: block;
   gap: 0;
@@ -700,6 +714,15 @@
   .company-editor__fields,
   .company-manager__list {
     grid-template-columns: 1fr;
+  }
+
+  .account-directory__item {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .account-directory__actions {
+    justify-content: flex-start;
   }
 }
 

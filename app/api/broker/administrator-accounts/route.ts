@@ -3,6 +3,7 @@ import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 type AccountPayload = {
+  action?: unknown;
   accountId?: unknown;
   fullName?: unknown;
   email?: unknown;
@@ -36,6 +37,47 @@ function applicationUrl(request: Request) {
   return (configuredUrl || new URL(request.url).origin).replace(/\/$/, "");
 }
 
+async function resendActivationLink(request: Request, accountId: string) {
+  const admin = createAdminSupabaseClient();
+  const { data: account, error: accountError } = await admin
+    .from("profiles")
+    .select("id, full_name, email, role, account_activated_at")
+    .eq("id", accountId)
+    .maybeSingle();
+
+  if (accountError || !account || account.role !== "administrator") {
+    throw new Error("Nie znaleziono konta administratora.");
+  }
+  if (account.account_activated_at) {
+    throw new Error("To konto jest już aktywne.");
+  }
+  if (!account.email) {
+    throw new Error("Konto nie ma przypisanego adresu e-mail.");
+  }
+
+  const redirectTo = `${applicationUrl(request)}/auth/set-password`;
+  const { error: inviteError } = await admin.auth.admin.inviteUserByEmail(account.email, {
+    data: { full_name: account.full_name || "Administrator" },
+    redirectTo,
+  });
+
+  // Po pierwszym otwarciu zaproszenia e-mail użytkownika może już być
+  // potwierdzony, ale konto nadal nieaktywne (np. gdy link wygasł). Wtedy
+  // wysyłamy bezpieczny link resetu, który prowadzi do tego samego formularza.
+  if (inviteError) {
+    const errorCode = "code" in inviteError && typeof inviteError.code === "string" ? inviteError.code : "";
+    if (!["email_exists", "user_already_exists"].includes(errorCode)) throw inviteError;
+    const { error: recoveryError } = await admin.auth.resetPasswordForEmail(account.email, { redirectTo });
+    if (recoveryError) throw recoveryError;
+  }
+
+  const { error: profileError } = await admin
+    .from("profiles")
+    .update({ account_invited_at: new Date().toISOString() })
+    .eq("id", account.id);
+  if (profileError) throw profileError;
+}
+
 async function companyExists(companyId: string) {
   const admin = createAdminSupabaseClient();
   const { data, error } = await admin.from("administrator_companies").select("id").eq("id", companyId).maybeSingle();
@@ -47,6 +89,19 @@ export async function POST(request: Request) {
   const access = await requireBroker();
   if (access.error) return access.error;
   const payload = await request.json().catch(() => null) as AccountPayload | null;
+  const action = text(payload?.action);
+
+  if (action === "resend-invite") {
+    const accountId = text(payload?.accountId);
+    if (!accountId) return NextResponse.json({ error: "Nie wskazano konta administratora." }, { status: 400 });
+    try {
+      await resendActivationLink(request, accountId);
+      return NextResponse.json({ ok: true });
+    } catch (error) {
+      return NextResponse.json({ error: error instanceof Error ? error.message : "Nie udało się wysłać linku aktywacyjnego." }, { status: 500 });
+    }
+  }
+
   const input = validatedPayload(payload);
   if (!input) return NextResponse.json({ error: "Podaj firmę, imię i nazwisko oraz poprawny e-mail." }, { status: 400 });
 
