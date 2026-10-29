@@ -45,12 +45,12 @@ export function AppSidebar({ profile }: { profile: AppProfile }) {
       })}
       <NotificationsNavLink role={profile.role} demo={profile.isDemo}/>
     </nav>
-    <Link href="/legal" className={`sidebar-legal-link ${pathname.startsWith("/legal") ? "active" : ""}`}><FileText size={15} /> Informacje prawne</Link>
     <div className="sidebar-user">
       <ShieldCheck size={15} />
-      <strong>{profile.full_name || "Użytkownik"}</strong>
+      <strong>{profile.role === "broker" ? "Jessica Klimiuk-Waszczuk" : profile.full_name || "Użytkownik"}</strong>
       <span>{profile.role === "broker" ? "Broker ubezpieczeniowy" : profile.email}</span>
       <button className="signout" type="button" onClick={handleSignOut}><LogOut size={12} /> Wyloguj się</button>
+      <Link href="/legal" className={`sidebar-legal-link ${pathname.startsWith("/legal") ? "active" : ""}`}><FileText size={15} /> Informacje prawne</Link>
     </div>
   </aside>;
 }

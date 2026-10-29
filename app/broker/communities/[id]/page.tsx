@@ -5,6 +5,7 @@ import { AppShell } from "@/components/app-shell";
 import { ClaimsTable } from "@/components/claims-table";
 import { CommunityLossSummary } from "@/components/community-loss-summary";
 import { CommunityEditForm } from "@/components/community-edit-form";
+import { BrokerDeleteConfirmation } from "@/components/broker-delete-confirmation";
 import { PolicyArchive } from "@/components/policy-archive";
 import { PolicyUploadForm } from "@/components/policy-upload-form";
 import { PolicyPeriodEditor } from "@/components/policy-period-editor";
@@ -104,6 +105,7 @@ function BrokerCommunityDetail({
         <h1>{community.name}</h1>
         <p className="subtitle">{community.address}{community.nip ? ` · NIP ${community.nip}` : ""}{community.regon ? ` · REGON ${community.regon}` : ""}</p>
       </div>
+      <BrokerDeleteConfirmation target={{ kind: "community", id: community.id, name: community.name }} isDemo={isDemo}/>
     </header>
 
     <CommunityEditForm community={community} companies={companies} isDemo={isDemo}/>

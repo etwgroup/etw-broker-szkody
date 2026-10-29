@@ -560,6 +560,77 @@
   gap: 8px;
 }
 
+.button-danger {
+  color: #a20b2b;
+  border: 1px solid #e6a9b5;
+  background: #fff7f8;
+  box-shadow: none;
+}
+
+.button-danger:hover {
+  color: #fff;
+  border-color: #b6002c;
+  background: #c60031;
+  box-shadow: none;
+}
+
+.broker-delete-dialog {
+  position: fixed;
+  z-index: 40;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.broker-delete-dialog__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgb(16 15 17 / .62);
+  backdrop-filter: blur(2px);
+}
+
+.broker-delete-dialog__card {
+  position: relative;
+  width: min(100%, 460px);
+  padding: 28px;
+  overflow: hidden;
+  border: 1px solid #e3dfe3;
+  border-top: 4px solid var(--red);
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 24px 70px #10101355;
+}
+
+.broker-delete-dialog__close {
+  position: absolute;
+  top: 13px;
+  right: 13px;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  color: #706c72;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+}
+
+.broker-delete-dialog__close:hover { color: var(--red); background: var(--red-pale); }
+.broker-delete-dialog__icon { display: grid; place-items: center; width: 42px; height: 42px; margin-bottom: 16px; color: #a20b2b; border-radius: 50%; background: #ffe9ed; }
+.broker-delete-dialog__card h2 { margin: 3px 0 8px; font: 700 22px "Space Grotesk", Manrope, sans-serif; letter-spacing: -1px; }
+.broker-delete-dialog__card > p { margin: 0; color: #59565b; font-size: 13px; line-height: 1.6; }
+.broker-delete-dialog__warning { margin-top: 13px !important; padding: 11px 12px; color: #86233a !important; border-left: 3px solid var(--red); background: #fff4f6; font-size: 12px !important; }
+.broker-delete-dialog__card form { display: grid; gap: 8px; margin-top: 20px; }
+.broker-delete-dialog__card label { color: #4e4b50; font-size: 12px; font-weight: 800; }
+.broker-delete-dialog__card input { width: 100%; padding: 11px 12px; border: 1px solid #d9d7da; border-radius: 4px; outline-color: var(--red); }
+.broker-delete-dialog__error { margin: 2px 0 0; padding: 9px 10px; color: #a20b2b; background: #fff0f2; border-radius: 4px; font-size: 11px; font-weight: 700; }
+.broker-delete-dialog__actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
+
+.notifications-center__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.notifications-center__error { margin: 0; padding: 11px 25px; color: #a20b2b; background: #fff0f2; font-size: 12px; font-weight: 700; }
+
 .account-resend-button {
   color: #8c1731;
   border-color: #eab5c1 !important;
@@ -724,6 +795,8 @@
   .account-directory__actions {
     justify-content: flex-start;
   }
+
+  .broker-delete-dialog__card { padding: 23px 20px; }
 }
 
 @media (max-width: 860px) {
@@ -1189,6 +1262,8 @@
   .notifications-center h1 { font-size: 21px; }
   .notifications-center__summary { padding: 11px 17px; }
   .notification-item { padding: 15px 17px; }
+  .notifications-center__actions { justify-content: flex-start; }
+  .notifications-center__error { padding-inline: 17px; }
 }
 
 .policy-upload,
@@ -1948,8 +2023,8 @@
   display: flex;
   gap: 9px;
   align-items: center;
-  margin: auto 10px 13px;
-  padding: 9px 0;
+  margin: 11px 0 0;
+  padding-top: 11px;
   color: #aaa8ad;
   border-top: 1px solid #ffffff1d;
   font-size: 11px;
