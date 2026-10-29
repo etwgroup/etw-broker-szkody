@@ -1774,6 +1774,207 @@
   height: 72px;
 }
 
+/* Legal footer and public legal documents. */
+.login-shell {
+  align-content: center;
+  gap: 20px;
+  grid-template-rows: auto auto;
+}
+
+.legal-footer {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+  width: min(100%, 620px);
+  color: #77747a;
+  text-align: center;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.legal-footer__identity,
+.legal-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px 12px;
+}
+
+.legal-footer__identity { color: #57545a; font-weight: 700; }
+.legal-footer__identity svg { color: var(--red); }
+.legal-footer__links a { color: #626066; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
+.legal-footer__links a:hover { color: var(--red); }
+.legal-footer p { margin: 0; }
+
+.landing .legal-footer {
+  width: min(100%, 920px);
+  margin: 8px auto 0;
+}
+
+.legal-shell {
+  min-height: 100vh;
+  padding: 28px clamp(20px, 5vw, 70px) 34px;
+  color: var(--ink);
+  background: linear-gradient(135deg, #f7f7f8 0 68%, #1a191b 68%);
+}
+
+.legal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 1020px;
+  margin: 0 auto 48px;
+}
+
+.legal-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 12px;
+  color: #4e4b50;
+  border: 1px solid #dad8dc;
+  border-radius: 4px;
+  background: rgb(255 255 255 / .78);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.legal-back:hover { color: var(--red); border-color: #e7a6b4; }
+
+.legal-overview {
+  max-width: 780px;
+  margin: 0 auto 30px;
+  text-align: center;
+}
+
+.legal-overview h1,
+.legal-article h1 {
+  margin: 0;
+  font: 700 clamp(29px, 4vw, 44px)/1.05 "Space Grotesk", Manrope, sans-serif;
+  letter-spacing: -2px;
+}
+
+.legal-overview > p:last-child {
+  max-width: 660px;
+  margin: 15px auto 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.legal-document-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  max-width: 880px;
+  margin: 0 auto 36px;
+}
+
+.legal-document-card {
+  min-height: 178px;
+  padding: 22px;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--red);
+  border-radius: 5px;
+  background: rgb(255 255 255 / .94);
+  box-shadow: 0 8px 22px #1715180c;
+  transition: transform .16s, box-shadow .16s, border-color .16s;
+}
+
+.legal-document-card:hover {
+  border-color: var(--red);
+  box-shadow: 0 12px 28px #17151818;
+  transform: translateY(-2px);
+}
+
+.legal-document-card > svg { color: var(--red); }
+.legal-document-card h2 { margin: 14px 0 7px; font: 700 17px "Space Grotesk", Manrope, sans-serif; }
+.legal-document-card p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.legal-document-card span { display: inline-block; margin-top: 14px; color: var(--red); font-size: 11px; font-weight: 800; }
+
+.legal-article {
+  max-width: 860px;
+  margin: 0 auto 36px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--paper);
+  box-shadow: 0 18px 48px #17151814;
+}
+
+.legal-article__heading {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: clamp(26px, 5vw, 44px);
+  color: white;
+  background: linear-gradient(115deg, #151517, #2a292c);
+}
+
+.legal-article__heading > span {
+  display: grid;
+  flex: 0 0 46px;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  color: white;
+  border: 1px solid #ffffff42;
+  border-radius: 4px;
+  background: var(--red);
+}
+
+.legal-article__heading .kicker { color: #ff607c; }
+.legal-article__heading h1 { color: white; }
+.legal-article__heading > div > p:not(.kicker) { max-width: 620px; margin: 12px 0 0; color: #d2cfd4; line-height: 1.6; }
+.legal-article__heading small { display: inline-flex; gap: 6px; align-items: center; margin-top: 15px; color: #a9a5ab; font-size: 11px; }
+
+.legal-article__content { padding: clamp(26px, 5vw, 46px); }
+.legal-article__content section + section { margin-top: 30px; }
+.legal-article__content h2 { margin: 0 0 10px; font: 700 18px/1.3 "Space Grotesk", Manrope, sans-serif; }
+.legal-article__content p { margin: 0; color: #555258; font-size: 14px; line-height: 1.75; }
+.legal-article__content p + p { margin-top: 12px; }
+.legal-article__content ul { display: grid; gap: 8px; margin: 14px 0 0; padding-left: 20px; color: #555258; font-size: 14px; line-height: 1.65; }
+.legal-article__content li::marker { color: var(--red); }
+.legal-external-link { display: inline-flex; margin-top: 28px; color: var(--red); font-size: 13px; font-weight: 800; text-decoration: underline; text-underline-offset: 4px; }
+
+.sidebar-legal-link {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  margin: auto 10px 13px;
+  padding: 9px 0;
+  color: #aaa8ad;
+  border-top: 1px solid #ffffff1d;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.sidebar-legal-link:hover,
+.sidebar-legal-link.active { color: white; }
+.sidebar-legal-link svg { color: #ff3159; }
+
+@media (max-width: 860px) {
+  .sidebar-legal-link { justify-content: center; margin-inline: 0; font-size: 0; }
+  .sidebar-legal-link svg { width: 18px; height: 18px; }
+  .legal-document-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+  .login-shell { display: flex; flex-direction: column; justify-content: center; align-items: stretch; }
+  .login-card { width: 100%; }
+  .legal-header { margin-bottom: 32px; }
+  .legal-header .brand-logo, .legal-header .brand-logo img { width: 48px; height: 48px; }
+  .legal-article__heading { flex-direction: column; }
+  .legal-overview h1, .legal-article h1 { letter-spacing: -1.3px; }
+}
+
 .claim-row {
   cursor: pointer;
 }

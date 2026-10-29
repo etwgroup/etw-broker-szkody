@@ -1,5 +1,6 @@
 import { Building2, CheckCircle2, ClipboardPenLine, FileCheck2, FileText, ShieldCheck, TrendingUp } from "lucide-react";
 import { LoginForm } from "@/components/login-form";
+import { LegalFooter } from "@/components/legal-footer";
 
 const features = [
   { icon: Building2, title: "Wspólnoty w jednym miejscu", text: "Przypisz każdą obsługiwaną wspólnotę do konta administratora." },
@@ -30,7 +31,7 @@ export default function HomePage() {
       <section className="feature-grid">
         {features.map(({ icon: Icon, title, text }) => <article key={title} className="feature-card"><Icon /><h2>{title}</h2><p>{text}</p></article>)}
       </section>
-      <footer>ETW Broker &copy; {new Date().getFullYear()} · Panel dla wspólnot mieszkaniowych</footer>
+      <LegalFooter variant="landing" />
     </main>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { ArchiveRestore, BarChart3, Building2, ClipboardList, LayoutDashboard, LogOut, PlusCircle, ShieldCheck, UsersRound } from "lucide-react";
+import { ArchiveRestore, BarChart3, Building2, ClipboardList, FileText, LayoutDashboard, LogOut, PlusCircle, ShieldCheck, UsersRound } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -45,6 +45,7 @@ export function AppSidebar({ profile }: { profile: AppProfile }) {
       })}
       <NotificationsNavLink role={profile.role} demo={profile.isDemo}/>
     </nav>
+    <Link href="/legal" className={`sidebar-legal-link ${pathname.startsWith("/legal") ? "active" : ""}`}><FileText size={15} /> Informacje prawne</Link>
     <div className="sidebar-user">
       <ShieldCheck size={15} />
       <strong>{profile.full_name || "Użytkownik"}</strong>
