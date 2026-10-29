@@ -1,18 +1,31 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { AlertCircle, ArchiveRestore, CheckCircle2, LoaderCircle } from "lucide-react";
+import { AlertCircle, ArchiveRestore, CheckCircle2, LoaderCircle, MapPin, Search, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { statusMeta, type ClaimStatus } from "@/lib/claims";
 
-type Community = { id: string; name: string; address: string };
+type Community = { id: string; name: string; address: string; nip?: string | null; regon?: string | null };
 type Notice = { kind: "success" | "error"; text: string } | null;
+
+function normalized(value: string | null | undefined) {
+  return (value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("pl-PL");
+}
 
 export function HistoricalClaimForm({ communities, demo = false }: { communities: Community[]; demo?: boolean }) {
   const router = useRouter();
   const [status, setStatus] = useState<ClaimStatus>("received");
   const [notice, setNotice] = useState<Notice>(null);
   const [pending, setPending] = useState(false);
+  const [communityQuery, setCommunityQuery] = useState("");
+  const [selectedCommunityId, setSelectedCommunityId] = useState("");
+  const [showCommunityResults, setShowCommunityResults] = useState(false);
+  const selectedCommunity = communities.find((community) => community.id === selectedCommunityId);
+  const communityResults = communities.filter((community) => {
+    const query = normalized(communityQuery.trim());
+    if (!query) return [];
+    return [community.name, community.address, community.nip, community.regon].some((value) => normalized(value).includes(query));
+  }).slice(0, 8);
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -20,7 +33,7 @@ export function HistoricalClaimForm({ communities, demo = false }: { communities
     setNotice(null);
 
     const payload = {
-      communityId: String(form.get("community_id") || ""),
+      communityId: selectedCommunityId,
       title: String(form.get("title") || ""),
       description: String(form.get("description") || ""),
       occurredAt: String(form.get("occurred_at") || ""),
@@ -74,7 +87,7 @@ export function HistoricalClaimForm({ communities, demo = false }: { communities
     <div className="historical-claim-form__heading"><span><ArchiveRestore size={20}/></span><div><h2>Wprowadź wcześniej zgłoszoną szkodę</h2><p>Sprawa trafi do wybranej wspólnoty i będzie widoczna także dla jej administratora.</p></div></div>
     {notice && <p className={`community-notice community-notice--${notice.kind}`} role="status">{notice.kind === "success" ? <CheckCircle2 size={16}/> : <AlertCircle size={16}/>} {notice.text}</p>}
     <div className="form-grid">
-      <div className="field full"><label htmlFor="historical-community">Wspólnota mieszkaniowa</label><select id="historical-community" name="community_id" required defaultValue=""><option value="" disabled>Wybierz wspólnotę, której dotyczy szkoda…</option>{communities.map((community) => <option key={community.id} value={community.id}>{community.name} — {community.address}</option>)}</select></div>
+      <div className="field full"><label htmlFor="historical-community">Wspólnota mieszkaniowa</label><div className="historical-community-search"><input type="hidden" name="community_id" value={selectedCommunityId}/><div className="historical-community-search__input"><Search size={17}/><input id="historical-community" type="search" autoComplete="off" value={communityQuery} onFocus={() => setShowCommunityResults(true)} onChange={(event) => { setCommunityQuery(event.target.value); setSelectedCommunityId(""); setShowCommunityResults(true); }} placeholder="Wpisz nazwę, adres, NIP lub REGON wspólnoty…"/>{communityQuery && <button type="button" aria-label="Wyczyść wyszukiwanie wspólnoty" onClick={() => { setCommunityQuery(""); setSelectedCommunityId(""); setShowCommunityResults(true); }}><X size={15}/></button>}</div>{showCommunityResults && communityQuery.trim() && <div className="historical-community-search__results" role="listbox" aria-label="Wyniki wyszukiwania wspólnot"><p>{communityResults.length ? `Wyniki wyszukiwania (${communityResults.length})` : "Nie znaleziono wspólnoty"}</p>{communityResults.map((community) => <button type="button" role="option" aria-selected={community.id === selectedCommunityId} key={community.id} onClick={() => { setSelectedCommunityId(community.id); setCommunityQuery(`${community.name} — ${community.address}`); setShowCommunityResults(false); }}><span><strong>{community.name}</strong><small><MapPin size={12}/>{community.address}</small></span>{(community.nip || community.regon) && <em>{community.nip ? `NIP ${community.nip}` : `REGON ${community.regon}`}</em>}</button>)}</div>}{selectedCommunity && <p className="historical-community-search__selected"><CheckCircle2 size={15}/> Wybrano: <strong>{selectedCommunity.name}</strong></p>}</div></div>
       <div className="field"><label htmlFor="historical-title">Tytuł szkody</label><input id="historical-title" name="title" required minLength={3} maxLength={140} placeholder="np. Uszkodzenie bramy wjazdowej"/></div>
       <div className="field"><label htmlFor="historical-occurred-at">Data zdarzenia</label><input id="historical-occurred-at" name="occurred_at" type="date" required/></div>
       <div className="field"><label htmlFor="historical-reported-at">Data zgłoszenia</label><input id="historical-reported-at" name="reported_at" type="date" required/></div>

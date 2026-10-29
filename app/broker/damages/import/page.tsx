@@ -9,7 +9,7 @@ export default async function ImportHistoricalClaimPage() {
   const { supabase, profile, isDemo } = await requireProfile("broker");
   const { data: communities } = isDemo
     ? { data: null }
-    : await supabase!.from("communities").select("id, name, address").order("name");
+    : await supabase!.from("communities").select("id, name, address, nip, regon").order("name");
   const availableCommunities = isDemo ? demoCommunities : communities || [];
 
   return <AppShell profile={profile}>

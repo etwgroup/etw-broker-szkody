@@ -1565,6 +1565,135 @@
   background: #fff7f8;
 }
 
+.historical-community-search {
+  position: relative;
+}
+
+.historical-community-search__input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  color: var(--red);
+  border: 1px solid #d9d7da;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.historical-community-search__input:focus-within {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px #ce003016;
+}
+
+.historical-community-search__input input {
+  width: 100%;
+  min-height: 42px;
+  padding: 0;
+  color: var(--ink);
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font: 600 12px "Space Grotesk", Manrope, sans-serif;
+}
+
+.historical-community-search__input button {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: #777379;
+  background: transparent;
+}
+
+.historical-community-search__input button:hover {
+  color: var(--red);
+  background: var(--red-pale);
+}
+
+.historical-community-search__results {
+  position: absolute;
+  z-index: 3;
+  top: calc(100% + 5px);
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  border: 1px solid #dddadd;
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: 0 12px 28px #1715181b;
+}
+
+.historical-community-search__results > p {
+  margin: 0;
+  padding: 9px 12px;
+  color: #7c787e;
+  border-bottom: 1px solid #efedef;
+  background: #fbfafb;
+  font: 500 9px DM Mono, monospace;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.historical-community-search__results > button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
+  padding: 11px 12px;
+  border: 0;
+  border-top: 1px solid #f0eef0;
+  color: var(--ink);
+  background: #fff;
+  text-align: left;
+}
+
+.historical-community-search__results > p + button { border-top: 0; }
+.historical-community-search__results > button:hover { background: #fff7f8; }
+
+.historical-community-search__results span {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.historical-community-search__results strong {
+  overflow: hidden;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.historical-community-search__results small {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.historical-community-search__results em {
+  flex: 0 0 auto;
+  color: #858186;
+  font: 500 9px DM Mono, monospace;
+  font-style: normal;
+}
+
+.historical-community-search__selected {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  margin: 7px 0 0;
+  color: #287044;
+  font-size: 11px;
+}
+
 @media (max-width: 1050px) {
   .policy-upload__form {
     grid-template-columns: 1fr 1fr;
