@@ -1238,7 +1238,7 @@
 
 .policy-upload__form {
   display: grid;
-  grid-template-columns: 1.05fr 1.05fr .7fr 1.35fr auto;
+  grid-template-columns: 1.05fr 1.05fr .85fr .85fr 1.35fr auto;
   gap: 12px;
   align-items: end;
 }
@@ -1384,6 +1384,14 @@
   gap: 3px;
 }
 
+.policy-archive__item > .policy-archive__tools {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  min-width: 0;
+}
+
 .policy-archive__item strong {
   color: var(--ink);
   font-size: 12px;
@@ -1422,6 +1430,80 @@
   font-size: 11px;
 }
 
+.policy-period-editor {
+  display: grid;
+  gap: 7px;
+  min-width: min(100%, 345px);
+  padding: 10px;
+  border: 1px solid #ead1d7;
+  border-radius: 5px;
+  background: #fffafb;
+}
+
+.policy-period-editor__trigger {
+  flex: 0 0 auto;
+  min-height: 33px;
+  padding: 0 11px;
+  font-size: 11px;
+}
+
+.policy-period-editor form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.policy-period-editor label {
+  display: grid;
+  gap: 4px;
+  color: #5f5a61;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.policy-period-editor input {
+  width: 100%;
+  min-width: 0;
+  min-height: 35px;
+  padding: 0 8px;
+  color: var(--ink);
+  border: 1px solid #d9d7da;
+  border-radius: 4px;
+  outline-color: var(--red);
+  background: #fff;
+  font: 600 11px "Space Grotesk", Manrope, sans-serif;
+}
+
+.policy-period-editor__actions {
+  display: flex;
+  flex-wrap: wrap;
+  grid-column: 1 / -1;
+  gap: 7px;
+}
+
+.policy-period-editor__actions .button {
+  min-height: 33px;
+  padding: 0 10px;
+  font-size: 10px;
+}
+
+.policy-period-editor__notice {
+  display: flex;
+  gap: 5px;
+  align-items: flex-start;
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.policy-period-editor__notice--error { color: #a00024; }
+.policy-period-editor__notice--success { color: #2d7045; }
+
+.policy-period-editor--compact {
+  flex-basis: 100%;
+}
+
 .policy-archive__missing {
   display: inline-flex;
   align-items: center;
@@ -1444,6 +1526,43 @@
 .policy-archive__empty p {
   margin: 0;
   font-size: 12px;
+}
+
+.historical-claim-form__heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  margin-bottom: 3px;
+}
+
+.historical-claim-form__heading > span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 39px;
+  height: 39px;
+  color: var(--red);
+  background: var(--red-pale);
+  border-radius: 50%;
+}
+
+.historical-claim-form__heading h2 {
+  margin: 1px 0 4px;
+  font-size: 16px;
+}
+
+.historical-claim-form__heading p,
+.historical-claim-form__note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.historical-claim-form__note {
+  padding: 10px 12px;
+  border-left: 3px solid var(--red);
+  background: #fff7f8;
 }
 
 @media (max-width: 1050px) {
@@ -1477,6 +1596,12 @@
 
   .policy-actions {
     width: 100%;
+  }
+
+  .policy-period-editor,
+  .policy-period-editor--compact {
+    width: 100%;
+    min-width: 0;
   }
 }
 

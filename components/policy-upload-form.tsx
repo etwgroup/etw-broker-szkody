@@ -12,7 +12,6 @@ export function PolicyUploadForm({ communityId, isDemo = false }: { communityId:
   const [file, setFile] = useState<File | null>(null);
   const [notice, setNotice] = useState<Notice>(null);
   const [pending, setPending] = useState(false);
-  const currentYear = new Date().getFullYear();
 
   const selectFile = (event: ChangeEvent<HTMLInputElement>) => {
     setFile(event.target.files?.[0] || null);
@@ -40,9 +39,14 @@ export function PolicyUploadForm({ communityId, isDemo = false }: { communityId:
     const form = new FormData(formElement);
     const insurer = String(form.get("insurer") || "").trim();
     const policyNumber = String(form.get("policy_number") || "").trim();
-    const year = Number(form.get("policy_year"));
-    if (!insurer || !policyNumber || !Number.isInteger(year) || year < 2000 || year > 2100) {
-      setNotice({ kind: "error", text: "Uzupełnij ubezpieczyciela, numer oraz rok polisy." });
+    const validFrom = String(form.get("valid_from") || "");
+    const validTo = String(form.get("valid_to") || "");
+    if (!insurer || !policyNumber || !validFrom || !validTo) {
+      setNotice({ kind: "error", text: "Uzupełnij ubezpieczyciela, numer oraz dokładny okres obowiązywania polisy." });
+      return;
+    }
+    if (validTo < validFrom) {
+      setNotice({ kind: "error", text: "Data końca ochrony nie może być wcześniejsza niż data początku." });
       return;
     }
 
@@ -55,7 +59,7 @@ export function PolicyUploadForm({ communityId, isDemo = false }: { communityId:
 
       const supabase = createClient();
       const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-      const storagePath = `${communityId}/${year}/${crypto.randomUUID()}-${safeName}`;
+      const storagePath = `${communityId}/${validTo.slice(0, 4)}/${crypto.randomUUID()}-${safeName}`;
       const { error: uploadError } = await supabase.storage.from("policy-documents").upload(storagePath, file, {
         contentType: "application/pdf",
         upsert: false,
@@ -66,8 +70,8 @@ export function PolicyUploadForm({ communityId, isDemo = false }: { communityId:
         community_id: communityId,
         insurer,
         policy_number: policyNumber,
-        valid_from: `${year}-01-01`,
-        valid_to: `${year}-12-31`,
+        valid_from: validFrom,
+        valid_to: validTo,
         file_name: file.name,
         storage_path: storagePath,
       });
@@ -93,7 +97,8 @@ export function PolicyUploadForm({ communityId, isDemo = false }: { communityId:
     <form className="policy-upload__form" onSubmit={uploadPolicy}>
       <label>Firma ubezpieczająca<input name="insurer" required placeholder="np. PZU S.A."/></label>
       <label>Numer polisy<input name="policy_number" required placeholder="np. PZU/WM/2026/001284"/></label>
-      <label>Rok obowiązywania polisy<input name="policy_year" type="number" required min="2000" max="2100" defaultValue={currentYear}/></label>
+      <label>Ochrona od<input name="valid_from" type="date" required/></label>
+      <label>Ochrona do<input name="valid_to" type="date" required/></label>
       <label className="policy-upload__file"><span>Plik polisy (PDF, maks. 20 MB)</span><input name="file" type="file" accept="application/pdf,.pdf" required onChange={selectFile}/>{file ? <strong><FileText size={14}/>{file.name}</strong> : <em>Wybierz plik z dysku</em>}</label>
       <button className="button button-primary" type="submit" disabled={pending}>{pending ? <><LoaderCircle className="spin" size={16}/> Dodawanie…</> : <><UploadCloud size={16}/> Dodaj polisę</>}</button>
     </form>

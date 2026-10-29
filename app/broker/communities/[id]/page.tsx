@@ -7,6 +7,7 @@ import { CommunityLossSummary } from "@/components/community-loss-summary";
 import { CommunityEditForm } from "@/components/community-edit-form";
 import { PolicyArchive } from "@/components/policy-archive";
 import { PolicyUploadForm } from "@/components/policy-upload-form";
+import { PolicyPeriodEditor } from "@/components/policy-period-editor";
 import { formatDate } from "@/lib/claims";
 import { requireProfile } from "@/lib/auth";
 import { demoClaims, demoCommunities, demoPolicies } from "@/lib/demo-data";
@@ -119,14 +120,14 @@ function BrokerCommunityDetail({
             <div><dt>Numer polisy</dt><dd>{currentPolicy.policy_number}</dd></div>
             <div><dt>Okres ochrony</dt><dd><CalendarDays size={13}/>{formatDate(currentPolicy.valid_from)} – {formatDate(currentPolicy.valid_to)}</dd></div>
           </dl>
-          {currentPolicy.download_url ? <div className="policy-actions"><a className="button button-ghost" href={currentPolicy.download_url} target="_blank" rel="noreferrer"><Eye size={16}/> Podgląd polisy</a><a className="button button-primary" href={isDemo ? currentPolicy.download_url : `/api/policies/${currentPolicy.id}/download`} download={isDemo ? currentPolicy.file_name || "polisa.pdf" : undefined}><Download size={16}/> Pobierz polisę</a></div> : <p className="error-message">Plik polisy nie jest obecnie dostępny do pobrania.</p>}
+          <div className="policy-actions">{currentPolicy.download_url ? <><a className="button button-ghost" href={currentPolicy.download_url} target="_blank" rel="noreferrer"><Eye size={16}/> Podgląd polisy</a><a className="button button-primary" href={isDemo ? currentPolicy.download_url : `/api/policies/${currentPolicy.id}/download`} download={isDemo ? currentPolicy.file_name || "polisa.pdf" : undefined}><Download size={16}/> Pobierz polisę</a></> : <p className="error-message">Plik polisy nie jest obecnie dostępny do pobrania.</p>}<PolicyPeriodEditor policyId={currentPolicy.id} validFrom={currentPolicy.valid_from} validTo={currentPolicy.valid_to} isDemo={isDemo}/></div>
         </> : <div className="policy-empty"><FileWarning size={25}/><div><strong>Brak aktualnej polisy</strong><p>Dodaj dokumentację polisy dla tej wspólnoty.</p></div></div>}
       </section>
       <section className="community-note"><FileCheck2 size={19}/><h3>Widok brokera</h3><p>Dodaj nową polisę poniżej. Wcześniejsze dokumenty pozostaną dostępne w archiwum.</p></section>
     </div>
 
     <PolicyUploadForm communityId={community.id} isDemo={isDemo}/>
-    <PolicyArchive policies={archivedPolicies} isDemo={isDemo}/>
+    <PolicyArchive policies={archivedPolicies} isDemo={isDemo} canEdit/>
 
     <CommunityLossSummary claims={claims}/>
 

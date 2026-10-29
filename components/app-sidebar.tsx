@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart3, Building2, ClipboardList, LayoutDashboard, LogOut, PlusCircle, ShieldCheck, UsersRound } from "lucide-react";
+import { ArchiveRestore, BarChart3, Building2, ClipboardList, LayoutDashboard, LogOut, PlusCircle, ShieldCheck, UsersRound } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -14,6 +14,7 @@ const adminNavigation = [
 ];
 const brokerNavigation = [
   { href: "/broker", label: "Zgłoszone szkody", icon: ClipboardList },
+  { href: "/broker/damages/import", label: "Dodaj już zgłoszone szkody", icon: ArchiveRestore },
   { href: "/broker/communities", label: "Wspólnoty", icon: Building2 },
   { href: "/broker/administrators", label: "Obsługiwani Administratorzy", icon: UsersRound },
   { href: "/broker/reports", label: "Raporty", icon: BarChart3 },
@@ -37,7 +38,11 @@ export function AppSidebar({ profile }: { profile: AppProfile }) {
     <Link href={profile.role === "broker" ? "/broker" : "/admin"} className="sidebar-logo" aria-label="ETW Broker — pulpit"><img src="/etw-broker-logo.png" alt="ETW Broker" /></Link>
     <nav className="nav-group">
       <p className="nav-label">{profile.role === "broker" ? "Panel brokera" : "Panel administratora"}</p>
-      {nav.map(({ href, label, icon: Icon }) => <Link key={href} href={href} className={`nav-link ${pathname === href || (href !== "/admin" && href !== "/broker" && pathname.startsWith(href)) || (href === "/broker" && pathname.startsWith("/broker/damages")) ? "active" : ""}`}><Icon size={17}/><span>{label}</span></Link>)}
+      {nav.map(({ href, label, icon: Icon }) => {
+        const isBrokerClaimDetail = href === "/broker" && pathname.startsWith("/broker/damages/") && !pathname.startsWith("/broker/damages/import");
+        const active = pathname === href || (href !== "/admin" && href !== "/broker" && pathname.startsWith(href)) || isBrokerClaimDetail;
+        return <Link key={href} href={href} className={`nav-link ${active ? "active" : ""}`}><Icon size={17}/><span>{label}</span></Link>;
+      })}
       <NotificationsNavLink role={profile.role} demo={profile.isDemo}/>
     </nav>
     <div className="sidebar-user">
