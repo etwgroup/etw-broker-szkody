@@ -5,7 +5,7 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 
 type DeletionTarget = {
-  kind: "account" | "community";
+  kind: "account" | "community" | "company";
   id: string;
   name: string;
 };
@@ -17,7 +17,14 @@ export function BrokerDeleteConfirmation({ target, isDemo = false }: { target: D
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const isCommunity = target.kind === "community";
-  const noun = isCommunity ? "wspólnotę" : "konto administratora";
+  const isCompany = target.kind === "company";
+  const noun = isCommunity ? "wspólnotę" : isCompany ? "firmę administrującą" : "konto administratora";
+  const triggerLabel = isCommunity ? "Usuń wspólnotę" : isCompany ? "Usuń firmę" : "Usuń konto";
+  const warning = isCommunity
+    ? "Usunięte zostaną również przypisane szkody, wiadomości, polisy i pliki."
+    : isCompany
+      ? "Konta administratorów i wspólnoty pozostaną w systemie, ale nie będą już przypisane do tej firmy."
+      : "Konto oraz dostęp do panelu zostaną usunięte. Historia szkód pozostanie w dokumentacji sprawy.";
 
   const close = () => {
     if (pending) return;
@@ -42,6 +49,9 @@ export function BrokerDeleteConfirmation({ target, isDemo = false }: { target: D
       if (isCommunity) {
         setOpen(false);
         router.replace("/broker/communities");
+      } else if (isCompany) {
+        setOpen(false);
+        router.replace("/broker/administrators");
       } else {
         setOpen(false);
         router.refresh();
@@ -54,7 +64,7 @@ export function BrokerDeleteConfirmation({ target, isDemo = false }: { target: D
   };
 
   return <>
-    <button className="button button-danger" type="button" onClick={() => setOpen(true)}><Trash2 size={15}/> Usuń</button>
+    <button className="button button-danger" type="button" onClick={() => setOpen(true)}><Trash2 size={15}/> {triggerLabel}</button>
     {open && <div className="broker-delete-dialog" role="presentation">
       <div className="broker-delete-dialog__backdrop" onClick={close}/>
       <section className="broker-delete-dialog__card" role="dialog" aria-modal="true" aria-labelledby={`delete-title-${target.id}`}>
@@ -63,7 +73,7 @@ export function BrokerDeleteConfirmation({ target, isDemo = false }: { target: D
         <p className="kicker">Operacja nieodwracalna</p>
         <h2 id={`delete-title-${target.id}`}>Usuń {noun}</h2>
         <p>Potwierdź usunięcie: <strong>{target.name}</strong>.</p>
-        <p className="broker-delete-dialog__warning">{isCommunity ? "Usunięte zostaną również przypisane szkody, wiadomości, polisy i pliki." : "Konto oraz dostęp do panelu zostaną usunięte. Historia szkód pozostanie w dokumentacji sprawy."}</p>
+        <p className="broker-delete-dialog__warning">{warning}</p>
         <form onSubmit={remove}>
           <label htmlFor={`broker-password-${target.id}`}>Wpisz swoje aktualne hasło brokera</label>
           <input id={`broker-password-${target.id}`} type="password" value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" required autoFocus/>

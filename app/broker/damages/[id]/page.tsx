@@ -12,8 +12,9 @@ import { loadClaimConversation } from "@/lib/claim-conversation";
 import { loadClaimInternalNotes } from "@/lib/claim-internal-notes";
 import { demoAttachments, demoClaimMessages, demoClaims, demoHistory, demoInternalNotes } from "@/lib/demo-data";
 
-export default async function BrokerClaimDetail({ params }: { params: Promise<{ id: string }> }) {
+export default async function BrokerClaimDetail({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ attachments?: string | string[] }> }) {
   const { id } = await params;
+  const query = await searchParams;
   const { supabase, profile, isDemo } = await requireProfile("broker");
 
   if (isDemo) {
@@ -45,6 +46,7 @@ export default async function BrokerClaimDetail({ params }: { params: Promise<{ 
 
   return <AppShell profile={profile}>
     <header className="page-top"><div><Link className="kicker" href="/broker"><ArrowLeft size={12}/> Wróć do listy szkód</Link></div></header>
+    {query.attachments === "partial" && <p className="error-message">Szkoda została dodana, ale przynajmniej jeden dokument nie został przesłany. Możesz dodać go później w korespondencji dotyczącej sprawy.</p>}
     <ClaimDetail claim={claim} attachments={files} history={history || []}/>
     <ClaimConversation claimId={id} role="broker" messages={messages}/>
     <BrokerInternalNotes claimId={id} notes={internalNotes}/>

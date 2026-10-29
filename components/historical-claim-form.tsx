@@ -1,15 +1,20 @@
 "use client";
 
-import { FormEvent, useState } from "react";
-import { AlertCircle, ArchiveRestore, CheckCircle2, LoaderCircle, MapPin, Search, X } from "lucide-react";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { AlertCircle, ArchiveRestore, CheckCircle2, FileText, LoaderCircle, MapPin, Search, UploadCloud, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { statusMeta, type ClaimStatus } from "@/lib/claims";
+import { createClient } from "@/lib/supabase/client";
 
 type Community = { id: string; name: string; address: string; nip?: string | null; regon?: string | null };
 type Notice = { kind: "success" | "error"; text: string } | null;
 
 function normalized(value: string | null | undefined) {
   return (value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("pl-PL");
+}
+
+function fileKey(file: File) {
+  return `${file.name}-${file.size}-${file.lastModified}`;
 }
 
 export function HistoricalClaimForm({ communities, demo = false }: { communities: Community[]; demo?: boolean }) {
@@ -20,12 +25,24 @@ export function HistoricalClaimForm({ communities, demo = false }: { communities
   const [communityQuery, setCommunityQuery] = useState("");
   const [selectedCommunityId, setSelectedCommunityId] = useState("");
   const [showCommunityResults, setShowCommunityResults] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
   const selectedCommunity = communities.find((community) => community.id === selectedCommunityId);
   const communityResults = communities.filter((community) => {
     const query = normalized(communityQuery.trim());
     if (!query) return [];
     return [community.name, community.address, community.nip, community.regon].some((value) => normalized(value).includes(query));
   }).slice(0, 8);
+
+  const onFiles = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = Array.from(event.target.files || []);
+    setFiles((current) => {
+      const present = new Set(current.map(fileKey));
+      return [...current, ...selectedFiles.filter((file) => !present.has(fileKey(file)))];
+    });
+    event.currentTarget.value = "";
+  };
+
+  const removeFile = (file: File) => setFiles((current) => current.filter((item) => fileKey(item) !== fileKey(file)));
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -58,11 +75,16 @@ export function HistoricalClaimForm({ communities, demo = false }: { communities
       setNotice({ kind: "error", text: "Dla szkody wypłaconej podaj kwotę wypłaty większą od zera." });
       return;
     }
+    const tooLargeFile = files.find((file) => file.size > 20 * 1024 * 1024);
+    if (tooLargeFile) {
+      setNotice({ kind: "error", text: `Plik „${tooLargeFile.name}” jest większy niż 20 MB.` });
+      return;
+    }
 
     setPending(true);
     try {
       if (demo) {
-        setNotice({ kind: "success", text: "Tryb demonstracyjny: historyczna szkoda zostałaby dodana do wybranej wspólnoty." });
+        setNotice({ kind: "success", text: "Tryb demonstracyjny: historyczna szkoda wraz z dokumentami zostałaby dodana do wybranej wspólnoty." });
         return;
       }
 
@@ -74,7 +96,34 @@ export function HistoricalClaimForm({ communities, demo = false }: { communities
       const result = await response.json().catch(() => null) as { claim?: { id?: string }; error?: string } | null;
       if (!response.ok || !result?.claim?.id) throw new Error(result?.error || "Nie udało się dodać szkody historycznej.");
 
-      router.push(`/broker/damages/${result.claim.id}`);
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Sesja wygasła. Zaloguj się ponownie.");
+
+      const failed: string[] = [];
+      for (const file of files) {
+        const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+        const storagePath = `${result.claim.id}/${crypto.randomUUID()}-${safeName}`;
+        const { error: uploadError } = await supabase.storage.from("claim-attachments").upload(storagePath, file, { contentType: file.type, upsert: false });
+        if (uploadError) {
+          failed.push(file.name);
+          continue;
+        }
+        const { error: attachmentError } = await supabase.from("claim_attachments").insert({
+          claim_id: result.claim.id,
+          file_name: file.name,
+          storage_path: storagePath,
+          mime_type: file.type,
+          size_bytes: file.size,
+          uploaded_by: user.id,
+        });
+        if (attachmentError) {
+          await supabase.storage.from("claim-attachments").remove([storagePath]);
+          failed.push(file.name);
+        }
+      }
+
+      router.push(`/broker/damages/${result.claim.id}${failed.length ? "?attachments=partial" : ""}`);
       router.refresh();
     } catch (error) {
       setNotice({ kind: "error", text: error instanceof Error ? error.message : "Nie udało się dodać szkody historycznej." });
@@ -97,6 +146,7 @@ export function HistoricalClaimForm({ communities, demo = false }: { communities
       <div className="field"><label htmlFor="historical-reporter">Osoba zgłaszająca <span className="field-hint">(opcjonalnie)</span></label><input id="historical-reporter" name="reported_by_name" placeholder="np. Anna Kowalska"/></div>
       <div className="field"><label htmlFor="historical-reporter-email">E-mail osoby zgłaszającej <span className="field-hint">(opcjonalnie)</span></label><input id="historical-reporter-email" name="reported_by_email" type="email" placeholder="anna@firma.pl"/></div>
       <div className="field full"><label htmlFor="historical-description">Opis szkody <span className="field-hint">(minimum 10 znaków)</span></label><textarea id="historical-description" name="description" required minLength={10} maxLength={5000} placeholder="Wprowadź posiadane informacje o zdarzeniu i dotychczasowym przebiegu sprawy."/></div>
+      <div className="field full"><label>Dokumenty i załączniki <span className="field-hint">(opcjonalnie)</span></label><div className="attachment-zone"><input aria-label="Dodaj dokumenty i załączniki" type="file" multiple accept="image/*,.pdf,.xlsx,.xls,.doc,.docx" onChange={onFiles}/><div><UploadCloud size={24}/><strong>{files.length ? "Dodaj kolejne pliki" : "Upuść pliki tutaj lub wybierz z dysku"}</strong><span>Zdjęcia, faktury, kosztorysy · maks. 20 MB na plik</span></div></div>{files.length > 0 && <div className="file-list">{files.map((file) => <div className="file-item" key={fileKey(file)}><FileText size={13}/><span>{file.name} ({Math.ceil(file.size / 1024)} KB)</span><button type="button" onClick={() => removeFile(file)} aria-label={`Usuń plik ${file.name}`} title="Usuń plik"><X size={14}/></button></div>)}</div>}</div>
     </div>
     <p className="historical-claim-form__note">Dodanie sprawy historycznej nie wysyła automatycznych e-maili ani powiadomień. Szkoda będzie dostępna w systemie dla brokera i administratorów przypisanych do tej wspólnoty.</p>
     <button className="button button-primary" type="submit" disabled={pending}>{pending ? <><LoaderCircle className="spin" size={16}/> Zapisywanie…</> : <><ArchiveRestore size={16}/> Dodaj zgłoszoną szkodę</>}</button>

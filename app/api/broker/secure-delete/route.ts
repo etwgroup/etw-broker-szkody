@@ -4,7 +4,7 @@ import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 type DeletePayload = { target?: unknown; id?: unknown; password?: unknown };
-type Target = "account" | "community";
+type Target = "account" | "community" | "company";
 
 function text(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
@@ -92,18 +92,33 @@ async function removeCommunity(communityId: string) {
   ]);
 }
 
+async function removeAdministratorCompany(companyId: string) {
+  const admin = createAdminSupabaseClient();
+  const { data: company, error: companyError } = await admin
+    .from("administrator_companies")
+    .select("id")
+    .eq("id", companyId)
+    .maybeSingle();
+  if (companyError || !company) throw new Error("Nie znaleziono firmy administrującej.");
+
+  // Existing foreign keys retain accounts and communities, but clear their company assignment.
+  const { error } = await admin.from("administrator_companies").delete().eq("id", companyId);
+  if (error) throw error;
+}
+
 export async function DELETE(request: Request) {
   const payload = await request.json().catch(() => null) as DeletePayload | null;
   const target = text(payload?.target) as Target;
   const id = text(payload?.id);
   const password = typeof payload?.password === "string" ? payload.password : "";
-  if (!id || !["account", "community"].includes(target)) return failed("Nie wskazano elementu do usunięcia.");
+  if (!id || !["account", "community", "company"].includes(target)) return failed("Nie wskazano elementu do usunięcia.");
 
   try {
     const access = await verifyBrokerPassword(password);
     if (access.error) return access.error;
     if (target === "account") await removeAdministratorAccount(id);
-    else await removeCommunity(id);
+    else if (target === "community") await removeCommunity(id);
+    else await removeAdministratorCompany(id);
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("Nie udało się wykonać trwałego usunięcia.", error);
