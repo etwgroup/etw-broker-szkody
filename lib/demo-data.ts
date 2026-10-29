@@ -75,6 +75,6 @@ export const demoPolicies = [
 
 export function demoProfile(role: "administrator" | "broker") {
   return role === "broker"
-    ? { id: "demo-broker", full_name: "Marta Broker", email: "broker@etw.demo", role }
+    ? { id: "demo-broker", full_name: "Jessica Klimiuk-Waszczuk", email: "broker@etw.demo", role }
     : { id: "demo-administrator", full_name: "Anna Administrator", email: "administrator@etw.demo", role };
 }

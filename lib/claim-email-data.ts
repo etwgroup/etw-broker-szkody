@@ -47,7 +47,9 @@ function recipients(rows: Array<{ email: string | null; full_name: string | null
 
 export async function loadBrokerEmailRecipients(admin: SupabaseClient) {
   const { data } = await admin.from("profiles").select("email, full_name").eq("role", "broker").not("email", "is", null);
-  return recipients(data);
+  return (data || [])
+    .filter((profile) => Boolean(profile.email))
+    .map((profile) => ({ email: profile.email as string, full_name: "Jessica Klimiuk-Waszczuk" }));
 }
 
 export async function loadAdministratorEmailRecipients(admin: SupabaseClient, companyId: string | null) {
