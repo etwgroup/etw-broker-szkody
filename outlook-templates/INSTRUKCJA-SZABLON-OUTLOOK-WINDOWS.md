@@ -11,7 +11,7 @@ Plik `ETW-Broker-Centrum-Obslugi-Szkod.html` wykorzystuje tę samą kolorystykę
 
    `Nowość dla zarządców wspólnot — Centrum Obsługi Szkód ETW Broker`
 
-5. Nie dołączaj PDF jako pliku. Odbiorca pobierze informację o platformie przez przycisk w treści wiadomości.
+5. Nie dołączaj PDF jako pliku. Odbiorca pobierze informację o platformie oraz dokumenty współpracy przez odnośniki w treści wiadomości.
 6. Nie wpisuj odbiorców do szablonu. Po zapisaniu dobierzesz ich indywidualnie do każdej wiadomości.
 
 ### Nowy Outlook dla Windows
@@ -28,4 +28,6 @@ Przy kolejnej wysyłce otwórz: **Nowe elementy → Więcej elementów → Wybie
 
 - Film jest umieszczony jako przycisk prowadzący do YouTube: `https://www.youtube.com/watch?v=onbzIZ5c_W8`.
 - Logo pobiera się z publicznego adresu ETW Broker. Jeżeli Outlook nie pokaże grafiki w podglądzie, odbiorca może wybrać „Pobierz obrazy”.
-- Informacyjny PDF dla potencjalnych klientów jest dostępny pod adresem `https://wspolnoty.etwbroker.pl/materialy/ETW-Broker-informacja-dla-zarzadcow.pdf`. Nie trzeba dodawać go jako załącznika.
+- Informacyjny PDF dla potencjalnych klientów jest dostępny pod adresem `https://wspolnoty.etwbroker.pl/materialy/ETW-Broker-informacja-dla-zarzadcow.pdf`.
+- Wiadomość zawiera również odnośniki do pełnomocnictwa brokerskiego i formularza zgody na przetwarzanie danych. Oba dokumenty należy wypełnić, podpisać przez osoby uprawnione do reprezentacji zarządu wspólnoty, a następnie przesłać na adres `jwaszczuk@etwbroker.pl`.
+- Przed pierwszą wysyłką wgraj do repozytorium, z zachowaniem dokładnych ścieżek, pliki `public/materialy/ETW-Broker-pelnomocnictwo-brokerskie.pdf` oraz `public/materialy/ETW-Broker-formularz-zgody-na-przetwarzanie-danych.pdf`. Po wdrożeniu Vercel otwórz oba odnośniki z wiadomości i potwierdź, że pliki się pobierają.
