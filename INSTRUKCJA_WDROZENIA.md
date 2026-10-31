@@ -268,7 +268,7 @@ GitHub służy tu do przechowywania kodu. Polecenia wpisujesz nadal w aplikacji 
    - **Redirect URLs:** `https://wspolnoty.etwbroker.pl/**`
 
 2. Otwórz **Authentication → Email Templates**.
-3. W szablonie **Invite user** ustaw temat `Ustaw hasło do konta ETW Broker`, a następnie wklej zawartość pliku `supabase/email-templates/invite.html`.
+3. W szablonie **Invite user** ustaw temat `Ustaw hasło do konta ETW Broker`, a następnie wklej zawartość pliku `supabase/email-templates/invite.html`. Wiadomość zawiera sekcję „Materiały na start” z dwoma odnośnikami: filmem instruktażowym `https://www.youtube.com/watch?v=Tz0nUwJP12g` oraz instrukcją PDF `https://wspolnoty.etwbroker.pl/instrukcje/ETW-Broker-instrukcja-uzytkownika.pdf`.
 4. W szablonie **Reset password** ustaw temat `Ustaw nowe hasło — ETW Broker`, a następnie wklej zawartość pliku `supabase/email-templates/recovery.html`.
 5. Dla produkcji skonfiguruj własny serwer poczty w **Authentication → SMTP Settings**. W przeciwnym razie standardowa wysyłka Supabase działa tylko testowo i nie wyśle zaproszeń do dowolnych administratorów.
 6. Po wykonaniu migracji `202610220013_account_invitations_and_activation.sql` utwórz testowe konto z poziomu firmy administrującej. Broker wpisuje wyłącznie imię, nazwisko i e-mail, a administrator ustawia hasło z otrzymanego linku. Przy koncie status zmieni się z „Oczekuje na ustawienie hasła” na „Konto aktywne”.

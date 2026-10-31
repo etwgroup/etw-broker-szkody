@@ -24,6 +24,14 @@ export default function AccountInviteEmailPreviewPage() {
         ctaLabel="Ustaw hasło"
         ctaUrl="/auth/set-password"
         logoUrl="/etw-broker-logo.png"
+        resources={{
+          title: "Poznaj panel przed pierwszym logowaniem",
+          description: "Film i instrukcja pomogą szybko rozpocząć pracę w panelu.",
+          links: [
+            { label: "Obejrzyj film instruktażowy na YouTube", href: "https://www.youtube.com/watch?v=Tz0nUwJP12g" },
+            { label: "Pobierz instrukcję PDF", href: "/instrukcje/ETW-Broker-instrukcja-uzytkownika.pdf" },
+          ],
+        }}
       />
     </main>
   );

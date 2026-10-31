@@ -10,6 +10,11 @@ export type EmailNotificationTemplateProps = {
   ctaLabel: string;
   ctaUrl: string;
   logoUrl: string;
+  resources?: {
+    title: string;
+    description: string;
+    links: Array<{ label: string; href: string }>;
+  };
 };
 
 const colors = {
@@ -41,6 +46,7 @@ export function EmailNotificationTemplate({
   ctaLabel,
   ctaUrl,
   logoUrl,
+  resources,
 }: EmailNotificationTemplateProps) {
   return (
     <div
@@ -125,7 +131,7 @@ export function EmailNotificationTemplate({
             </td>
           </tr>
           <tr>
-            <td style={{ padding: "24px 32px 32px" }}>
+            <td style={{ padding: resources ? "24px 32px 22px" : "24px 32px 32px" }}>
               <a
                 href={ctaUrl}
                 style={{
@@ -145,6 +151,28 @@ export function EmailNotificationTemplate({
               </a>
             </td>
           </tr>
+          {resources && (
+            <tr>
+              <td style={{ padding: "0 32px 32px" }}>
+                <table cellPadding="0" cellSpacing="0" role="presentation" style={{ width: "100%", border: `1px solid ${colors.line}`, borderCollapse: "separate", borderSpacing: 0 }}>
+                  <tbody>
+                    <tr>
+                      <td style={{ padding: "16px 17px 17px" }}>
+                        <p style={{ ...textStyle, color: colors.red, fontSize: "10px", fontWeight: 700, letterSpacing: "1.1px", textTransform: "uppercase" }}>Materiały na start</p>
+                        <p style={{ ...textStyle, marginTop: "5px", fontSize: "14px", fontWeight: 800 }}>{resources.title}</p>
+                        <p style={{ ...textStyle, marginTop: "4px", color: colors.muted, fontSize: "13px", lineHeight: "1.5" }}>{resources.description}</p>
+                        {resources.links.map((link, index) => (
+                          <p key={link.href} style={{ ...textStyle, marginTop: index === 0 ? "13px" : "7px", fontSize: "13px", fontWeight: 700, lineHeight: "1.5" }}>
+                            <a href={link.href} style={{ color: colors.red, textDecoration: "underline" }}>{link.label}&nbsp; →</a>
+                          </p>
+                        ))}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          )}
           <tr>
             <td style={{ padding: "20px 32px", backgroundColor: "#171719", borderTop: `1px solid ${colors.line}` }}>
               <p style={{ ...textStyle, color: "#ffffff", fontSize: "12px", fontWeight: 700 }}>ETW Broker · obsługa szkód wspólnot mieszkaniowych</p>
