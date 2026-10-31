@@ -62,7 +62,7 @@ Panel dla administratorów wspólnot mieszkaniowych i brokera ubezpieczeniowego.
 6. Aby działały zaproszenia do kont i reset hasła, skonfiguruj wysyłkę e-maili w Supabase:
 
    - w **Authentication → URL Configuration** ustaw `https://wspolnoty.etwbroker.pl` jako **Site URL** oraz zachowaj `https://wspolnoty.etwbroker.pl/**` w **Redirect URLs**;
-   - w **Authentication → Email Templates** wklej zawartość `supabase/email-templates/invite.html` do szablonu **Invite user**, ustawiając temat `Ustaw hasło do konta ETW Broker`;
+   - w **Authentication → Email Templates** wklej zawartość `supabase/email-templates/invite.html` do szablonu **Invite user**, ustawiając temat `Ustaw hasło do konta ETW Broker`; wiadomość zawiera link do filmu instruktażowego i instrukcji PDF dostępnej pod `/instrukcje/ETW-Broker-instrukcja-uzytkownika.pdf`;
    - do szablonu **Reset password** wklej `supabase/email-templates/recovery.html`, ustawiając temat `Ustaw nowe hasło — ETW Broker`;
    - w produkcji skonfiguruj własny serwer SMTP w **Authentication → SMTP Settings**. Domyślna poczta Supabase służy tylko do testów i nie wysyła wiadomości na dowolne adresy.
 
