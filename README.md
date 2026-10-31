@@ -40,6 +40,9 @@ Panel dla administratorów wspólnot mieszkaniowych i brokera ubezpieczeniowego.
    11. `supabase/migrations/202610220011_claim_payouts_and_internal_notes.sql`
    12. `supabase/migrations/202610220012_notifications_center.sql`
    13. `supabase/migrations/202610220013_account_invitations_and_activation.sql`
+   14. `supabase/migrations/202610220014_historical_claim_reporting.sql`
+   15. `supabase/migrations/202610220015_secure_deletion_and_notification_clear.sql`
+   16. `supabase/migrations/202610220016_administrator_company_logos.sql`
 
    Trzecia i czwarta migracja muszą zostać wykonane osobno. PostgreSQL udostępnia nową wartość statusu dopiero po zatwierdzeniu poprzedniego zapytania.
 
@@ -150,7 +153,7 @@ Gdy aktualizacja zawiera zmiany w `supabase/migrations/`:
 3. Wypchnij kod na `main` lub uruchom redeploy w Vercel.
 4. Sprawdź krytyczną ścieżkę: logowanie, tworzenie firmy i konta administratora, import wspólnot, zgłoszenie szkody i zmianę statusu przez brokera.
 
-Migracje nie powinny być pomijane — nowy status z numerem szkody wymaga zarówno migracji `003`, jak i `004`, wspólny dostęp kont jednej firmy do polis wymaga migracji `007`, czat oraz wymiana dokumentów przy szkodzie wymagają migracji `008`, szybkie powiadomienia o ostatniej odpowiedzi wymagają migracji `009`, dane zgłaszającego wymagają migracji `010`, notatki wewnętrzne i kwoty wypłat wymagają migracji `011`, centrum powiadomień wymaga migracji `012`, a zaproszenia do kont wraz ze statusem aktywacji wymagają migracji `013`.
+Migracje nie powinny być pomijane — nowy status z numerem szkody wymaga zarówno migracji `003`, jak i `004`, wspólny dostęp kont jednej firmy do polis wymaga migracji `007`, czat oraz wymiana dokumentów przy szkodzie wymagają migracji `008`, szybkie powiadomienia o ostatniej odpowiedzi wymagają migracji `009`, dane zgłaszającego wymagają migracji `010`, notatki wewnętrzne i kwoty wypłat wymagają migracji `011`, centrum powiadomień wymaga migracji `012`, zaproszenia do kont wraz ze statusem aktywacji wymagają migracji `013`, import wcześniejszych szkód wymaga `014`, bezpieczne usuwanie danych wymaga `015`, a logotypy firm administrujących wymagają `016`.
 
 ## Bezpieczeństwo
 
