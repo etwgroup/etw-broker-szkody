@@ -20,7 +20,7 @@ Przejdź przez kroki po kolei. Nie przechodź do następnego punktu, dopóki bie
 
 ## Krok 2 — uruchom strukturę bazy danych
 
-Trzeba uruchomić osiem plików SQL — **jeden po drugim**.
+Trzeba uruchomić szesnaście plików SQL — **jeden po drugim**.
 
 1. W lewym menu Supabase kliknij **SQL Editor**.
 2. Kliknij **New query**.
@@ -44,6 +44,9 @@ Trzeba uruchomić osiem plików SQL — **jeden po drugim**.
    10. [202610220011_claim_payouts_and_internal_notes.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220011_claim_payouts_and_internal_notes.sql)
    11. [202610220012_notifications_center.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220012_notifications_center.sql)
    12. [202610220013_account_invitations_and_activation.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220013_account_invitations_and_activation.sql)
+   13. [202610220014_historical_claim_reporting.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220014_historical_claim_reporting.sql)
+   14. [202610220015_secure_deletion_and_notification_clear.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220015_secure_deletion_and_notification_clear.sql)
+   15. [202610220016_administrator_company_logos.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220016_administrator_company_logos.sql)
 
 > Ważne: plików `003` i `004` nie wklejaj do jednego zapytania. Każdy plik musi być uruchomiony osobno i zakończony sukcesem.
 
@@ -272,3 +275,9 @@ GitHub służy tu do przechowywania kodu. Polecenia wpisujesz nadal w aplikacji 
 4. W szablonie **Reset password** ustaw temat `Ustaw nowe hasło — ETW Broker`, a następnie wklej zawartość pliku `supabase/email-templates/recovery.html`.
 5. Dla produkcji skonfiguruj własny serwer poczty w **Authentication → SMTP Settings**. W przeciwnym razie standardowa wysyłka Supabase działa tylko testowo i nie wyśle zaproszeń do dowolnych administratorów.
 6. Po wykonaniu migracji `202610220013_account_invitations_and_activation.sql` utwórz testowe konto z poziomu firmy administrującej. Broker wpisuje wyłącznie imię, nazwisko i e-mail, a administrator ustawia hasło z otrzymanego linku. Przy koncie status zmieni się z „Oczekuje na ustawienie hasła” na „Konto aktywne”.
+
+## Krok 12 — logotypy firm administrujących
+
+1. W Supabase → **SQL Editor** uruchom plik [202610220016_administrator_company_logos.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220016_administrator_company_logos.sql).
+2. Wgraj zmienione pliki aplikacji do GitHub i poczekaj, aż Vercel zakończy wdrożenie ze statusem **Ready**.
+3. W panelu brokera przejdź do **Obsługiwani Administratorzy**. Przy tworzeniu firmy lub w jej edycji dodaj logo w formacie PNG, JPG albo WebP, maksymalnie 2 MB.

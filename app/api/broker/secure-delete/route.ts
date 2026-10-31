@@ -1,6 +1,7 @@
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
+import { COMPANY_LOGO_BUCKET } from "@/lib/company-logo";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 type DeletePayload = { target?: unknown; id?: unknown; password?: unknown };
@@ -96,7 +97,7 @@ async function removeAdministratorCompany(companyId: string) {
   const admin = createAdminSupabaseClient();
   const { data: company, error: companyError } = await admin
     .from("administrator_companies")
-    .select("id")
+    .select("id, logo_path")
     .eq("id", companyId)
     .maybeSingle();
   if (companyError || !company) throw new Error("Nie znaleziono firmy administrującej.");
@@ -104,6 +105,7 @@ async function removeAdministratorCompany(companyId: string) {
   // Existing foreign keys retain accounts and communities, but clear their company assignment.
   const { error } = await admin.from("administrator_companies").delete().eq("id", companyId);
   if (error) throw error;
+  await removeFiles(admin, COMPANY_LOGO_BUCKET, company.logo_path ? [company.logo_path] : []);
 }
 
 export async function DELETE(request: Request) {

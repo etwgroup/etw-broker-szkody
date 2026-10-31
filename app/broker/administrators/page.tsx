@@ -3,9 +3,10 @@ import { Building2 } from "lucide-react";
 import { AdministratorCompanyManager } from "@/components/administrator-company-manager";
 import { AppShell } from "@/components/app-shell";
 import { requireProfile } from "@/lib/auth";
+import { companyLogoUrl } from "@/lib/company-logo";
 import { demoCommunities } from "@/lib/demo-data";
 
-type Company = { id: string; name: string; nip: string | null };
+type Company = { id: string; name: string; nip: string | null; logo_path: string | null };
 type Administrator = { id: string; full_name: string | null; email: string | null; administrator_company_id: string | null };
 type CommunityOwner = { administrator_company_id: string | null };
 
@@ -13,12 +14,12 @@ export default async function BrokerAdministratorsPage() {
   const { supabase, profile, isDemo } = await requireProfile("broker");
   const [{ data: companies }, { data: administrators }, { data: communities }] = isDemo
     ? [
-      { data: [{ id: "demo-company", name: "ETW Administracja", nip: null }] },
+      { data: [{ id: "demo-company", name: "ETW Administracja", nip: null, logo_path: null }] },
       { data: [{ id: "demo-administrator", full_name: "Anna Administrator", email: "administrator@etw.demo", administrator_company_id: "demo-company" }] },
       { data: demoCommunities.map(() => ({ administrator_company_id: "demo-company" })) },
     ]
     : await Promise.all([
-      supabase!.from("administrator_companies").select("id, name, nip").order("name"),
+      supabase!.from("administrator_companies").select("id, name, nip, logo_path").order("name"),
       supabase!.from("profiles").select("id, full_name, email, administrator_company_id").eq("role", "administrator").order("full_name"),
       supabase!.from("communities").select("administrator_company_id"),
     ]);
@@ -34,7 +35,12 @@ export default async function BrokerAdministratorsPage() {
     if (account.administrator_company_id) accountCountByCompany.set(account.administrator_company_id, (accountCountByCompany.get(account.administrator_company_id) || 0) + 1);
   }
   const assignedCommunities = Array.from(communityCountByCompany.values()).reduce((sum, count) => sum + count, 0);
-  const companiesForManager = companyItems.map((company) => ({ ...company, accountCount: accountCountByCompany.get(company.id) || 0, communityCount: communityCountByCompany.get(company.id) || 0 }));
+  const companiesForManager = companyItems.map((company) => ({
+    ...company,
+    logoUrl: companyLogoUrl(company.logo_path),
+    accountCount: accountCountByCompany.get(company.id) || 0,
+    communityCount: communityCountByCompany.get(company.id) || 0,
+  }));
 
   return <AppShell profile={profile}>
     <header className="page-top"><div><p className="kicker">Panel brokera</p><h1>Obsługiwani Administratorzy</h1><p className="subtitle">Firmy posiadają wspólnoty, a ich pracownicy otrzymują dostęp przez przypisane konta.</p></div><Link className="button button-secondary" href="/broker/communities"><Building2 size={16}/> Wspólnoty</Link></header>
