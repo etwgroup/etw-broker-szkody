@@ -28,15 +28,18 @@ button { cursor: pointer; }
 @media (max-width: 520px) { .landing-nav .button { padding: 0 10px; }.hero h1 { font-size: 42px; }.hero p { font-size: 15px; }.feature-card { padding: 22px; }.stats { grid-template-columns: 1fr 1fr; }.data-table th:nth-child(3), .data-table td:nth-child(3) { display: none; } }
 
 /* Administrator-company branding */
-.company-logo-picker { display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 12px; align-items: center; min-width: 0; padding: 11px; border: 1px solid var(--line); border-radius: 5px; background: #fcfbfc; }
+.company-logo-picker { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 11px; align-items: center; min-width: 0; padding: 10px; border: 1px solid var(--line); border-radius: 5px; background: #fcfbfc; }
 .company-logo-picker__preview, .company-card-logo, .company-overview__logo { display: grid; flex: 0 0 auto; place-items: center; overflow: hidden; color: var(--red); background: var(--red-pale); border-radius: 5px; }
-.company-logo-picker__preview { width: 58px; height: 58px; }
+.company-logo-picker__preview { width: 52px; height: 52px; }
 .company-logo-picker__preview img, .company-card-logo img, .company-overview__logo img { display: block; width: 100%; height: 100%; object-fit: contain; background: #fff; }
 .company-logo-picker__controls { min-width: 0; }
-.company-logo-picker__controls > label { display: block; margin-bottom: 5px; color: #4e4d51; font-size: 12px; font-weight: 800; }
-.company-logo-picker__controls > label span { color: var(--muted); font-weight: 500; }
-.company-logo-picker__controls input { display: block; width: 100%; max-width: 340px; color: var(--ink); font-size: 11px; }
-.company-logo-picker__controls p, .company-logo-picker__controls strong { display: flex; gap: 5px; align-items: center; margin: 5px 0 0; color: var(--muted); font-size: 10px; line-height: 1.4; }
+.company-logo-picker__label { margin: 0 0 6px !important; color: #4e4d51 !important; font-size: 12px !important; font-weight: 800 !important; }
+.company-logo-picker__label span { color: var(--muted); font-weight: 500; }
+.company-logo-picker__input { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.company-logo-picker__choose { display: inline-flex; gap: 6px; align-items: center; width: fit-content; min-height: 30px; padding: 0 10px; color: var(--ink); border: 1px solid #d6d4d7; border-radius: 4px; background: #fff; font-size: 11px; font-weight: 800; cursor: pointer; }
+.company-logo-picker__choose:hover { border-color: var(--red); color: var(--red); }
+.company-logo-picker__input:focus-visible + p { outline: 2px solid var(--red); }
+.company-logo-picker__controls p:not(.company-logo-picker__label), .company-logo-picker__controls strong { display: flex; gap: 5px; align-items: center; margin: 5px 0 0; color: var(--muted); font-size: 10px; line-height: 1.4; }
 .company-logo-picker__controls strong { color: var(--ink); font-weight: 700; }
 .company-logo-picker__remove, .company-logo-picker__undo { display: inline-flex; gap: 5px; align-items: center; margin: 7px 0 0; padding: 0; border: 0; color: var(--red); background: transparent; font-size: 10px; font-weight: 800; }
 .company-logo-picker__undo { color: var(--ink); text-decoration: underline; }
@@ -46,11 +49,14 @@ button { cursor: pointer; }
 .company-overview h2 { margin: 0; font: 700 17px "Space Grotesk", Manrope, sans-serif; }
 .company-overview p:not(.kicker) { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
 .company-manager__form, .company-editor__fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 20px; }
+.company-manager__form { grid-template-columns: minmax(0, 1.08fr) minmax(0, .86fr) minmax(310px, 1.16fr); align-items: end; }
 .company-manager__form > label, .company-editor__fields > label { display: grid; gap: 7px; color: #4e4d51; font-size: 12px; font-weight: 800; }
 .company-manager__form > label span, .company-editor__fields > label span { color: var(--muted); font-weight: 500; }
 .company-manager__form > label input, .company-editor__fields > label input { width: 100%; padding: 11px 12px; color: var(--ink); background: #fcfcfc; border: 1px solid #d9d7da; border-radius: 4px; outline-color: var(--red); }
-.company-manager__form .company-logo-picker, .company-editor__fields .company-logo-picker { grid-column: 1 / -1; }
+.company-manager__form .company-logo-picker { grid-column: auto; }
+.company-editor__fields .company-logo-picker { grid-column: 1 / -1; }
 .company-manager__form .button, .company-editor__fields .button { justify-self: start; }
 .company-manager__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 0 20px 20px; }
 .company-manager__card-link h3 { margin: 0 0 7px; font: 700 16px "Space Grotesk", Manrope, sans-serif; }
+@media (max-width: 1100px) { .company-manager__form { grid-template-columns: repeat(2, minmax(0, 1fr)); }.company-manager__form .company-logo-picker { grid-column: 1 / -1; } }
 @media (max-width: 720px) { .company-manager__form, .company-editor__fields, .company-manager__list { grid-template-columns: 1fr; }.company-logo-picker { grid-template-columns: 50px minmax(0, 1fr); }.company-logo-picker__preview { width: 50px; height: 50px; } }

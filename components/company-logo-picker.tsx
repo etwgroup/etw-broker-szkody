@@ -65,8 +65,9 @@ export function CompanyLogoPicker({
       {visibleLogoUrl ? <img src={visibleLogoUrl} alt="Logo firmy administrującej"/> : <Building2 size={23}/>} 
     </div>
     <div className="company-logo-picker__controls">
-      <label htmlFor={id}>Logo firmy <span>— opcjonalnie</span></label>
-      <input id={id} type="file" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" onChange={selectLogo} disabled={disabled}/>
+      <p className="company-logo-picker__label">Logo firmy <span>— opcjonalnie</span></p>
+      <label className="company-logo-picker__choose" htmlFor={id}><ImagePlus size={14}/>{value ? "Zmień plik" : "Wybierz plik"}</label>
+      <input className="company-logo-picker__input" id={id} type="file" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" onChange={selectLogo} disabled={disabled}/>
       <p>PNG, JPG lub WebP · maks. 2 MB</p>
       {value && <strong><ImagePlus size={13}/> Wybrano: {value.name}</strong>}
       {allowCurrentRemoval && currentLogoUrl && !value && !currentLogoWillBeRemoved && <button type="button" className="company-logo-picker__remove" onClick={() => onCurrentRemovalChange?.(true)} disabled={disabled}><Trash2 size={13}/> Usuń obecne logo</button>}
