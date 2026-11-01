@@ -1,6 +1,6 @@
 "use client";
 
-import { ArchiveRestore, BarChart3, Building2, ClipboardList, FileText, LayoutDashboard, LogOut, PlusCircle, ShieldCheck, UsersRound } from "lucide-react";
+import { ArchiveRestore, BarChart3, Building2, ClipboardList, FileText, LayoutDashboard, LogOut, PlusCircle, ShieldCheck, UserRoundCheck, UsersRound } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -18,6 +18,7 @@ const brokerNavigation = [
   { href: "/broker/communities", label: "Wspólnoty", icon: Building2 },
   { href: "/broker/administrators", label: "Obsługiwani Administratorzy", icon: UsersRound },
   { href: "/broker/reports", label: "Raporty", icon: BarChart3 },
+  { href: "/broker/user-logins", label: "Raport użytkowników", icon: UserRoundCheck },
 ];
 
 export function AppSidebar({ profile }: { profile: AppProfile }) {

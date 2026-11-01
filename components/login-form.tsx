@@ -24,6 +24,8 @@ export function LoginForm({ variant = "default" }: { variant?: "default" | "hero
       if (authError) throw authError;
       const { data: { user } } = await supabase.auth.getUser();
       const { data: profile } = await supabase.from("profiles").select("role").eq("id", user?.id).single();
+      // Rejestrujemy wyłącznie udane logowanie. Błąd raportowania nie może blokować dostępu do panelu.
+      await fetch("/api/auth/login-events", { method: "POST", credentials: "same-origin" }).catch(() => undefined);
       router.replace(profile?.role === "broker" ? "/broker" : "/admin"); router.refresh();
     } catch (reason) { setError(reason instanceof Error ? reason.message : "Nie udało się zalogować."); }
     finally { setLoading(false); }

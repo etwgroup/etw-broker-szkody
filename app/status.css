@@ -394,6 +394,141 @@
   margin: 0;
 }
 
+.stats--three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.stats--login-report .stat-card span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.stats--login-report .stat-card span svg,
+.login-report-table h2 svg,
+.login-report-note > svg {
+  color: var(--red);
+}
+
+.login-report__latest {
+  font-size: 17px !important;
+  letter-spacing: -.4px !important;
+}
+
+.stats--login-report .stat-card small {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.login-report-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 18px;
+  padding: 14px 18px;
+  color: #5b555c;
+  background: #fffafb;
+}
+
+.login-report-note p {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.login-report-note strong { color: var(--ink); }
+
+.login-report-table .panel-header > div { display: grid; gap: 4px; }
+
+.login-report-table .panel-header h2 {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  font-size: 15px;
+}
+
+.login-report-table .panel-header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.login-report-filters {
+  display: grid;
+  grid-template-columns: minmax(200px, 1.8fr) minmax(150px, .7fr) minmax(145px, .65fr) auto;
+  align-items: end;
+  gap: 9px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line);
+  background: #fcfbfc;
+}
+
+.login-report-filters > label {
+  display: grid;
+  gap: 5px;
+  color: #5f5a61;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.login-report-filters input,
+.login-report-filters select {
+  width: 100%;
+  min-width: 0;
+  min-height: 35px;
+  padding: 0 9px;
+  color: var(--ink);
+  border: 1px solid #d9d7da;
+  border-radius: 4px;
+  outline-color: var(--red);
+  background: #fff;
+  font: 600 11px "Space Grotesk", Manrope, sans-serif;
+}
+
+.login-report-filters__search {
+  position: relative;
+  display: flex !important;
+  align-items: center;
+}
+
+.login-report-filters__search svg {
+  position: absolute;
+  left: 10px;
+  color: var(--red);
+}
+
+.login-report-filters__search input { padding-left: 32px; }
+
+.login-report-filters .button {
+  min-height: 35px;
+  margin: 0;
+  padding: 0 13px;
+  font-size: 10px;
+}
+
+.login-report__email {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.login-report__muted { color: #9a969c; }
+
+.login-role {
+  display: inline-flex;
+  padding: 5px 8px;
+  border-radius: 50px;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.login-role--administrator { color: #255f8d; background: #e2eff7; }
+.login-role--broker { color: #8c1731; background: #ffe7ed; }
+
 .company-manager,
 .account-directory,
 .community-editor,
@@ -831,6 +966,9 @@
   .administrator-account-form__fields {
     grid-template-columns: 1fr;
   }
+
+  .stats--three,
+  .login-report-filters { grid-template-columns: 1fr; }
 }
 
 .payout-amount {
