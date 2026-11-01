@@ -67,6 +67,12 @@ export const demoNotifications: Array<AppNotification & { recipient_role: "admin
   { id: "demo-notification-3", recipient_role: "administrator" as const, notification_type: "claim_status_changed", claim_id: "demo-claim-2", title: "Ubezpieczyciel nadał numer szkody", body: "Szkoda ETW-2026-00984: Uszkodzenie bramy wjazdowej", created_at: "2026-10-16T12:20:00+02:00", read_at: null },
 ];
 
+export const demoUserLoginEvents = [
+  { id: "demo-login-1", full_name: "Anna Administrator", email: "administrator@etw.demo", role: "administrator" as const, company_name: "Administracja Testowa", device_label: "Google Chrome · Windows", logged_in_at: "2026-11-01T09:18:00+01:00" },
+  { id: "demo-login-2", full_name: "Jessica Klimiuk-Waszczuk", email: "broker@etw.demo", role: "broker" as const, company_name: null, device_label: "Google Chrome · macOS", logged_in_at: "2026-11-01T08:42:00+01:00" },
+  { id: "demo-login-3", full_name: "Anna Administrator", email: "administrator@etw.demo", role: "administrator" as const, company_name: "Administracja Testowa", device_label: "Safari · iPhone", logged_in_at: "2026-10-31T16:05:00+01:00" },
+];
+
 export const demoPolicies = [
   { id: "demo-policy-1", community_id: "demo-community-1", insurer: "PZU S.A.", policy_number: "PZU/WM/2026/001284", valid_from: "2026-01-01", valid_to: "2026-12-31", file_name: "polisa-wspolnota-sloneczna-12.pdf", download_url: "data:text/plain;charset=utf-8,ETW%20Broker%20-%20demonstracyjna%20polisa%20Wspolnoty%20Sloneczna%2012" },
   { id: "demo-policy-archive-1", community_id: "demo-community-1", insurer: "PZU S.A.", policy_number: "PZU/WM/2025/000917", valid_from: "2025-01-01", valid_to: "2025-12-31", file_name: "polisa-wspolnota-sloneczna-12-2025.pdf", download_url: "data:text/plain;charset=utf-8,ETW%20Broker%20-%20archiwalna%20polisa%20Wspolnoty%20Sloneczna%2012%202025" },

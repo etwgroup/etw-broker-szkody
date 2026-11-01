@@ -45,6 +45,7 @@ Panel dla administratorów wspólnot mieszkaniowych i brokera ubezpieczeniowego.
    15. `supabase/migrations/202610220015_secure_deletion_and_notification_clear.sql`
    16. `supabase/migrations/202610220016_administrator_company_logos.sql`
    17. `supabase/migrations/202610220017_perpetrator_liability_payouts.sql`
+   18. `supabase/migrations/202610220018_user_login_reports.sql`
 
    Trzecia i czwarta migracja muszą zostać wykonane osobno. PostgreSQL udostępnia nową wartość statusu dopiero po zatwierdzeniu poprzedniego zapytania.
 

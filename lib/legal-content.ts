@@ -21,7 +21,7 @@ export const legalDocuments: LegalDocument[] = [
     label: "Polityka prywatności",
     title: "Polityka prywatności",
     lead: "Informacja o przetwarzaniu danych osobowych w Centrum obsługi szkód ETW Broker.",
-    updatedAt: "29 października 2026 r.",
+    updatedAt: "1 listopada 2026 r.",
     sections: [
       {
         title: "1. Administrator danych",
@@ -32,7 +32,7 @@ export const legalDocuments: LegalDocument[] = [
       },
       {
         title: "2. Zakres, cele i podstawy przetwarzania",
-        paragraphs: ["W zależności od sposobu korzystania z platformy możemy przetwarzać dane identyfikacyjne i kontaktowe użytkownika, dane jego firmy, dane zawarte w zgłoszeniu szkody, wiadomościach oraz załącznikach, a także dane techniczne potrzebne do bezpiecznego zalogowania."],
+        paragraphs: ["W zależności od sposobu korzystania z platformy możemy przetwarzać dane identyfikacyjne i kontaktowe użytkownika, dane jego firmy, dane zawarte w zgłoszeniu szkody, wiadomościach oraz załącznikach, a także dane techniczne potrzebne do bezpiecznego zalogowania. Dla ochrony dostępu prowadzimy rejestr udanych logowań obejmujący użytkownika, datę i godzinę wejścia oraz informację o rodzaju przeglądarki i urządzenia; nie zapisujemy w nim haseł ani adresów IP."],
         items: [
           "utworzenie i obsługa konta użytkownika oraz zapewnienie bezpieczeństwa dostępu — art. 6 ust. 1 lit. b i f RODO;",
           "przyjęcie, prowadzenie i dokumentowanie zgłoszenia szkody — art. 6 ust. 1 lit. b i f RODO;",
