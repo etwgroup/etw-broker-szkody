@@ -2735,6 +2735,25 @@
   margin: 0;
 }
 
+/* Keep account information and the sign-out controls visible while the page scrolls. */
+@media (min-width: 861px) {
+  .app-shell {
+    align-items: flex-start;
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    height: 100vh;
+    min-height: 100vh;
+  }
+
+  .sidebar-user {
+    flex: 0 0 auto;
+  }
+}
+
 @media (max-width: 860px) {
   .administrator-account-form {
     padding: 17px;
