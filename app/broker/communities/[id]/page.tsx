@@ -23,6 +23,7 @@ type CommunityClaim = {
   created_at: string;
   paid_amount?: string | number | null;
   paid_at?: string | null;
+  paid_from_perpetrator_liability?: boolean | null;
   communities: { name: string; address: string } | { name: string; address: string }[];
 };
 
@@ -59,7 +60,7 @@ export default async function BrokerCommunityDetailPage({ params }: { params: Pr
       .order("created_at", { ascending: false }),
     supabase!
       .from("claims")
-      .select("id, reference, title, status, occurred_at, created_at, paid_amount, paid_at, communities(name, address)")
+      .select("id, reference, title, status, occurred_at, created_at, paid_amount, paid_at, paid_from_perpetrator_liability, communities(name, address)")
       .eq("community_id", id)
       .order("created_at", { ascending: false }),
     supabase!.from("administrator_companies").select("id, name").order("name"),

@@ -20,6 +20,7 @@ function fileKey(file: File) {
 export function HistoricalClaimForm({ communities, demo = false }: { communities: Community[]; demo?: boolean }) {
   const router = useRouter();
   const [status, setStatus] = useState<ClaimStatus>("received");
+  const [paidFromPerpetratorLiability, setPaidFromPerpetratorLiability] = useState(false);
   const [notice, setNotice] = useState<Notice>(null);
   const [pending, setPending] = useState(false);
   const [communityQuery, setCommunityQuery] = useState("");
@@ -59,6 +60,7 @@ export function HistoricalClaimForm({ communities, demo = false }: { communities
       insurerClaimNumber: String(form.get("insurer_claim_number") || ""),
       paidAmount: String(form.get("paid_amount") || ""),
       paidAt: String(form.get("paid_at") || ""),
+      paidFromPerpetratorLiability: status === "paid" && paidFromPerpetratorLiability,
       reportedByName: String(form.get("reported_by_name") || ""),
       reportedByEmail: String(form.get("reported_by_email") || ""),
     };
@@ -142,7 +144,7 @@ export function HistoricalClaimForm({ communities, demo = false }: { communities
       <div className="field"><label htmlFor="historical-reported-at">Data zgłoszenia</label><input id="historical-reported-at" name="reported_at" type="date" required/></div>
       <div className="field"><label htmlFor="historical-status">Aktualny etap szkody</label><select id="historical-status" name="status" value={status} onChange={(event) => setStatus(event.target.value as ClaimStatus)}>{Object.entries(statusMeta).map(([value, meta]) => <option key={value} value={value}>{meta.label}</option>)}</select></div>
       {status === "insurer_claim_number_assigned" && <div className="field full"><label htmlFor="historical-insurer-number">Numer szkody nadany przez ubezpieczyciela</label><input id="historical-insurer-number" name="insurer_claim_number" required placeholder="np. 123456/2026"/></div>}
-      {status === "paid" && <><div className="field"><label htmlFor="historical-paid-amount">Kwota wypłaty (PLN)</label><input id="historical-paid-amount" name="paid_amount" type="number" min="0.01" step="0.01" required placeholder="np. 12500,00"/></div><div className="field"><label htmlFor="historical-paid-at">Data wypłaty <span className="field-hint">(opcjonalnie)</span></label><input id="historical-paid-at" name="paid_at" type="date"/></div></>}
+      {status === "paid" && <><div className="field"><label htmlFor="historical-paid-amount">Kwota wypłaty (PLN)</label><input id="historical-paid-amount" name="paid_amount" type="number" min="0.01" step="0.01" required placeholder="np. 12500,00"/></div><div className="field"><label htmlFor="historical-paid-at">Data wypłaty <span className="field-hint">(opcjonalnie)</span></label><input id="historical-paid-at" name="paid_at" type="date"/></div><div className="field full"><label className="status-checkbox-field"><input type="checkbox" checked={paidFromPerpetratorLiability} onChange={(event) => setPaidFromPerpetratorLiability(event.target.checked)}/><span><strong>Odszkodowanie wypłacone z OC sprawcy</strong><small>Ta kwota nie zostanie wliczona do szkodowości wspólnoty.</small></span></label></div></>}
       <div className="field"><label htmlFor="historical-reporter">Osoba zgłaszająca <span className="field-hint">(opcjonalnie)</span></label><input id="historical-reporter" name="reported_by_name" placeholder="np. Anna Kowalska"/></div>
       <div className="field"><label htmlFor="historical-reporter-email">E-mail osoby zgłaszającej <span className="field-hint">(opcjonalnie)</span></label><input id="historical-reporter-email" name="reported_by_email" type="email" placeholder="anna@firma.pl"/></div>
       <div className="field full"><label htmlFor="historical-description">Opis szkody <span className="field-hint">(minimum 10 znaków)</span></label><textarea id="historical-description" name="description" required minLength={10} maxLength={5000} placeholder="Wprowadź posiadane informacje o zdarzeniu i dotychczasowym przebiegu sprawy."/></div>

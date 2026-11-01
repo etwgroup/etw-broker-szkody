@@ -20,7 +20,7 @@ Przejdź przez kroki po kolei. Nie przechodź do następnego punktu, dopóki bie
 
 ## Krok 2 — uruchom strukturę bazy danych
 
-Trzeba uruchomić szesnaście plików SQL — **jeden po drugim**.
+Trzeba uruchomić siedemnaście plików SQL — **jeden po drugim**.
 
 1. W lewym menu Supabase kliknij **SQL Editor**.
 2. Kliknij **New query**.
@@ -47,6 +47,7 @@ Trzeba uruchomić szesnaście plików SQL — **jeden po drugim**.
    13. [202610220014_historical_claim_reporting.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220014_historical_claim_reporting.sql)
    14. [202610220015_secure_deletion_and_notification_clear.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220015_secure_deletion_and_notification_clear.sql)
    15. [202610220016_administrator_company_logos.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220016_administrator_company_logos.sql)
+   16. [202610220017_perpetrator_liability_payouts.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220017_perpetrator_liability_payouts.sql)
 
 > Ważne: plików `003` i `004` nie wklejaj do jednego zapytania. Każdy plik musi być uruchomiony osobno i zakończony sukcesem.
 
@@ -281,3 +282,9 @@ GitHub służy tu do przechowywania kodu. Polecenia wpisujesz nadal w aplikacji 
 1. W Supabase → **SQL Editor** uruchom plik [202610220016_administrator_company_logos.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220016_administrator_company_logos.sql).
 2. Wgraj zmienione pliki aplikacji do GitHub i poczekaj, aż Vercel zakończy wdrożenie ze statusem **Ready**.
 3. W panelu brokera przejdź do **Obsługiwani Administratorzy**. Przy tworzeniu firmy lub w jej edycji dodaj logo w formacie PNG, JPG albo WebP, maksymalnie 2 MB.
+
+## Krok 13 — wypłaty z OC sprawcy
+
+1. W Supabase → **SQL Editor** uruchom plik [202610220017_perpetrator_liability_payouts.sql](/Users/jakubwaszczuk/Documents/ChatGPT/SZKODY%20ETW%20BROKER/ETW-Broker-GitHub/supabase/migrations/202610220017_perpetrator_liability_payouts.sql).
+2. Wgraj zmienione pliki aplikacji do GitHub i poczekaj, aż Vercel zakończy wdrożenie ze statusem **Ready**.
+3. Przy ustawianiu statusu szkody na **Wypłacona** zaznacz opcję **Odszkodowanie wypłacone z OC sprawcy**, gdy wypłata nie pochodzi z polisy wspólnoty. Kwota będzie widoczna osobno w raporcie brokera, lecz nie zwiększy szkodowości wspólnoty.

@@ -13,6 +13,7 @@ type HistoricalClaimPayload = {
   insurerClaimNumber?: unknown;
   paidAmount?: unknown;
   paidAt?: unknown;
+  paidFromPerpetratorLiability?: unknown;
   reportedByName?: unknown;
   reportedByEmail?: unknown;
 };
@@ -42,6 +43,7 @@ export async function POST(request: Request) {
   const insurerClaimNumber = text(payload?.insurerClaimNumber);
   const paidAmount = parsePayout(payload?.paidAmount);
   const paidAt = text(payload?.paidAt);
+  const paidFromPerpetratorLiability = payload?.paidFromPerpetratorLiability === true;
   const reportedByName = text(payload?.reportedByName);
   const reportedByEmail = text(payload?.reportedByEmail);
 
@@ -84,6 +86,7 @@ export async function POST(request: Request) {
       insurer_claim_number: insurerClaimNumber || null,
       paid_amount: status === "paid" ? paidAmount : null,
       paid_at: status === "paid" && paidAt ? paidAt : null,
+      paid_from_perpetrator_liability: status === "paid" && paidFromPerpetratorLiability,
       reported_by_name: reportedByName || null,
       reported_by_email: reportedByEmail || null,
       created_at: `${reportedAt}T12:00:00.000Z`,

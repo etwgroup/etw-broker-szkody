@@ -25,13 +25,13 @@ export default async function BrokerClaimDetail({ params, searchParams }: { para
       <ClaimDetail claim={claim} attachments={demoAttachments} history={demoHistory}/>
       <ClaimConversation claimId={id} role="broker" messages={demoClaimMessages.filter((message) => message.claim_id === id)} demo/>
       <BrokerInternalNotes claimId={id} notes={demoInternalNotes.filter((note) => note.claim_id === id)} demo/>
-      <BrokerStatusForm claimId={id} status={claim.status as ClaimStatus} insurerClaimNumber={claim.insurer_claim_number} paidAmount={claim.paid_amount} demo/>
+      <BrokerStatusForm claimId={id} status={claim.status as ClaimStatus} insurerClaimNumber={claim.insurer_claim_number} paidAmount={claim.paid_amount} paidFromPerpetratorLiability={claim.paid_from_perpetrator_liability} demo/>
     </AppShell>;
   }
 
   const { data: claim } = await supabase!
     .from("claims")
-    .select("id, reference, title, description, status, insurer_claim_number, paid_amount, paid_at, occurred_at, created_at, reported_by_name, reported_by_email, communities(name, address)")
+    .select("id, reference, title, description, status, insurer_claim_number, paid_amount, paid_at, paid_from_perpetrator_liability, occurred_at, created_at, reported_by_name, reported_by_email, communities(name, address)")
     .eq("id", id)
     .single();
   if (!claim) notFound();
@@ -50,6 +50,6 @@ export default async function BrokerClaimDetail({ params, searchParams }: { para
     <ClaimDetail claim={claim} attachments={files} history={history || []}/>
     <ClaimConversation claimId={id} role="broker" messages={messages}/>
     <BrokerInternalNotes claimId={id} notes={internalNotes}/>
-    <BrokerStatusForm claimId={id} status={claim.status as ClaimStatus} insurerClaimNumber={claim.insurer_claim_number} paidAmount={claim.paid_amount}/>
+    <BrokerStatusForm claimId={id} status={claim.status as ClaimStatus} insurerClaimNumber={claim.insurer_claim_number} paidAmount={claim.paid_amount} paidFromPerpetratorLiability={claim.paid_from_perpetrator_liability}/>
   </AppShell>;
 }

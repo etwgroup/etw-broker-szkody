@@ -10,6 +10,7 @@ type StatusPayload = {
   status?: unknown;
   insurerClaimNumber?: unknown;
   paidAmount?: unknown;
+  paidFromPerpetratorLiability?: unknown;
 };
 
 function text(value: unknown) {
@@ -28,6 +29,7 @@ export async function POST(request: Request) {
   const status = text(payload?.status) as ClaimStatus;
   const insurerClaimNumber = text(payload?.insurerClaimNumber);
   const paidAmount = parsePayout(payload?.paidAmount);
+  const paidFromPerpetratorLiability = payload?.paidFromPerpetratorLiability === true;
 
   if (!claimId || !(status in statusMeta)) return NextResponse.json({ error: "Wybierz poprawny status szkody." }, { status: 400 });
   if (status === "insurer_claim_number_assigned" && !insurerClaimNumber) return NextResponse.json({ error: "Podaj numer szkody nadany przez ubezpieczyciela." }, { status: 400 });
@@ -48,6 +50,7 @@ export async function POST(request: Request) {
       status,
       insurer_claim_number: insurerClaimNumber || null,
       ...(status === "paid" ? { paid_amount: paidAmount } : {}),
+      paid_from_perpetrator_liability: status === "paid" && paidFromPerpetratorLiability,
       updated_at: new Date().toISOString(),
     })
     .eq("id", claimId);
