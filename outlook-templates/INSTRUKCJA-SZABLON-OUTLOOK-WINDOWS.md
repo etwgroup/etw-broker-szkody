@@ -1,18 +1,21 @@
 # Szablon wiadomości dla nowych administratorów
 
-Plik `ETW-Broker-Centrum-Obslugi-Szkod.html` wykorzystuje tę samą kolorystykę i układ co e-maile wysyłane przez aplikację ETW Broker.
+Plik `ETW-Broker-Centrum-Obslugi-Szkod.html` jest przeznaczony dla nowego Outlooka. Plik `ETW-Broker-Centrum-Obslugi-Szkod-Outlook-Klasyczny.html` jest wersją zalecaną dla klasycznego Outlooka dla Windows.
+
+Wersja klasyczna jest wyrównana do lewej, nie zawiera ciemnego tła ani graficznej stopki. Ma wyłącznie logo ETW Broker w nagłówku, a tekst pozostaje czytelny w klasycznym Outlooku.
 
 ## Utworzenie szablonu w Outlooku dla Windows
 
-1. Otwórz plik HTML w przeglądarce Chrome lub Edge.
-2. Naciśnij `Ctrl + A`, a następnie `Ctrl + C`.
-3. W Outlooku utwórz **Nową wiadomość**, kliknij w jej treści i wklej przez `Ctrl + V`.
-4. Uzupełnij temat:
+1. W klasycznym Outlooku wybierz konto, z którego ma być wysyłana wiadomość, a następnie utwórz zwykłą **Nową wiadomość**. Nie otwieraj pliku EML - blokuje on wybór nadawcy.
+2. Otwórz plik HTML w przeglądarce Chrome lub Edge.
+3. Naciśnij `Ctrl + A`, a następnie `Ctrl + C`.
+4. Wróć do utworzonej wiadomości w Outlooku, kliknij w jej treści i wklej przez `Ctrl + V`.
+5. Uzupełnij temat:
 
    `Nowość dla zarządców wspólnot — Centrum Obsługi Szkód ETW Broker`
 
-5. Nie dołączaj PDF jako pliku. Odbiorca pobierze informację o platformie oraz dokumenty współpracy przez odnośniki w treści wiadomości.
-6. Nie wpisuj odbiorców do szablonu. Po zapisaniu dobierzesz ich indywidualnie do każdej wiadomości.
+6. Nie dołączaj PDF jako pliku. Odbiorca pobierze informację o platformie oraz dokumenty współpracy przez odnośniki w treści wiadomości.
+7. Nie wpisuj odbiorców do szablonu. Po zapisaniu dobierzesz ich indywidualnie do każdej wiadomości.
 
 ### Nowy Outlook dla Windows
 
@@ -23,6 +26,8 @@ Po przygotowaniu wiadomości wybierz **Wiadomość → Szablon wiadomości → Z
 Wybierz **Plik → Zapisz jako**, a następnie typ: **Szablon programu Outlook (*.oft)**. Nadaj nazwę `ETW Broker — prezentacja dla administratorów`.
 
 Przy kolejnej wysyłce otwórz: **Nowe elementy → Więcej elementów → Wybierz formularz → Szablony użytkownika w systemie plików**.
+
+Gdy szablon zostanie otwarty, kliknij pole **Od** i wybierz właściwe konto z listy. Jeśli pola **Od** nie widać, w zwykłej wiadomości wybierz **Opcje → Od**. Nie wpisuj adresu nadawcy ręcznie.
 
 ## Ważne
 

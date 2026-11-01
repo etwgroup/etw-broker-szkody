@@ -8,7 +8,7 @@ export const demoCommunities = [
 
 export type DemoClaim = {
   id: string; reference: string; title: string; description: string; status: ClaimStatus;
-  occurred_at: string; created_at: string; insurer_claim_number?: string | null; paid_amount?: number | null; paid_at?: string | null; reported_by_name?: string | null; reported_by_email?: string | null; communities: (typeof demoCommunities)[number];
+  occurred_at: string; created_at: string; insurer_claim_number?: string | null; paid_amount?: number | null; paid_at?: string | null; paid_from_perpetrator_liability?: boolean | null; reported_by_name?: string | null; reported_by_email?: string | null; communities: (typeof demoCommunities)[number];
 };
 
 export const demoClaims: DemoClaim[] = [
